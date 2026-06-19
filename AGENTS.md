@@ -14,7 +14,7 @@ Requires **Node.js 20.x** (pinned in `.nvmrc` and `package.json` `engines`). Act
 
 | Task | Command |
 |------|---------|
-| Install deps | `npm ci` (runs `patch-package` via `postinstall`) |
+| Install deps | `npm ci` |
 | Dev server | `npm run dev` (Turbopack, port 3000) |
 | Lint | `npm run lint` |
 | Unit tests | `npm run test` |
@@ -28,5 +28,5 @@ Requires **Node.js 20.x** (pinned in `.nvmrc` and `package.json` `engines`). Act
 - **E2E tests need a running dev server.** Start `npm run dev` in a separate terminal/tmux session before running `npm run test:e2e`. The Playwright config reuses the dev server on port 3000.
 - **Playwright browsers must be installed** with `npx playwright install --with-deps chromium webkit` on first setup. The `--with-deps` flag is essential on Linux to pull WebKit system libraries.
 - **No environment variables are required** for local dev. All optional secrets (Involve Asia, Strapi, Firebase) fall back to sensible defaults. See `.env.example` for reference.
-- **`patch-package`** applies a Tailwind CSS patch automatically on install. If you see Tailwind issues after upgrading, check `patches/tailwindcss+3.4.18.patch`.
+- **Tailwind CSS 4** uses the `@tailwindcss/postcss` adapter. If styles fail after dependency work, check `app/globals.css`, `postcss.config.mjs`, and `tailwind.config.ts`.
 - **Static export only:** `next start` is not used in production. Always validate with `npm run build` since the live site is `output: "export"` static HTML.

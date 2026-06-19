@@ -11,7 +11,6 @@
     "setup": "npm install",
     "start:dev": "bash scripts/start-dev.sh",
     "local": "npm install && npm run dev",
-    "postinstall": "npm exec -- patch-package",
     "clean": "rm -rf .next",
     "dev:local": "bash scripts/dev-local.sh",
     "dev:docker": "docker compose up --build",
@@ -42,13 +41,13 @@
     "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --preset=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
   },
   "dependencies": {
-    "@swc/helpers": "0.5.15",
-    "firebase": "^12.11.0",
-    "framer-motion": "^12.38.0",
-    "next": "^16.2.7",
-    "posthog-js": "^1.379.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "@swc/helpers": "0.5.23",
+    "firebase": "^12.15.0",
+    "framer-motion": "^12.40.0",
+    "next": "^16.2.9",
+    "posthog-js": "^1.391.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "react-markdown": "^10.1.0"
   },
   "engines": {
@@ -56,30 +55,28 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@next/bundle-analyzer": "^16.2.7",
-    "@playwright/test": "^1.58.2",
-    "@types/node": "^20.0.0",
+    "@next/bundle-analyzer": "^16.2.9",
+    "@playwright/test": "^1.61.0",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^26.0.0",
     "@types/qrcode": "^1.5.6",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "autoprefixer": "^10.4.27",
-    "cross-env": "^7.0.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.39.4",
-    "eslint-config-next": "^16.2.7",
-    "firebase-tools": "^15.19.1",
-    "globals": "^17.4.0",
-    "patch-package": "^8.0.1",
+    "eslint-config-next": "^16.2.9",
+    "firebase-tools": "^15.22.0",
+    "globals": "^17.6.0",
     "postcss": "^8.5.15",
     "qrcode": "^1.5.4",
-    "sharp": "^0.34.5",
-    "tailwindcss": "3.4.18",
+    "sharp": "^0.35.2",
+    "tailwindcss": "4.3.1",
     "tsx": "^4.22.4",
-    "typescript": "^5.0.0"
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "postcss": "^8.5.15",
-    "gaxios": {
-      "uuid": "^11.1.1"
-    }
+    "uuid": "^11.1.1"
   }
 }

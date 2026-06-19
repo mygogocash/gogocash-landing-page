@@ -35,9 +35,9 @@ This document is the **canonical onboarding guide** for the repo. Topic-specific
 | Layer | Choice | Notes |
 |--------|--------|--------|
 | Framework | Next.js 16 (App Router) | `output: "export"` → static HTML in `out/` |
-| Styling | Tailwind CSS 3.4 | `tailwind.config.ts`; [`patches/tailwindcss+3.4.18.patch`](./patches/tailwindcss+3.4.18.patch) via `patch-package` |
+| Styling | Tailwind CSS 4 | `tailwind.config.ts` plus the `@tailwindcss/postcss` adapter in [`postcss.config.mjs`](./postcss.config.mjs) |
 | Motion | Framer Motion | Tree-shaken via `experimental.optimizePackageImports` in [`next.config.mjs`](./next.config.mjs) |
-| Content | React 18, `react-markdown` | Learn hub and legal pages |
+| Content | React 19, `react-markdown` | Learn hub and legal pages |
 | SEO / link previews | Next.js `metadata` + shared constants | Default title, description, `og:image`, and Twitter cards; see [Social preview](#social-preview-open-graph) |
 | Hosting | Firebase Hosting | `public: "out"` in [`firebase.json`](./firebase.json) |
 | Server/API in prod | None for this export | Static files only on Firebase Hosting unless you add a separate backend |
@@ -96,7 +96,7 @@ flowchart LR
 ```bash
 git clone https://github.com/mygogocash/landing-page.git
 cd landing-page
-npm ci          # runs patch-package via postinstall
+npm ci
 cp .env.example .env.local   # optional; see Environment variables
 npm run dev
 ```
@@ -276,7 +276,7 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 
 ## Patches & tooling notes
 
-- **`patch-package`**: Applied on `npm install` via `postinstall`. Currently patches **Tailwind** 3.4.18 ([`patches/tailwindcss+3.4.18.patch`](./patches/tailwindcss+3.4.18.patch)). If you upgrade Tailwind, regenerate or remove the patch as needed.
+- **Tailwind CSS 4**: Global styles import Tailwind from [`app/globals.css`](./app/globals.css) and load the project config with `@config "../tailwind.config.ts"`. PostCSS uses `@tailwindcss/postcss`; no `patch-package` patch is currently required.
 - **Firebase CLI**: Use the **project-local** version (`npm exec -- firebase`) to avoid global/CLI version skew.
 
 ---

@@ -1,8 +1,6 @@
 import type { Config } from "tailwindcss";
-import defaultTailwindConfig from "tailwindcss/stubs/config.full.js";
 
 const config: Config = {
-  presets: [defaultTailwindConfig],
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
