@@ -12,6 +12,7 @@ cms/strapi/.cache/
 cms/strapi/.tmp/
 cms/strapi/.strapi/
 cms/strapi/.strapi-updater.json
+cms/strapi/types/
 
 # Env (keep .env.example in repo)
 .env

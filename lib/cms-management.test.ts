@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
 
@@ -31,5 +31,23 @@ describe("CMS management wiring", () => {
     assert.equal(pkg.dependencies?.["@strapi/plugin-users-permissions"], "5.48.1");
     assert.equal(pkg.dependencies?.["better-sqlite3"], "12.11.1");
     assert.equal(pkg.dependencies?.["pg"], "8.16.3");
+  });
+
+  it("includes local admin runtime requirements", () => {
+    const adminConfig = readFileSync(
+      join(process.cwd(), "cms", "strapi", "config", "admin.ts"),
+      "utf8",
+    );
+    const envGenerator = readFileSync(
+      join(process.cwd(), "scripts", "create-cms-env.mjs"),
+      "utf8",
+    );
+
+    assert.match(adminConfig, /encryptionKey: env\("ENCRYPTION_KEY"\)/);
+    assert.match(envGenerator, /ENCRYPTION_KEY=\$\{secret\(\)\}/);
+    assert.equal(
+      existsSync(join(process.cwd(), "cms", "strapi", "favicon.png")),
+      true,
+    );
   });
 });

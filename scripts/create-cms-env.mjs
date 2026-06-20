@@ -32,6 +32,7 @@ API_TOKEN_SALT=${secret()}
 ADMIN_JWT_SECRET=${secret()}
 TRANSFER_TOKEN_SALT=${secret()}
 JWT_SECRET=${secret()}
+ENCRYPTION_KEY=${secret()}
 
 # Local npm run cms:dev uses SQLite.
 DATABASE_CLIENT=sqlite
