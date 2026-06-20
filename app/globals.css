@@ -2,8 +2,8 @@
 @config "../tailwind.config.ts";
 
 :root {
-  --primary: #047857;
-  --primary-dark: #065f46;
+  --primary: #007f60;
+  --primary-dark: #006f54;
   --accent: #f97066;
   --accent-dark: #dc2626;
   --text-primary: #1f2937;
