@@ -18,75 +18,16 @@ PostHog US uses two upstreams: `us.i.posthog.com` (events/flags) and
 
 ---
 
-## Option A — Cloudflare Worker (recommended here)
+## Cloudflare Worker
 
-This site already fronts on Cloudflare, and a Worker needs **no Blaze plan** and no
-change to the Firebase deploy. Use PostHog's official Worker:
+This site deploys to Cloudflare Workers Static Assets. Use a separate Cloudflare
+Worker route for PostHog's official reverse proxy:
 
 1. PostHog → **Settings → Project → Reverse proxy → Cloudflare**, copy the Worker.
 2. Deploy it on a route like `gogocash.co/ingest/*`.
 3. Set the two env vars above in the build env; redeploy the site.
 
 Docs: https://posthog.com/docs/advanced/proxy/cloudflare
-
-## Option B — Firebase Cloud Function (requires Blaze)
-
-Firebase Hosting can't rewrite to an external host, so this needs a function.
-**Caveats:** requires the **Blaze** plan, the deploy pipeline must `firebase deploy
---only functions,hosting`, and it adds cold-start latency. Test after deploying.
-
-`functions/package.json`:
-
-```json
-{
-  "name": "functions",
-  "engines": { "node": "20" },
-  "main": "index.js",
-  "dependencies": { "firebase-functions": "^5" }
-}
-```
-
-`functions/index.js`:
-
-```js
-const { onRequest } = require("firebase-functions/v2/https");
-
-const API_HOST = "us.i.posthog.com";
-const ASSET_HOST = "us-assets.i.posthog.com";
-
-exports.posthogProxy = onRequest({ region: "asia-southeast1" }, async (req, res) => {
-  const path = req.path.replace(/^\/ingest/, "");
-  const host = path.startsWith("/static/") ? ASSET_HOST : API_HOST;
-  const qs = req.originalUrl.includes("?") ? `?${req.originalUrl.split("?")[1]}` : "";
-  const upstream = await fetch(`https://${host}${path}${qs}`, {
-    method: req.method,
-    headers: { ...req.headers, host },
-    body: ["GET", "HEAD"].includes(req.method) ? undefined : req.rawBody,
-  });
-  res.status(upstream.status);
-  upstream.headers.forEach((v, k) => {
-    if (!["content-encoding", "transfer-encoding", "content-length"].includes(k)) {
-      res.setHeader(k, v);
-    }
-  });
-  res.send(Buffer.from(await upstream.arrayBuffer()));
-});
-```
-
-Add to `firebase.json` (under `hosting`) — only after the function exists:
-
-```json
-"rewrites": [
-  { "source": "/ingest/**", "function": "posthogProxy" }
-]
-```
-
-Deploy: `firebase deploy --only functions,posthogProxy,hosting`, then set the env
-vars and confirm events reach PostHog with a blocker enabled.
-
-Docs: https://posthog.com/docs/advanced/proxy
-
----
 
 ## Verify
 

@@ -6,11 +6,11 @@ import {
   isMarketingAnalyticsEnabled,
   marketingSiteOrigin,
   marketingSiteUrl,
-  publicFirebaseConfig,
-  publicFirebaseMeasurementId,
+  publicCloudflareWebAnalyticsToken,
   publicLineTagId,
   newsletterSignupConfig,
   publicPostHogHost,
+  shouldLoadCloudflareWebAnalytics,
   shouldLoadPostHog,
   strapiBaseUrl,
 } from "./app-config";
@@ -65,14 +65,18 @@ describe("app-config", () => {
     delete process.env.NEXT_PUBLIC_LINE_TAG_ID;
   });
 
-  it("returns the default public firebase config with overrides applied", () => {
-    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID = "custom-project";
-    process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = "G-CUSTOM";
+  it("loads Cloudflare Web Analytics only with a token and analytics enabled", () => {
+    delete process.env.NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN;
+    assert.equal(publicCloudflareWebAnalyticsToken(), null);
+    assert.equal(shouldLoadCloudflareWebAnalytics(), false);
 
-    const config = publicFirebaseConfig();
-    assert.ok(config);
-    assert.equal(config?.projectId, "custom-project");
-    assert.equal(publicFirebaseMeasurementId(), "G-CUSTOM");
+    process.env.NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN = "cf-token";
+    process.env.NEXT_PUBLIC_ANALYTICS_ENABLED = "false";
+    assert.equal(publicCloudflareWebAnalyticsToken(), "cf-token");
+    assert.equal(shouldLoadCloudflareWebAnalytics(), false);
+
+    process.env.NEXT_PUBLIC_ANALYTICS_ENABLED = "true";
+    assert.equal(shouldLoadCloudflareWebAnalytics(), true);
   });
 
   it("normalizes strapi base url and involve asia pagination bounds", () => {

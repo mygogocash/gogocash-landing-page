@@ -8,26 +8,6 @@ const DEFAULT_LINE_TAG_ID = "d27ab1a2-5e67-48d0-af8d-ca6b30b67452";
 const LINE_TAG_UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-const DEFAULT_PUBLIC_FIREBASE_CONFIG = {
-  apiKey: "AIzaSyDrxKfICfS512IFSjfPomoFZSwy-D-vPZI",
-  authDomain: "landing-page-4ae23.firebaseapp.com",
-  projectId: "landing-page-4ae23",
-  storageBucket: "landing-page-4ae23.firebasestorage.app",
-  messagingSenderId: "110817639529",
-  appId: "1:110817639529:web:7aa0d7da755797ecac76f8",
-  measurementId: "G-847C4M51SE",
-} as const;
-
-export type PublicFirebaseConfig = {
-  apiKey: string;
-  authDomain: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-  appId: string;
-  measurementId?: string;
-};
-
 function readTrimmedEnv(name: string): string | null {
   const value = process.env[name]?.trim();
   return value ? value : null;
@@ -126,7 +106,7 @@ const DEFAULT_POSTHOG_HOST = "https://us.i.posthog.com";
  * PostHog project key (publishable). No default — PostHog stays off until set.
  * Read via STATIC `process.env.NEXT_PUBLIC_*` so Next inlines it into the client
  * bundle (computed `process.env[name]` is not inlined and would be undefined in
- * the browser; that is why Firebase/LINE rely on hardcoded defaults instead).
+ * the browser; that is why LINE relies on a hardcoded default instead).
  */
 export function publicPostHogKey(): string | null {
   const value = process.env.NEXT_PUBLIC_POSTHOG_KEY?.trim();
@@ -160,6 +140,19 @@ export function shouldLoadPostHog(): boolean {
   if (override === "false") return false;
   if (override === "true") return true;
   return isMarketingAnalyticsEnabled();
+}
+
+export function publicCloudflareWebAnalyticsToken(): string | null {
+  const value = process.env.NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN?.trim();
+  return value ? value : null;
+}
+
+/**
+ * Cloudflare Web Analytics is optional and consent-gated at runtime.
+ * There is no default token so local/dev builds stay tracker-free.
+ */
+export function shouldLoadCloudflareWebAnalytics(): boolean {
+  return Boolean(publicCloudflareWebAnalyticsToken()) && isMarketingAnalyticsEnabled();
 }
 
 export type NewsletterSignupConfig = {
@@ -221,40 +214,6 @@ export function newsletterSignupConfig(): NewsletterSignupConfig {
     sourceValue:
       readTrimmedEnv("NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE") ?? "footer",
     customerIoFormsEnabled: Boolean(customerIoForms.siteId),
-  };
-}
-
-export function publicFirebaseMeasurementId(): string {
-  return (
-    readTrimmedEnv("NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID") ??
-    DEFAULT_PUBLIC_FIREBASE_CONFIG.measurementId
-  );
-}
-
-export function publicFirebaseConfig(): PublicFirebaseConfig | null {
-  const apiKey =
-    readTrimmedEnv("NEXT_PUBLIC_FIREBASE_API_KEY") ??
-    DEFAULT_PUBLIC_FIREBASE_CONFIG.apiKey;
-  if (!apiKey) return null;
-
-  return {
-    apiKey,
-    authDomain:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN") ??
-      DEFAULT_PUBLIC_FIREBASE_CONFIG.authDomain,
-    projectId:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID") ??
-      DEFAULT_PUBLIC_FIREBASE_CONFIG.projectId,
-    storageBucket:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET") ??
-      DEFAULT_PUBLIC_FIREBASE_CONFIG.storageBucket,
-    messagingSenderId:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID") ??
-      DEFAULT_PUBLIC_FIREBASE_CONFIG.messagingSenderId,
-    appId:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_APP_ID") ??
-      DEFAULT_PUBLIC_FIREBASE_CONFIG.appId,
-    measurementId: publicFirebaseMeasurementId(),
   };
 }
 

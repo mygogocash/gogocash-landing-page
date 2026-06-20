@@ -5,7 +5,7 @@ The `/learn` hub and `/learn/[slug]` pages resolve article metadata and Markdown
 ## Local (default)
 
 - **Metadata:** [`lib/learn-articles.ts`](../lib/learn-articles.ts) (`LEARN_ARTICLES`).
-- **Body:** files under [`content/learn/`](../content/learn/) named `{slug}.md`, or bundled fallbacks in [`lib/learn-article-content.ts`](../lib/learn-article-content.ts).
+- **Body:** a `content/learn/{slug}.md` file if present, otherwise the bundled fallback `learnArticleMarkdownBySlug` in [`lib/learn-article-content.ts`](../lib/learn-article-content.ts). The `content/learn/` directory is optional and is **not** currently present in the repo, so article bodies ship from `lib/learn-article-content.ts` by default.
 
 No environment variables are required. CI builds use this path unless Strapi is configured.
 
@@ -16,7 +16,7 @@ When **`STRAPI_URL`** is set (and the API returns at least one published entry),
 1. **Index:** [`fetchStrapiLearnIndex`](../lib/strapi-learn.ts) for the hub and `generateStaticParams`.
 2. **Per slug:** [`fetchStrapiLearnArticleBySlug`](../lib/strapi-learn.ts) for each article page.
 
-If Strapi is unreachable or returns empty data, the build **falls back** to local `LEARN_ARTICLES` + `content/learn/*.md` without cluttering the build log. To print those diagnostics, set **`NODE_DEBUG=learn-data`** when running `next build` (Node `util.debuglog`).
+If Strapi is unreachable or returns empty data, the build **falls back** to local `LEARN_ARTICLES` + the bundled `lib/learn-article-content.ts` (or `content/learn/*.md` if you add that directory) without cluttering the build log. To print those diagnostics, set **`NODE_DEBUG=learn-data`** when running `next build` (Node `util.debuglog`).
 
 Optional **`STRAPI_API_TOKEN`:** use for non-public Strapi permissions (build-time only; do not expose in client bundles).
 

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { BrowserLocaleBootstrap } from "@/components/browser-locale-bootstrap";
-import { FirebaseClientInit } from "@/components/firebase-client-init";
+import { CloudflareWebAnalyticsInit } from "@/components/cloudflare-web-analytics-init";
 import { PostHogInit } from "@/components/posthog-init";
 import { AnalyticsRouteListener } from "@/components/analytics-route-listener";
 import CookieConsent from "@/components/cookie-consent";
@@ -17,7 +17,7 @@ export function AppClientProviders({ children }: { children: ReactNode }) {
   return (
     <>
       <BrowserLocaleBootstrap />
-      <FirebaseClientInit />
+      <CloudflareWebAnalyticsInit />
       <PostHogInit />
       <AnalyticsRouteListener />
       <LoadingScreen>

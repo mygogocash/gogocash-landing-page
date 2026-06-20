@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "gogocash-landing-production",
+  "compatibility_date": "2026-06-19",
+  "workers_dev": false,
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page",
+    "html_handling": "drop-trailing-slash"
+  },
+  "routes": [
+    {
+      "pattern": "gogocash.co",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.gogocash.co",
+      "custom_domain": true
+    }
+  ]
+}

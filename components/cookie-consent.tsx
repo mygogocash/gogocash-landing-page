@@ -59,7 +59,7 @@ const COPY: Record<"en" | "th", ConsentCopy> = {
     alwaysOn: "Always on",
     analyticsTitle: "Analytics cookies",
     analyticsBody:
-      "Help us measure visits and improve pages with Firebase Analytics and PostHog.",
+      "Help us measure visits and improve pages with PostHog and Cloudflare Web Analytics.",
     marketingTitle: "Marketing cookies",
     marketingBody:
       "Let us load marketing pixels such as LINE Tag for campaign measurement.",
@@ -82,7 +82,7 @@ const COPY: Record<"en" | "th", ConsentCopy> = {
     alwaysOn: "เปิดเสมอ",
     analyticsTitle: "คุกกี้วิเคราะห์",
     analyticsBody:
-      "ช่วยให้เราวัดการเข้าชมและปรับปรุงหน้าเว็บด้วย Firebase Analytics และ PostHog",
+      "ช่วยให้เราวัดการเข้าชมและปรับปรุงหน้าเว็บด้วย PostHog และ Cloudflare Web Analytics",
     marketingTitle: "คุกกี้การตลาด",
     marketingBody:
       "อนุญาตให้โหลดพิกเซลการตลาด เช่น LINE Tag เพื่อวัดผลแคมเปญ",

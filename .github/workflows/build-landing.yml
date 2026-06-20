@@ -1,9 +1,5 @@
-# Build Next.js static export and deploy to Firebase Hosting (production site
-# — landing-page-4ae23 → gogocash.co). Triggers on push to `production` as
-# part of the beta/staging/production branch model. `main` remains the
-# default branch for GitHub; production ships from the `production` branch.
-#
-# Auth is handled through GitHub OIDC + Google Workload Identity Federation.
+# Build Next.js static export and deploy production to Cloudflare Workers
+# Static Assets. Production ships from the `production` branch.
 
 name: Build and deploy landing (production)
 
@@ -12,13 +8,18 @@ on:
     branches: [production]
   workflow_dispatch:
 
+concurrency:
+  group: landing-production-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SITE_URL: https://gogocash.co
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -38,31 +39,33 @@ jobs:
       - name: Test
         run: npm run test
 
-      # Optional Strapi for /learn: set STRAPI_URL (+ STRAPI_API_TOKEN if needed) in repo secrets
-      # and add them under env below — see docs/learn-content.md
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Build static site
         run: npm run build
         env:
-          # Optional: Involve Asia (server-side at build time for partner data)
           INVOLVE_ASIA_API_KEY: ${{ secrets.INVOLVE_ASIA_API_KEY }}
           INVOLVE_ASIA_API_SECRET: ${{ secrets.INVOLVE_ASIA_API_SECRET }}
-          # PostHog publishable project key — loads only after cookie consent.
           NEXT_PUBLIC_POSTHOG_KEY: ${{ vars.NEXT_PUBLIC_POSTHOG_KEY }}
-          # Optional footer newsletter provider form endpoint + field mapping.
+          NEXT_PUBLIC_POSTHOG_HOST: ${{ vars.NEXT_PUBLIC_POSTHOG_HOST }}
+          NEXT_PUBLIC_POSTHOG_UI_HOST: ${{ vars.NEXT_PUBLIC_POSTHOG_UI_HOST }}
+          NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ vars.NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN }}
+          NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID: ${{ vars.NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID }}
+          NEXT_PUBLIC_CUSTOMERIO_FORMS_BASE_URL: ${{ vars.NEXT_PUBLIC_CUSTOMERIO_FORMS_BASE_URL }}
           NEXT_PUBLIC_NEWSLETTER_FORM_ACTION: ${{ vars.NEXT_PUBLIC_NEWSLETTER_FORM_ACTION }}
           NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD }}
           NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD }}
           NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD }}
           NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE: ${{ vars.NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE }}
 
-      # WebKit needs GTK/GStreamer/etc. on Ubuntu; without --with-deps, launch fails with missing .so (CI).
-      - name: Install Playwright (browsers + system dependencies)
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 
-      - name: E2E (served from out/)
-        run: npm run test:e2e:ci
+      - name: E2E static export
+        run: npm run test:e2e:static-only
 
-      - name: Upload Static Artifact
+      - name: Upload static artifact
         uses: actions/upload-artifact@v7
         with:
           name: landing-page-out
@@ -70,16 +73,8 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: projects/110817639529/locations/global/workloadIdentityPools/github-actions/providers/mygogocash-landing-page
-          service_account: github-action-firebase-deploy@landing-page-4ae23.iam.gserviceaccount.com
-          create_credentials_file: true
-          export_environment_variables: true
-
-      - name: Deploy to Firebase Hosting
+      - name: Deploy to Cloudflare Workers
+        run: npm exec -- wrangler deploy --config wrangler.production.jsonc
         env:
-          FIREBASE_PROJECT_ID: landing-page-4ae23
-          FIREBASE_HOSTING_SITES: landing-page-4ae23
-        run: node scripts/deploy-firebase-hosting.mjs
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
