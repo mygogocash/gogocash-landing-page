@@ -8,6 +8,7 @@ const eslintConfig = [
       ".next/**",
       "out/**",
       "coverage/**",
+      "cms/strapi/**",
       "e2e/**",
       "playwright.config.ts",
     ],

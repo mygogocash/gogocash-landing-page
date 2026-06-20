@@ -1,15 +1,23 @@
 # Dependencies
 node_modules/
 .node_modules.stalled/
+cms/strapi/node_modules/
 
 # Next.js
 .next/
 out/
+cms/strapi/build/
+cms/strapi/dist/
+cms/strapi/.cache/
+cms/strapi/.tmp/
+cms/strapi/.strapi/
+cms/strapi/.strapi-updater.json
 
 # Env (keep .env.example in repo)
 .env
 .env.local
 .env.*.local
+cms/strapi/.env
 
 # Cloudflare API (DNS automation — never commit)
 .env.cloudflare
@@ -38,6 +46,8 @@ coverage/
 playwright-report/
 test-results/
 playwright/.cache/
+cms/strapi/public/uploads/*
+!cms/strapi/public/uploads/.gitkeep
 
 # TypeScript / Next generated files
 *.tsbuildinfo

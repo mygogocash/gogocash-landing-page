@@ -103,6 +103,11 @@ and redeploy.
 | `npm run verify` | lint + test + typecheck + build |
 | `npm run test:e2e` | Playwright against dev server |
 | `npm run test:e2e:static` | Build then Playwright against `out/` |
+| `npm run cms:env` | Generate local Strapi CMS secrets |
+| `npm run cms:install` | Install Strapi CMS dependencies |
+| `npm run cms:dev` | Run Strapi CMS admin on port 1337 |
+| `npm run cms:docker` | Run Strapi CMS + Postgres via Docker Compose profile |
+| `npm run cms:seed` | Push bundled Learn articles into Strapi |
 | `npm run deploy:cloudflare:production` | Build and deploy production Worker |
 | `npm run deploy:cloudflare:staging` | Build and deploy staging Worker |
 | `npm run deploy:cloudflare:beta` | Build and deploy beta Worker |
@@ -167,6 +172,7 @@ runs Playwright against the static export, then deploys with Wrangler.
 | Document | Topic |
 |----------|-------|
 | `docs/cloudflare-workers-deploy.md` | Cloudflare deploy and cutover |
+| `docs/cms-management.md` | Strapi CMS setup and publishing flow |
 | `docs/framer-to-next-migration.md` | Historical Framer migration checklist |
 | `docs/learn-content.md` | Learn articles: local files vs Strapi |
 | `docs/posthog-reverse-proxy.md` | PostHog reverse proxy on Cloudflare |

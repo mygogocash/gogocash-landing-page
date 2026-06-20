@@ -20,3 +20,60 @@ services:
       CHOKIDAR_USEPOLLING: "true"
     stdin_open: true
     tty: true
+
+  postgres:
+    image: postgres:16-alpine
+    profiles:
+      - cms
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: gogocash_cms
+      POSTGRES_USER: gogocash
+      POSTGRES_PASSWORD: gogocash_dev_password
+    volumes:
+      - strapi-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gogocash -d gogocash_cms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cms:
+    build:
+      context: ./cms/strapi
+      dockerfile: Dockerfile
+    profiles:
+      - cms
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./cms/strapi:/app
+      - /app/node_modules
+      - strapi-uploads:/app/public/uploads
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 1337
+      STRAPI_TELEMETRY_DISABLED: "true"
+      APP_KEYS: local-key-1,local-key-2,local-key-3,local-key-4
+      API_TOKEN_SALT: local-api-token-salt
+      ADMIN_JWT_SECRET: local-admin-jwt-secret
+      TRANSFER_TOKEN_SALT: local-transfer-token-salt
+      JWT_SECRET: local-jwt-secret
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: gogocash_cms
+      DATABASE_USERNAME: gogocash
+      DATABASE_PASSWORD: gogocash_dev_password
+      DATABASE_SSL: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+volumes:
+  strapi-postgres-data:
+  strapi-uploads:

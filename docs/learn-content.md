@@ -2,8 +2,9 @@
 
 The `/learn` hub and `/learn/[slug]` pages resolve article metadata and Markdown from **one of two sources**, chosen at **`next build`** (static export).
 
-The production-ready CMS path is **Strapi**. The checked-in collection schema
-and setup notes live in [`cms/strapi/`](../cms/strapi/README.md).
+The production-ready CMS path is **Strapi**. The runnable CMS app, collection
+schema, and setup notes live in [`cms/strapi/`](../cms/strapi/README.md). The
+operator runbook is [`docs/cms-management.md`](./cms-management.md).
 
 ## Local (default)
 

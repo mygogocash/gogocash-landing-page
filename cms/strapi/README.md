@@ -1,15 +1,42 @@
 # GoGoCash Learn CMS
 
-This folder contains the Strapi collection blueprint for managing GoGoCash
-Learn articles outside the landing-page codebase.
+This folder is a runnable Strapi CMS app for managing GoGoCash Learn articles.
 
 The landing site is still a static export. At `next build` time it reads
 published CMS articles from `STRAPI_URL`; if the CMS is unavailable or empty,
 it falls back to the local bundled Learn articles.
 
+## Local Admin
+
+From the repository root:
+
+```bash
+npm run cms:env
+npm run cms:install
+npm run cms:dev
+```
+
+Open:
+
+```txt
+http://localhost:1337/admin
+```
+
+Create the first admin user when Strapi asks. Local `cms:dev` uses SQLite at
+`cms/strapi/.tmp/data.db`.
+
+Docker/Postgres option:
+
+```bash
+npm run cms:docker
+```
+
+That starts Strapi at `http://localhost:1337/admin` and Postgres on host port
+`5433`.
+
 ## Collection
 
-Create one Strapi collection type:
+The app includes one Strapi collection type:
 
 - Display name: `Learn Article`
 - Singular API ID: `learn-article`
@@ -19,11 +46,8 @@ Create one Strapi collection type:
 The schema file is:
 
 ```txt
-cms/strapi/src/api/learn-article/content-types/learn-article/schema.json
+src/api/learn-article/content-types/learn-article/schema.json
 ```
-
-Copy that file into the same path in your Strapi app, or use it as the field
-checklist when creating the collection from the Strapi admin UI.
 
 ## Fields
 
@@ -39,7 +63,7 @@ checklist when creating the collection from the Strapi admin UI.
 Publish entries before rebuilding the landing site. Drafts are ignored by the
 landing build.
 
-## Permissions
+## Tokens and Permissions
 
 Use one of these access models:
 
@@ -51,12 +75,23 @@ For seeding from the repo, create a separate write token with create/update
 access and set `STRAPI_PUSH_TOKEN`. Do not expose write tokens as public
 `NEXT_PUBLIC_*` variables.
 
+Recommended token setup in Strapi Admin:
+
+- `landing-build-read`: read-only token used by `STRAPI_API_TOKEN`.
+- `local-seed-write`: write token used locally as `STRAPI_PUSH_TOKEN`.
+
 ## Commands
 
 Check CMS readiness:
 
 ```bash
 STRAPI_URL=https://cms.example.com STRAPI_API_TOKEN=... npm run learn:cms-check
+```
+
+For local Strapi:
+
+```bash
+STRAPI_URL=http://localhost:1337 STRAPI_API_TOKEN=... npm run learn:cms-check
 ```
 
 Seed or update the CMS from the bundled Learn articles:
@@ -75,4 +110,11 @@ Rebuild the landing site after publishing CMS changes:
 
 ```bash
 npm run build
+```
+
+Preview the landing page from local CMS content:
+
+```bash
+STRAPI_URL=http://localhost:1337 STRAPI_API_TOKEN=... npm run build
+npm run dev
 ```
