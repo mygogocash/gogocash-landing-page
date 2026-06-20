@@ -1,0 +1,32 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import { describe, it } from "node:test";
+
+function readRepoFile(filePath: string): string {
+  return fs.readFileSync(path.join(process.cwd(), filePath), "utf8").trim();
+}
+
+function readJsonFile(filePath: string): Record<string, unknown> {
+  return JSON.parse(readRepoFile(filePath)) as Record<string, unknown>;
+}
+
+describe("Cloudflare production build contract", () => {
+  it("pins the build image to the Node 22 runtime required by current tooling", () => {
+    const packageJson = readJsonFile("package.json");
+    const engines = packageJson.engines as Record<string, unknown>;
+
+    assert.equal(readRepoFile(".nvmrc"), "22");
+    assert.equal(readRepoFile(".node-version"), "22");
+    assert.equal(engines.node, ">=22 <23");
+  });
+
+  it("provides the Wrangler config used by the production deploy command", () => {
+    const wranglerConfig = readJsonFile("wrangler.production.jsonc");
+    const assets = wranglerConfig.assets as Record<string, unknown>;
+
+    assert.equal(wranglerConfig.name, "gogocash-landing-production");
+    assert.equal(assets.directory, "./out");
+    assert.equal(assets.not_found_handling, "404-page");
+  });
+});

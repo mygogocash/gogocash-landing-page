@@ -8,7 +8,7 @@ Static-export Next.js 16 marketing site for GoGoCash (cashback rewards). No back
 
 ### Node version
 
-Requires **Node.js 20.x** (pinned in `.nvmrc` and `package.json` `engines`). Activate with `source ~/.nvm/nvm.sh && nvm use 20` if the default shell version differs.
+Requires **Node.js 22.x** (pinned in `.nvmrc`, `.node-version`, and `package.json` `engines`). Activate with `source ~/.nvm/nvm.sh && nvm use 22` if the default shell version differs.
 
 ### Key commands
 

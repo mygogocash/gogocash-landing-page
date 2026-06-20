@@ -1,0 +1,11 @@
+{
+  "name": "gogocash-landing-production",
+  "compatibility_date": "2026-06-20",
+  "workers_dev": false,
+  "preview_urls": false,
+  "keep_vars": true,
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
