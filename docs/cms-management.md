@@ -20,6 +20,12 @@ Docker/Postgres alternative:
 npm run cms:docker
 ```
 
+## Cloudflare Hosting
+
+The production Cloudflare path runs Strapi through Cloudflare Containers and
+uses an external PostgreSQL database for persistent content. See
+`docs/cms-cloudflare-hosting.md`.
+
 ## First Content Load
 
 1. In Strapi Admin, create a write API token with access to `learn-articles`.

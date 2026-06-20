@@ -61,6 +61,7 @@ services:
       ADMIN_JWT_SECRET: local-admin-jwt-secret
       TRANSFER_TOKEN_SALT: local-transfer-token-salt
       JWT_SECRET: local-jwt-secret
+      ENCRYPTION_KEY: local-encryption-key
       DATABASE_CLIENT: postgres
       DATABASE_HOST: postgres
       DATABASE_PORT: 5432

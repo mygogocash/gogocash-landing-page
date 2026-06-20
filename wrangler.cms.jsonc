@@ -1,0 +1,54 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "gogocash-learn-cms",
+  "main": "cms/cloudflare/src/index.ts",
+  "compatibility_date": "2026-06-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": true,
+  "containers": [
+    {
+      "class_name": "StrapiCmsContainer",
+      "image": "./cms/strapi/Dockerfile.cloudflare",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CMS_CONTAINER",
+        "class_name": "StrapiCmsContainer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "StrapiCmsContainer"
+      ]
+    }
+  ],
+  "vars": {
+    "DATABASE_SSL": "true",
+    "DATABASE_SSL_REJECT_UNAUTHORIZED": "true",
+    "DATABASE_POOL_MIN": "0",
+    "DATABASE_POOL_MAX": "3"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  }
+}
