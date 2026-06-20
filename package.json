@@ -37,13 +37,13 @@
     "test:e2e:install": "npm exec -- playwright install chromium webkit",
     "typecheck": "npm exec -- tsc --noEmit",
     "verify": "npm run lint && npm run test && npm run typecheck && npm run build",
+    "eo:audit": "npm run build && node scripts/eo-audit.mjs",
     "learn:strapi-push": "npm exec -- tsx scripts/push-learn-to-strapi.ts",
-    "generate:assets": "node scripts/generate-seo-assets.mjs",
-    "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --preset=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
+    "generate:assets": "node scripts/generate-seo-assets.mjs && npm exec -- tsx scripts/generate-partner-data.ts",
+    "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --form-factor=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
   },
   "dependencies": {
     "@swc/helpers": "0.5.23",
-    "framer-motion": "^12.40.0",
     "next": "^16.2.9",
     "posthog-js": "^1.391.2",
     "react": "^19.2.7",

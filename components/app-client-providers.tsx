@@ -6,8 +6,6 @@ import { CloudflareWebAnalyticsInit } from "@/components/cloudflare-web-analytic
 import { PostHogInit } from "@/components/posthog-init";
 import { AnalyticsRouteListener } from "@/components/analytics-route-listener";
 import CookieConsent from "@/components/cookie-consent";
-import PageTransition from "@/components/page-transition";
-import LoadingScreen from "@/components/loading-screen";
 
 /**
  * Client-only providers and shell (analytics, locale, loading).
@@ -20,9 +18,7 @@ export function AppClientProviders({ children }: { children: ReactNode }) {
       <CloudflareWebAnalyticsInit />
       <PostHogInit />
       <AnalyticsRouteListener />
-      <LoadingScreen>
-        <PageTransition>{children}</PageTransition>
-      </LoadingScreen>
+      <div className="min-h-[100dvh] min-w-0 overflow-x-clip">{children}</div>
       <CookieConsent />
     </>
   );

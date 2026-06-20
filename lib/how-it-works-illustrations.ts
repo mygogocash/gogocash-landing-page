@@ -1,9 +1,7 @@
-/** SVG paths for How it works steps (same order EN + locale homes). */
-export const HOW_IT_WORKS_ILLUSTRATION_PATHS = [
-  "/images/how-it-works/browse-and-pick-your-brand.svg",
-  "/images/how-it-works/shop-the-way-you-already-do.svg",
-  "/images/how-it-works/cashback-after-the-merchant-confirms.svg",
-] as const;
+import { HOW_IT_WORKS_IMAGE_PATHS } from "@/lib/seo-assets";
+
+/** Optimized paths for How it works steps (same order EN + locale homes). */
+export const HOW_IT_WORKS_ILLUSTRATION_PATHS = HOW_IT_WORKS_IMAGE_PATHS;
 
 export function howItWorksIllustrationSrc(
   stepIndex: number,

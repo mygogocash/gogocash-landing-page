@@ -37,7 +37,7 @@ function metadataBaseUrl(): URL {
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
   display: "swap",
 });
@@ -52,7 +52,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#10b981",
+  themeColor: "#047857",
   colorScheme: "light",
   viewportFit: "cover",
 };

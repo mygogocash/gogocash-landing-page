@@ -1,11 +1,9 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useId, useState } from "react";
 import { ArrowUpRight, CheckCircle2 } from "@/components/icons";
 import { logHowItWorksTab } from "@/lib/analytics-client";
-import { usePrefersReducedMotionAfterMount } from "@/hooks/use-prefers-reduced-motion";
 import { uiCtaPrimarySurface } from "@/lib/ui-classes";
 import {
   twCtaPrimaryMotion,
@@ -13,8 +11,6 @@ import {
   twPressSm,
   twTransitionButton,
 } from "@/lib/motion-styles";
-
-const easeStandard = [0.4, 0, 0.2, 1] as const;
 
 export type HowItWorksStep = {
   summary: string;
@@ -38,14 +34,9 @@ export default function HowItWorksInteractive({
   const reactId = useId().replace(/:/g, "");
   const tabPrefix = `howit-tab-${reactId}`;
   const panelId = `howit-panel-${reactId}`;
-  const reduceMotion = usePrefersReducedMotionAfterMount();
 
   const block = steps[active];
   const hasIllustration = Boolean(block.illustrationSrc);
-
-  const panelTransition = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.28, ease: easeStandard };
 
   return (
     <>
@@ -88,19 +79,14 @@ export default function HowItWorksInteractive({
           aria-labelledby={`${tabPrefix}-${active}`}
           className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 py-6 shadow-sm sm:px-6 sm:py-8 md:px-10 md:py-12 lg:px-14 lg:py-14"
         >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={active}
-              initial={reduceMotion ? undefined : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? undefined : { opacity: 0, y: -10 }}
-              transition={panelTransition}
-              className={
-                hasIllustration
-                  ? "grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12"
-                  : "grid gap-8"
-              }
-            >
+          <div
+            key={active}
+            className={
+              hasIllustration
+                ? "grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12"
+                : "grid gap-8"
+            }
+          >
               <div className="flex min-w-0 gap-4 md:gap-10">
                 <span
                   className="shrink-0 pt-0.5 text-3xl font-bold tabular-nums leading-none text-primary md:w-12 md:pt-1 md:text-right md:text-4xl"
@@ -156,8 +142,7 @@ export default function HowItWorksInteractive({
                   />
                 </div>
               ) : null}
-            </motion.div>
-          </AnimatePresence>
+          </div>
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import AnimateOnScroll from "@/components/animate-on-scroll";
 import SectionBadge from "@/components/section-badge";
@@ -19,6 +19,7 @@ import {
   twFocusRingPrimary,
   twTransitionButton,
 } from "@/lib/motion-styles";
+import { PARTNER_DIRECTORY_JSON_PATH } from "@/lib/partner-directory";
 
 /** Desktop (md+): show this many rows before "Load more"; chunk size = cols × rows. */
 const BRANDS_ROWS_PER_CHUNK = 5;
@@ -85,6 +86,7 @@ const DEFAULT_PARTNER_LOGO_ALT_TEMPLATE = "{name} cashback partner GoGoCash";
 
 type MerchantOffersStripProps = {
   partners: PartnerBrand[];
+  totalPartnerCount?: number;
   /** Override badge label (e.g. Thai landing). */
   sectionBadgeLabel?: string;
   /** Override section heading. */
@@ -106,21 +108,26 @@ type MerchantOffersStripProps = {
 
 type MerchantBrandsGridProps = {
   filtered: PartnerBrand[];
+  hasMoreInDirectory: boolean;
   noResultsMessage: string;
   loadMoreLabel: string;
   loadMoreId: string;
   partnerLogoAlt: (name: string) => string;
+  onLoadFullDirectory: () => Promise<number | null>;
 };
 
 /** Keyed by search + partner count so visible cap resets without a reset effect. */
 function MerchantBrandsGrid({
   filtered,
+  hasMoreInDirectory,
   noResultsMessage,
   loadMoreLabel,
   loadMoreId,
   partnerLogoAlt,
+  onLoadFullDirectory,
 }: MerchantBrandsGridProps) {
   const gridRef = useRef<HTMLDivElement>(null);
+  const initialFilteredLengthRef = useRef(filtered.length);
   /** Items to add per "Load more" (updates on resize for desktop col count). */
   const [loadStep, setLoadStep] = useState(BRANDS_MOBILE_VISIBLE_CAP_GUESS);
   const [visibleCap, setVisibleCap] = useState(() =>
@@ -143,7 +150,7 @@ function MerchantBrandsGrid({
         const chunk = BRANDS_MOBILE_COLS * BRANDS_MOBILE_ROWS;
         setLoadStep(chunk);
         if (resetVisible) {
-          setVisibleCap(Math.min(chunk, filtered.length));
+          setVisibleCap(Math.min(chunk, initialFilteredLengthRef.current));
         }
         return;
       }
@@ -151,7 +158,7 @@ function MerchantBrandsGrid({
       const chunk = cols * BRANDS_ROWS_PER_CHUNK;
       setLoadStep(chunk);
       if (resetVisible) {
-        setVisibleCap(Math.min(chunk, filtered.length));
+        setVisibleCap(Math.min(chunk, initialFilteredLengthRef.current));
       }
     };
 
@@ -162,14 +169,14 @@ function MerchantBrandsGrid({
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [filtered]);
+  }, []);
 
   const visibleSlice = useMemo(
     () => filtered.slice(0, visibleCap),
     [filtered, visibleCap],
   );
 
-  const hasMore = filtered.length > visibleSlice.length;
+  const hasMore = filtered.length > visibleSlice.length || hasMoreInDirectory;
 
   return (
     <>
@@ -235,15 +242,26 @@ function MerchantBrandsGrid({
             type="button"
             id={loadMoreId}
             className={`rounded-full border border-primary/30 bg-white px-6 py-2.5 text-sm font-normal text-primary shadow-sm hover:bg-surface-green ${twCtaOutlineMotion}`}
-            onClick={() =>
+            onClick={async () => {
+              if (hasMoreInDirectory) {
+                const fullLength = await onLoadFullDirectory();
+                if (fullLength) {
+                  setVisibleCap((c) => Math.min(c + loadStep, fullLength));
+                  logBrandsLoadMore(
+                    Math.min(visibleCap + loadStep, fullLength),
+                    fullLength,
+                  );
+                }
+                return;
+              }
               setVisibleCap((c) => {
                 const next = Math.min(c + loadStep, filtered.length);
                 if (next > c) {
                   logBrandsLoadMore(next, filtered.length);
                 }
                 return next;
-              })
-            }
+              });
+            }}
           >
             {loadMoreLabel}
           </button>
@@ -255,6 +273,7 @@ function MerchantBrandsGrid({
 
 export default function MerchantOffersStrip({
   partners,
+  totalPartnerCount,
   sectionBadgeLabel = "Our Brand Partners",
   heading = "Earn cashback with the brands you already love",
   description = DEFAULT_DESCRIPTION,
@@ -272,13 +291,40 @@ export default function MerchantOffersStrip({
   const resultsStatusId = useId();
   const loadMoreId = useId();
   const [query, setQuery] = useState("");
+  const [directoryPartners, setDirectoryPartners] = useState(partners);
+  const [directoryLoadPromise, setDirectoryLoadPromise] =
+    useState<Promise<number | null> | null>(null);
+  const displayedTotal = totalPartnerCount ?? directoryPartners.length;
+  const hasMoreInDirectory = directoryPartners.length < displayedTotal;
+
+  const loadFullDirectory = useCallback(async () => {
+    if (!hasMoreInDirectory) return directoryPartners.length;
+    if (directoryLoadPromise) return directoryLoadPromise;
+
+    const promise = fetch(PARTNER_DIRECTORY_JSON_PATH, {
+      headers: { accept: "application/json" },
+    })
+      .then(async (res) => {
+        if (!res.ok) return null;
+        const payload = (await res.json()) as { partners?: PartnerBrand[] };
+        if (!Array.isArray(payload.partners) || payload.partners.length === 0) {
+          return null;
+        }
+        setDirectoryPartners(payload.partners);
+        return payload.partners.length;
+      })
+      .catch(() => null);
+
+    setDirectoryLoadPromise(promise);
+    return promise;
+  }, [directoryLoadPromise, directoryPartners.length, hasMoreInDirectory]);
 
   const filtered = useMemo(
-    () => filterPartnerBrands(partners, query),
-    [partners, query],
+    () => filterPartnerBrands(directoryPartners, query),
+    [directoryPartners, query],
   );
 
-  const total = partners.length;
+  const total = displayedTotal;
   const filteredCount = filtered.length;
   const countLine = buildPartnerCountLine({
     query,
@@ -335,7 +381,16 @@ export default function MerchantOffersStrip({
               type="search"
               name="brand-search"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => {
+                if (hasMoreInDirectory) void loadFullDirectory();
+              }}
+              onChange={(e) => {
+                const nextQuery = e.target.value;
+                setQuery(nextQuery);
+                if (nextQuery.trim() && hasMoreInDirectory) {
+                  void loadFullDirectory();
+                }
+              }}
               placeholder={searchPlaceholder}
               autoComplete="off"
               spellCheck={false}
@@ -364,12 +419,14 @@ export default function MerchantOffersStrip({
         </div>
 
         <MerchantBrandsGrid
-          key={`${query}:${partners.length}`}
+          key={query}
           filtered={filtered}
+          hasMoreInDirectory={hasMoreInDirectory && !query.trim()}
           noResultsMessage={noResultsMessage}
           loadMoreLabel={loadMoreLabel}
           loadMoreId={loadMoreId}
           partnerLogoAlt={partnerLogoAlt}
+          onLoadFullDirectory={loadFullDirectory}
         />
       </div>
     </section>

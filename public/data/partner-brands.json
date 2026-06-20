@@ -1,0 +1,742 @@
+{
+  "partners": [
+    {
+      "id": "bundled-accor",
+      "name": "Accor",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Accor_South_Asia_-_CPS-fc70c023-d9d2-4842-8166-1b92582f0e52.webp"
+    },
+    {
+      "id": "bundled-adidas",
+      "name": "Adidas",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Adidas.webp"
+    },
+    {
+      "id": "bundled-agoda",
+      "name": "agoda",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/agoda.webp"
+    },
+    {
+      "id": "bundled-airindia",
+      "name": "Air India",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Air India - CPS.webp"
+    },
+    {
+      "id": "bundled-airalo",
+      "name": "Airalo",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Airalo (Global) - CPS.webp"
+    },
+    {
+      "id": "bundled-airasia",
+      "name": "AirAsia",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/AirAsia (Travel).webp"
+    },
+    {
+      "id": "bundled-airpaz",
+      "name": "Airpaz",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Airpaz_Global_-_CPS-da26be80-c72b-4454-ac91-03338cf5a8e5.webp"
+    },
+    {
+      "id": "bundled-alibaba",
+      "name": "Alibaba",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Alibaba_CPS-00476bdf-0bdb-4df3-8a1d-b50c2498e3c4.webp"
+    },
+    {
+      "id": "bundled-aliexpress",
+      "name": "AliExpress",
+      "category": "E-commerce",
+      "logoUrl": "/images/partner-logos/optimized/AliExpress__Global__-_CPS-47e7e5c4-3d6e-4ca9-9bbb-26760c14b23c.webp"
+    },
+    {
+      "id": "bundled-all",
+      "name": "All",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/All_Online_TH_-_CPS-e270f21b-acb5-429e-a442-0475bc19994c.webp"
+    },
+    {
+      "id": "bundled-allonlineth",
+      "name": "All Online TH",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/All Online TH - CPS.webp"
+    },
+    {
+      "id": "bundled-auras",
+      "name": "Auras",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Auras_Insurance-70d2de29-20d3-4dba-9205-83c2f3134782.webp"
+    },
+    {
+      "id": "bundled-b2s",
+      "name": "B2S",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/B2S.webp"
+    },
+    {
+      "id": "bundled-banana",
+      "name": "Banana",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Banana_IT__TH_-b88fe9a0-b3d2-4dcb-b567-0d6592ef27f7.webp"
+    },
+    {
+      "id": "bundled-banggood",
+      "name": "Banggood",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Banggood (Global).webp"
+    },
+    {
+      "id": "bundled-bangkok",
+      "name": "Bangkok",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Bangkok_airways-2a301eb4-7d8a-4bc7-af1a-4c1594dd305d.webp"
+    },
+    {
+      "id": "bundled-bask",
+      "name": "Bask",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Bask_Bear_Coffee_-_CPS-60e65462-bdf3-4137-a21f-b31784db1e1d.webp"
+    },
+    {
+      "id": "bundled-beauty",
+      "name": "Beauty",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Beauty_Firster_TH_-_CPS-2025ffc9-c1d8-4a8e-b521-d647cd717118.webp"
+    },
+    {
+      "id": "bundled-british",
+      "name": "British",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/British_Council-309b9c16-ef19-4248-8bdc-f85be93d2d2a.webp"
+    },
+    {
+      "id": "bundled-brogame",
+      "name": "Bro.Game",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Bro.Game_TH_-_CPS-574a0c12-164b-4ee2-bc26-c5657b7d0867.webp"
+    },
+    {
+      "id": "bundled-capcut",
+      "name": "Capcut",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Capcut.webp"
+    },
+    {
+      "id": "bundled-central",
+      "name": "Central",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Central (TH) - CPS.webp"
+    },
+    {
+      "id": "bundled-charles",
+      "name": "Charles",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Charles___Keith__TH__-_CPS-1f274735-07bd-46f8-afb5-c4ad8e34cc7a.webp"
+    },
+    {
+      "id": "bundled-chow",
+      "name": "Chow",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Chow_Sang_Sang-8f46ec6c-c900-4193-a5d4-ca5884d91596.webp"
+    },
+    {
+      "id": "bundled-cleartrip",
+      "name": "cleartrip",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/cleartrip.webp"
+    },
+    {
+      "id": "bundled-codashop",
+      "name": "Codashop",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Codashop - CPS-2.webp"
+    },
+    {
+      "id": "bundled-cotton",
+      "name": "Cotton",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Cotton_On-f423cd57-360d-47aa-b28c-085c4e87e624.webp"
+    },
+    {
+      "id": "bundled-dhgate",
+      "name": "DHGate",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/DHGate_Global__CPS_-414628b4-032b-4657-be84-425020cc8f54.webp"
+    },
+    {
+      "id": "bundled-dominospizza",
+      "name": "Domino's Pizza",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Domino's Pizza (ID) - CPS.webp"
+    },
+    {
+      "id": "bundled-double",
+      "name": "Double",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Double_A_Thailand-63ed5aca-7226-4807-9eb5-9aedc40f5ec4.webp"
+    },
+    {
+      "id": "bundled-eithad",
+      "name": "Eithad",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Eithad.webp"
+    },
+    {
+      "id": "bundled-expedia",
+      "name": "expedia",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/expedia.webp"
+    },
+    {
+      "id": "bundled-express",
+      "name": "Express",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Express_VPN_-_CPS__NEW_-395b841b-9570-4327-98e9-5342d4612cae.webp"
+    },
+    {
+      "id": "bundled-fever",
+      "name": "Fever",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Fever_Global_-_CPS-5bb41b38-08e5-43e5-8dbb-fad088405b85.webp"
+    },
+    {
+      "id": "bundled-foreo",
+      "name": "foreo",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/foreo.webp"
+    },
+    {
+      "id": "bundled-gameseal",
+      "name": "Gameseal",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Gameseal_Global_-_CPS-7c645fb7-5c97-4386-bc65-a53e4a7880ba.webp"
+    },
+    {
+      "id": "bundled-geekbuying",
+      "name": "geekbuying",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/geekbuying.webp"
+    },
+    {
+      "id": "bundled-gocity",
+      "name": "go city",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/go city.webp"
+    },
+    {
+      "id": "bundled-godaddycom",
+      "name": "GoDaddy.com",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/GoDaddy.com.webp"
+    },
+    {
+      "id": "bundled-gowabi",
+      "name": "gowabi",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/gowabi.webp"
+    },
+    {
+      "id": "bundled-gq",
+      "name": "GQ",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/GQ_Thailand_-_CPS-5a0af668-8033-49cc-b123-9c2478c54da5.webp"
+    },
+    {
+      "id": "bundled-havaianas",
+      "name": "Havaianas",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Havaianas_TH_-_CPS-444ec231-84ab-478e-9b18-522fc6a981cd.webp"
+    },
+    {
+      "id": "bundled-hideme",
+      "name": "HideMe",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/HideMe_VPN_-_CPS-39bb0fbd-8c5a-4c1e-b79c-41d7adedcb07.webp"
+    },
+    {
+      "id": "bundled-homepro",
+      "name": "HomePro",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/HomePro_TH_-_CPS-ff188215-3660-42da-a55c-ad23aa0d8916.webp"
+    },
+    {
+      "id": "bundled-homestyler",
+      "name": "Homestyler",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Homestyler_Global_-_CPS-f69394b8-addb-403a-8557-da836b7d08bd.webp"
+    },
+    {
+      "id": "bundled-hopegoo",
+      "name": "HopeGoo",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/HopeGoo - CPS.webp"
+    },
+    {
+      "id": "bundled-hotelscom",
+      "name": "hotels.com",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/hotels.com.webp"
+    },
+    {
+      "id": "bundled-hp",
+      "name": "HP",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/HP.webp"
+    },
+    {
+      "id": "bundled-hungry",
+      "name": "Hungry",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Hungry_Hub__TH_-59589c50-6c1d-40a7-b011-1f57c945eb12.webp"
+    },
+    {
+      "id": "bundled-iherb",
+      "name": "iherb",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/iherb.webp"
+    },
+    {
+      "id": "bundled-ihg",
+      "name": "IHG",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/IHG.webp"
+    },
+    {
+      "id": "bundled-image",
+      "name": "image",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/image-4dd083ba-fc6b-4768-a67b-d33e8d633fbc.webp"
+    },
+    {
+      "id": "bundled-imobie",
+      "name": "iMobie",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/iMobie - CPS.webp"
+    },
+    {
+      "id": "bundled-imyfone",
+      "name": "iMyFone",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/iMyFone_CPS-b4cdc451-3eb5-4be4-a37e-51d21362f71a.webp"
+    },
+    {
+      "id": "bundled-insurverse",
+      "name": "Insurverse",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Insurverse_TH_-_CPA-89f2cd46-4c40-45fd-a3cb-85134b491349.webp"
+    },
+    {
+      "id": "bundled-international",
+      "name": "International",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/International_Open_Academy_-_CPS-937bd034-aafa-46a1-a03f-9edde2d561fe.webp"
+    },
+    {
+      "id": "bundled-jazeera",
+      "name": "Jazeera",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Jazeera.webp"
+    },
+    {
+      "id": "bundled-jd",
+      "name": "JD",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/JD.webp"
+    },
+    {
+      "id": "bundled-jetpac",
+      "name": "jetpac",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/jetpac.webp"
+    },
+    {
+      "id": "bundled-juice",
+      "name": "Juice",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Juice_Store-81c5bbe4-899a-4af9-8ff8-76e6d8ddb0b8.webp"
+    },
+    {
+      "id": "bundled-king",
+      "name": "King",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/King_Power__TH_-e000a475-5f6c-4327-becd-920a17e3f8c2.webp"
+    },
+    {
+      "id": "bundled-kinokuniya",
+      "name": "Kinokuniya",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Kinokuniya (TH).webp"
+    },
+    {
+      "id": "bundled-kiwi",
+      "name": "Kiwi",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Kiwi_Global_-_CPS-673475ac-3225-4107-84cf-0718b3d26893.webp"
+    },
+    {
+      "id": "bundled-kkday",
+      "name": "KKday",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/KKday_Global_-_CPS-8843707a-e989-4247-9894-78ecab1c8c10.webp"
+    },
+    {
+      "id": "bundled-klook",
+      "name": "Klook",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/Klook_Travel_-_CPS-2add8e44-e62f-41b1-b929-0209a591c335.webp"
+    },
+    {
+      "id": "bundled-ktc",
+      "name": "KTC",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/KTC_Credit_Card__TH_-1-cb0f4356-7f30-4680-a6dd-52d86019f346.webp"
+    },
+    {
+      "id": "bundled-ktccreditcard",
+      "name": "KTC Credit Card",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/KTC Credit Card (TH)-1.webp"
+    },
+    {
+      "id": "bundled-lapakgaming",
+      "name": "LapakGaming",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/LapakGaming - CPS.webp"
+    },
+    {
+      "id": "bundled-lazada",
+      "name": "Lazada",
+      "category": "E-commerce",
+      "logoUrl": "/images/partner-logos/optimized/Lazada.webp"
+    },
+    {
+      "id": "bundled-lightpdf",
+      "name": "Lightpdf",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Lightpdf.webp"
+    },
+    {
+      "id": "bundled-lotus",
+      "name": "Lotus",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Lotus_s_TH_-_CPS-7fd7d834-2412-4b35-ac64-5a1342172c4e.webp"
+    },
+    {
+      "id": "bundled-lotussth",
+      "name": "Lotus's TH",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Lotus's TH - CPS.webp"
+    },
+    {
+      "id": "bundled-lululemon",
+      "name": "lululemon",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/lululemon.webp"
+    },
+    {
+      "id": "bundled-malaysia",
+      "name": "Malaysia",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Malaysia_Airlines-6d5a548a-d91b-4caf-9c4a-1ec40e513fcd.webp"
+    },
+    {
+      "id": "bundled-megatix",
+      "name": "Megatix",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Megatix_TH-24c49f36-9caa-493f-b13f-7085eb25402a.webp"
+    },
+    {
+      "id": "bundled-mister",
+      "name": "Mister",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Mister_Aladin__ID__-_CPS-79055e07-28ed-4e7a-b037-de5d2cc3a62c.webp"
+    },
+    {
+      "id": "bundled-muang",
+      "name": "Muang",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Muang_Thai_Life_-_CPS-3eb56f78-11e1-4595-b1b0-3275f19e5a00.webp"
+    },
+    {
+      "id": "bundled-myrepublic",
+      "name": "MyRepublic",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/MyRepublic_SG_-_CPS-41198f0c-28e3-4022-b630-d27b16dacca4.webp"
+    },
+    {
+      "id": "bundled-nike",
+      "name": "Nike",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Nike.webp"
+    },
+    {
+      "id": "bundled-olive",
+      "name": "Olive",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Olive_Young-5c798b71-69d6-46f4-acd6-6967a43be853.webp"
+    },
+    {
+      "id": "bundled-omio",
+      "name": "Omio",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/Omio (GoEuro).webp"
+    },
+    {
+      "id": "bundled-pai",
+      "name": "pai",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/pai_welness-d77616eb-a255-458f-a31f-40ce9815be52.webp"
+    },
+    {
+      "id": "bundled-paiwelness",
+      "name": "pai welness",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/pai welness.webp"
+    },
+    {
+      "id": "bundled-panelplace",
+      "name": "PanelPlace",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/PanelPlace_Global_-_CPA-b1c894c4-a695-4bf4-b806-6671ce9d962a.webp"
+    },
+    {
+      "id": "bundled-papique",
+      "name": "Papique",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Papique - CPS.webp"
+    },
+    {
+      "id": "bundled-pelago",
+      "name": "Pelago",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/Pelago - CPS.webp"
+    },
+    {
+      "id": "bundled-pepperstone",
+      "name": "pepperstone",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/pepperstone.webp"
+    },
+    {
+      "id": "bundled-petronas",
+      "name": "Petronas",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Petronas_Shop_-_CPS-5d2d9992-ee83-40b1-87ed-f6394bc32d76.webp"
+    },
+    {
+      "id": "bundled-photobook",
+      "name": "Photobook",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Photobook (TH).webp"
+    },
+    {
+      "id": "bundled-plaud",
+      "name": "Plaud",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Plaud.webp"
+    },
+    {
+      "id": "bundled-puma",
+      "name": "Puma",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Puma.webp"
+    },
+    {
+      "id": "bundled-qatar",
+      "name": "Qatar",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Qatar_Airways-f42cd3f9-cb1a-4d57-878e-187bd62924d5.webp"
+    },
+    {
+      "id": "bundled-rakuten",
+      "name": "Rakuten",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Rakuten_travel-0910d528-c5cd-4bec-be99-72cc07abfbf3.webp"
+    },
+    {
+      "id": "bundled-razer",
+      "name": "razer",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/razer.webp"
+    },
+    {
+      "id": "bundled-roamless",
+      "name": "Roamless",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Roamless_eSIM_-_CPS-87a7ffc7-0521-4dd1-81e6-d8a69df0c978.webp"
+    },
+    {
+      "id": "bundled-sasa",
+      "name": "Sasa",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Sasa.webp"
+    },
+    {
+      "id": "bundled-seagm",
+      "name": "SEAGM",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/SEAGM.webp"
+    },
+    {
+      "id": "bundled-sephora",
+      "name": "Sephora",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Sephora (TH).webp"
+    },
+    {
+      "id": "bundled-shein",
+      "name": "Shein",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Shein_Global_-_CPS-695745ce-9e44-4863-8da5-32b59912697d.webp"
+    },
+    {
+      "id": "bundled-shopee",
+      "name": "Shopee",
+      "category": "E-commerce",
+      "logoUrl": "/images/partner-logos/optimized/Shopee_TH_-_CPS-82b4655f-0d6d-4b71-892b-23ee8f97130b.webp"
+    },
+    {
+      "id": "bundled-sider",
+      "name": "Sider",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Sider_AI_-_CPS-84458b1a-6fc4-4e9d-979c-768e9a891cd2.webp"
+    },
+    {
+      "id": "bundled-simoptions",
+      "name": "SimOptions",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/SimOptions_Global_-_CPS-8d222286-9d5a-4d28-9929-ab535ceba287.webp"
+    },
+    {
+      "id": "bundled-skechers",
+      "name": "Skechers",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Skechers_TH_-_CPS-b3e76eef-30c4-4ffd-a89b-34d13f673f1a.webp"
+    },
+    {
+      "id": "bundled-stacksocial",
+      "name": "StackSocial",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/StackSocial.webp"
+    },
+    {
+      "id": "bundled-studio7",
+      "name": "Studio7",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Studio7_TH_-_CPS-b7d9e2c3-6db8-4b43-bcf6-126e2f1cae4d.webp"
+    },
+    {
+      "id": "bundled-stylevana",
+      "name": "Stylevana",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Stylevana.webp"
+    },
+    {
+      "id": "bundled-swarovski",
+      "name": "Swarovski",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Swarovski.webp"
+    },
+    {
+      "id": "bundled-taobao",
+      "name": "Taobao",
+      "category": "E-commerce",
+      "logoUrl": "/images/partner-logos/optimized/Taobao (Deeplinkable) - CPS.webp"
+    },
+    {
+      "id": "bundled-thisshop",
+      "name": "Thisshop",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Thisshop_TH_-_CPS-783a4ef7-3d6f-4f58-8af4-563e00f8d357.webp"
+    },
+    {
+      "id": "bundled-tiktok",
+      "name": "TikTok",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/TikTok_B2B-841d4ba3-7e3a-4467-b9cb-d4ae7dc87746.webp"
+    },
+    {
+      "id": "bundled-tiqets",
+      "name": "Tiqets",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Tiqets_CPS-3d3fca37-0bb2-4776-9061-871164ec4842.webp"
+    },
+    {
+      "id": "bundled-trainpal",
+      "name": "TrainPal",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/TrainPal - CPS.webp"
+    },
+    {
+      "id": "bundled-traveloka",
+      "name": "Traveloka",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Traveloka_PH_-_CPS-41c49581-2ca2-493f-9ada-85f6f560d0a4.webp"
+    },
+    {
+      "id": "bundled-tripcom",
+      "name": "Trip.com",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/Trip.com_-_CPS-52d7d063-9ce8-4985-9b45-9bf6086a7e00.webp"
+    },
+    {
+      "id": "bundled-tripadvisor",
+      "name": "Tripadvisor",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Tripadvisor (CPS).webp"
+    },
+    {
+      "id": "bundled-true",
+      "name": "True",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/True_TH_-_CPS___CPA-c12122a3-89ac-4c3b-9718-45135e89b066.webp"
+    },
+    {
+      "id": "bundled-tumi",
+      "name": "Tumi",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Tumi.webp"
+    },
+    {
+      "id": "bundled-udemy",
+      "name": "Udemy",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Udemy_US_-_CPS-3e4566a0-d1c8-45de-8669-78c39bfbd88e.webp"
+    },
+    {
+      "id": "bundled-unipin",
+      "name": "Unipin",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Unipin_Global_-_CPS-a7003c71-daab-4c15-974d-89546165e630.webp"
+    },
+    {
+      "id": "bundled-wegic",
+      "name": "Wegic",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Wegic_AI_-_CPS-e8919720-1ddf-42fc-8f93-7171b071a960.webp"
+    },
+    {
+      "id": "bundled-wps",
+      "name": "WPS",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/WPS_SOFTWARE_-_CPI___CPS-e1725457-041d-4563-bd93-4e28ef8477a4.webp"
+    },
+    {
+      "id": "bundled-xioami",
+      "name": "Xioami",
+      "category": "Partners",
+      "logoUrl": "/images/partner-logos/optimized/Xioami.webp"
+    },
+    {
+      "id": "bundled-zenhotels",
+      "name": "Zen Hotels",
+      "category": "Travel",
+      "logoUrl": "/images/partner-logos/optimized/Zen Hotels - CPS.webp"
+    }
+  ]
+}

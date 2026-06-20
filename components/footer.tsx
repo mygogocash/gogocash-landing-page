@@ -42,9 +42,9 @@ export default function Footer() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4 lg:gap-12 xl:gap-16">
             {Object.entries(FOOTER_LINKS).map(([title, links]) => (
               <div key={title}>
-                <h4 className="text-sm font-semibold text-[#1f2937]">
+                <h2 className="text-sm font-semibold text-[#1f2937]">
                   {title}
-                </h4>
+                </h2>
                 <ul className="mt-4 flex flex-col gap-3">
                   {links.map((link) => {
                     const external = link.href.startsWith("http");
@@ -128,7 +128,7 @@ export default function Footer() {
         </div>
 
         {/* Risk disclaimer — below copyright / social */}
-        <p className="mt-8 text-xs leading-relaxed text-[#9ca3af]">
+        <p className="mt-8 text-xs leading-relaxed text-[#6b7280]">
           Cashback rates, merchant availability, and product features may
           change. GoGoCash does not provide financial, investment, or tax
           advice. Saving Plus and related offerings involve risk; read terms

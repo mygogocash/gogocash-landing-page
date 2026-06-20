@@ -26,6 +26,7 @@ import { WEB_APP_HREF } from "@/components/social-data";
 import FaqJsonLd from "@/components/faq-json-ld";
 import SectionViewTracker from "@/components/section-view-tracker";
 import { HOW_IT_WORKS_ILLUSTRATION_PATHS } from "@/lib/how-it-works-illustrations";
+import { INITIAL_PARTNER_GRID_COUNT } from "@/lib/partner-directory";
 
 const HOW_IT_WORKS_STEPS: HowItWorksStep[] = [
   {
@@ -73,6 +74,11 @@ type HomePageProps = {
 };
 
 export default function HomePage({ initialPartners }: HomePageProps) {
+  const initialPartnerPreview = initialPartners.slice(
+    0,
+    INITIAL_PARTNER_GRID_COUNT,
+  );
+
   return (
     <>
       <Header />
@@ -81,7 +87,8 @@ export default function HomePage({ initialPartners }: HomePageProps) {
         <EnglishHomeHeroSection />
 
         <MerchantOffersStrip
-          partners={initialPartners}
+          partners={initialPartnerPreview}
+          totalPartnerCount={initialPartners.length}
           description={partnersStripEarnDescription()}
           loadMoreLabel="See more Brands"
         />

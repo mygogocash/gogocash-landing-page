@@ -47,7 +47,7 @@ export default function AppDownloadSection() {
                   href="https://t.me/GoGoCashAppBot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#229ED9] px-6 py-3 text-sm font-normal text-white hover:opacity-95 ${twOpacityHoverMotion} ${twPressSm} ${twFocusRingPrimary}`}
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0b6fa4] px-6 py-3 text-sm font-normal text-white hover:opacity-95 ${twOpacityHoverMotion} ${twPressSm} ${twFocusRingPrimary}`}
                 >
                   Telegram Mini App
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
@@ -56,7 +56,7 @@ export default function AppDownloadSection() {
                   href={LINE_MINI_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#06C755] px-6 py-3 text-sm font-normal text-white hover:opacity-95 ${twOpacityHoverMotion} ${twPressSm} ${twFocusRingPrimary}`}
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#047a38] px-6 py-3 text-sm font-normal text-white hover:opacity-95 ${twOpacityHoverMotion} ${twPressSm} ${twFocusRingPrimary}`}
                 >
                   LINE Mini App
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
@@ -81,7 +81,7 @@ export default function AppDownloadSection() {
                 href={LINE_MINI_APP_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`mt-4 block rounded-2xl border border-gray-200 bg-white p-2 shadow-inner hover:border-[#06C755]/40 ${twTransitionButton} ${twFocusRingPrimary}`}
+                className={`mt-4 block rounded-2xl border border-gray-200 bg-white p-2 shadow-inner hover:border-[#047a38]/40 ${twTransitionButton} ${twFocusRingPrimary}`}
                 aria-label="Open GoGoCash LINE Mini App (QR code)"
               >
                 <Image
@@ -99,7 +99,7 @@ export default function AppDownloadSection() {
                   href={LINE_MINI_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`font-medium text-[#06C755] underline-offset-2 hover:underline ${twDurButton} ${twEaseStandard} transition-colors motion-reduce:duration-micro`}
+                  className={`font-medium text-[#047a38] underline-offset-2 hover:underline ${twDurButton} ${twEaseStandard} transition-colors motion-reduce:duration-micro`}
                 >
                   GoGoCash LINE Mini App
                 </a>
