@@ -14,7 +14,7 @@ Production marketing site for **GoGoCash**, built as a **static export** from
 | Styling | Tailwind CSS 4 | `@tailwindcss/postcss` via `postcss.config.mjs` |
 | Motion | Framer Motion | Tree-shaken via `experimental.optimizePackageImports` |
 | Analytics | PostHog, Cloudflare Web Analytics, LINE Tag | Optional and cookie-consent gated |
-| Content | Local Learn data, optional Strapi at build time | See `docs/learn-content.md` |
+| Content | Local Learn fallback, Strapi CMS at build time | See `docs/learn-content.md` |
 | E2E | Playwright | Can test dev server or exported `out/` |
 
 ```mermaid
@@ -77,7 +77,8 @@ Variables are documented in `.env.example`. Important production variables:
 | `NEXT_PUBLIC_LINE_TAG_ID` / `NEXT_PUBLIC_LINE_TAG_ENABLED` | Optional | LINE Tag config |
 | `NEXT_PUBLIC_CUSTOMERIO_FORMS_*` | Optional | Customer.io Connected Forms config |
 | `NEXT_PUBLIC_NEWSLETTER_*` | Optional | Newsletter provider form field mapping |
-| `STRAPI_URL` / `STRAPI_API_TOKEN` | Optional | Build-time Learn CMS |
+| `STRAPI_URL` / `STRAPI_API_TOKEN` | Optional | Build-time Learn CMS read access |
+| `STRAPI_PUSH_TOKEN` | Optional local secret | Write token for `npm run learn:strapi-push` |
 
 Cloudflare deploy variables:
 
@@ -106,6 +107,7 @@ and redeploy.
 | `npm run deploy:cloudflare:staging` | Build and deploy staging Worker |
 | `npm run deploy:cloudflare:beta` | Build and deploy beta Worker |
 | `npm run deploy:cloudflare:dry-run` | Build and dry-run all Wrangler deploy configs |
+| `npm run learn:cms-check` | Validate Strapi Learn CMS read access |
 | `npm run learn:strapi-push` | Push local Learn Markdown to Strapi |
 
 ## Cloudflare Workers Deploy

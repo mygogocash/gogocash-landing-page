@@ -38,6 +38,7 @@
     "typecheck": "npm exec -- tsc --noEmit",
     "verify": "npm run lint && npm run test && npm run typecheck && npm run build",
     "eo:audit": "npm run build && node scripts/eo-audit.mjs",
+    "learn:cms-check": "npm exec -- tsx scripts/check-learn-cms.ts",
     "learn:strapi-push": "npm exec -- tsx scripts/push-learn-to-strapi.ts",
     "generate:assets": "node scripts/generate-seo-assets.mjs && npm exec -- tsx scripts/generate-partner-data.ts",
     "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --form-factor=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
