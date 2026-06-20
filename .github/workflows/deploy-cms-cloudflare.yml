@@ -40,6 +40,9 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Install CMS
+        run: npm --prefix cms/strapi ci
+
       - name: Validate landing and CMS config
         run: npm run test && npm run typecheck && npm run cms:build
 
