@@ -45,7 +45,7 @@ Cloudflare deployment path.
 
 ## Prerequisites
 
-- Node.js 26.3.1 (`.nvmrc`, `package.json` engines)
+- Node.js 22.x (`.nvmrc`, `.node-version`, `package.json` engines)
 - npm with `package-lock.json`
 - Playwright browsers for local E2E: `npm run test:e2e:install`
 - Cloudflare API token for deploys; see `docs/cloudflare-workers-deploy.md`

@@ -8,7 +8,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-MIN_NODE_VERSION=26.3.1
+MIN_NODE_VERSION=22.0.0
 if ! node -e "
   const [major, minor, patch] = process.versions.node.split('.').map(Number);
   const [minMajor, minMinor, minPatch] = process.argv[1].split('.').map(Number);

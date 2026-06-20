@@ -19,7 +19,7 @@ run_docker() {
 }
 
 if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
-  MIN_NODE_VERSION=26.3.1
+  MIN_NODE_VERSION=22.0.0
   if ! node -e "
     const [major, minor, patch] = process.versions.node.split('.').map(Number);
     const [minMajor, minMinor, minPatch] = process.argv[1].split('.').map(Number);
@@ -50,7 +50,7 @@ fi
 cat <<'EOF'
 Could not start the dev server.
 
-Option A — Install Node.js 26.3.1+ (https://nodejs.org/), then from this folder:
+Option A — Install Node.js 22+ (https://nodejs.org/), then from this folder:
   npm install
   npm run dev
 
