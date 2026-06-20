@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 30
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      RAW_CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       DATABASE_URL: ${{ secrets.CMS_DATABASE_URL }}
       APP_KEYS: ${{ secrets.CMS_APP_KEYS }}
       API_TOKEN_SALT: ${{ secrets.CMS_API_TOKEN_SALT }}
@@ -49,7 +49,7 @@ jobs:
       - name: Normalize Cloudflare API token
         shell: bash
         run: |
-          token="$(node -e 'const raw = process.env.CLOUDFLARE_API_TOKEN || ""; const token = raw.replace(/[\r\n]/g, "").trim().replace(/^Bearer\s+/i, "").trim(); if (!token || /\s/.test(token)) process.exit(1); process.stdout.write(token);')"
+          token="$(node -e 'const raw = process.env.RAW_CLOUDFLARE_API_TOKEN || ""; const token = raw.replace(/[\r\n]/g, "").trim().replace(/^Bearer\s+/i, "").trim(); if (!token || /\s/.test(token)) process.exit(1); process.stdout.write(token);')"
           echo "::add-mask::$token"
           printf 'CLOUDFLARE_API_TOKEN=%s\n' "$token" >> "$GITHUB_ENV"
 
