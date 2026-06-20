@@ -94,6 +94,8 @@ export default function Footer() {
                         alt=""
                         width={200}
                         height={80}
+                        loading="eager"
+                        decoding="async"
                         className="h-8 w-auto max-w-[min(100%,200px)] object-contain object-left"
                         sizes="200px"
                       />
