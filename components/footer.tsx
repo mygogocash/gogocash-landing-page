@@ -20,10 +20,10 @@ export default function Footer() {
   const newsletterConfig = newsletterSignupConfig();
 
   return (
-    <footer role="contentinfo" className="bg-white pt-20 pb-8">
+    <footer role="contentinfo" className="bg-white pt-12 pb-8 sm:pt-20">
       <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         {/* Top section */}
-        <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
+        <div className="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:justify-between">
           {/* Left: Logo */}
           <div className="max-w-sm">
             <Link
@@ -39,7 +39,7 @@ export default function Footer() {
           </div>
 
           {/* Right: Link columns */}
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4 lg:gap-12 xl:gap-16">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-4 lg:gap-12 xl:gap-16">
             {Object.entries(FOOTER_LINKS).map(([title, links]) => (
               <div key={title}>
                 <h4 className="text-sm font-semibold text-[#1f2937]">
