@@ -59,12 +59,12 @@ export default function NewsletterSignup({
       className="rounded-2xl border border-gray-100 bg-gray-50 p-5"
     >
       <div>
-        <h2
+        <h4
           id="footer-newsletter-title"
           className="text-sm font-semibold text-[#1f2937]"
         >
           Get cashback tips and offers
-        </h2>
+        </h4>
       </div>
 
       <form

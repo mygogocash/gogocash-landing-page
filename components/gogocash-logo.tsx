@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { LOGO_MARK_UI_IMAGE } from "@/lib/seo-assets";
 
 interface GoGoCashLogoProps {
   className?: string;
@@ -50,7 +49,7 @@ export function GoGoCashLogoMark({
   return (
     <span className={`relative inline-block ${className}`}>
       <Image
-        src={LOGO_MARK_UI_IMAGE.src}
+        src="/images/gogocash-logo-mark.png"
         alt={alt}
         fill
         sizes={sizes}

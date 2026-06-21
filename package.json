@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/mygogocash/gogocash-landing-page.git"
+    "url": "https://github.com/mygogocash/landing-page.git"
   },
   "type": "module",
   "scripts": {
@@ -14,18 +14,6 @@
     "clean": "rm -rf .next",
     "dev:local": "bash scripts/dev-local.sh",
     "dev:docker": "docker compose up --build",
-    "cms:env": "node scripts/create-cms-env.mjs",
-    "cms:install": "npm --prefix cms/strapi install",
-    "cms:dev": "npm --prefix cms/strapi run develop",
-    "cms:build": "npm --prefix cms/strapi run build",
-    "cms:start": "npm --prefix cms/strapi run start",
-    "cms:docker": "docker compose --profile cms up --build cms postgres",
-    "cms:open": "open http://localhost:1337/admin",
-    "cms:seed": "npm run learn:strapi-push",
-    "cms:cloudflare:secrets": "node scripts/put-cms-cloudflare-secrets.mjs",
-    "cms:cloudflare:deploy": "npm exec -- wrangler deploy --config wrangler.cms.jsonc",
-    "cms:cloudflare:dry-run": "npm exec -- wrangler deploy --dry-run --config wrangler.cms.jsonc",
-    "cms:cloudflare:status": "npm exec -- wrangler containers list",
     "dev": "npm exec -- next dev --hostname 0.0.0.0 --port 3000",
     "dev:clean": "npm run clean && npm run dev",
     "dev:webpack": "npm exec -- next dev --webpack",
@@ -34,10 +22,9 @@
     "analyze": "cross-env ANALYZE=true npm run build:webpack",
     "analyze:turbopack": "npm exec -- next experimental-analyze",
     "build:clean": "npm run clean && npm run build",
-    "deploy:cloudflare:production": "npm run build && npm exec -- wrangler deploy --config wrangler.production.jsonc",
-    "deploy:cloudflare:staging": "npm run build && npm exec -- wrangler deploy --config wrangler.staging.jsonc",
-    "deploy:cloudflare:beta": "npm run build && npm exec -- wrangler deploy --config wrangler.beta.jsonc",
-    "deploy:cloudflare:dry-run": "npm run build && npm exec -- wrangler deploy --dry-run --config wrangler.production.jsonc && npm exec -- wrangler deploy --dry-run --config wrangler.staging.jsonc && npm exec -- wrangler deploy --dry-run --config wrangler.beta.jsonc",
+    "deploy:firebase": "npm run build && node scripts/deploy-firebase-hosting.mjs",
+    "deploy:firebase:full": "npm run deploy:firebase",
+    "dns:cloudflare-firebase-apex": "bash scripts/run-cloudflare-firebase-dns.sh",
     "start": "npm exec -- next start",
     "lint": "npm exec -- eslint . --ignore-pattern node_modules --ignore-pattern .next --ignore-pattern .node_modules.stalled",
     "test": "node scripts/run-lib-tests.mjs",
@@ -49,14 +36,14 @@
     "test:e2e:install": "npm exec -- playwright install chromium webkit",
     "typecheck": "npm exec -- tsc --noEmit",
     "verify": "npm run lint && npm run test && npm run typecheck && npm run build",
-    "eo:audit": "npm run build && node scripts/eo-audit.mjs",
-    "learn:cms-check": "npm exec -- tsx scripts/check-learn-cms.ts",
     "learn:strapi-push": "npm exec -- tsx scripts/push-learn-to-strapi.ts",
-    "generate:assets": "node scripts/generate-seo-assets.mjs && npm exec -- tsx scripts/generate-partner-data.ts",
-    "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --form-factor=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
+    "generate:assets": "node scripts/generate-seo-assets.mjs",
+    "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --preset=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
   },
   "dependencies": {
     "@swc/helpers": "0.5.23",
+    "firebase": "^12.15.0",
+    "framer-motion": "^12.40.0",
     "next": "^16.2.9",
     "posthog-js": "^1.391.2",
     "react": "^19.2.7",
@@ -67,9 +54,8 @@
     "node": ">=22 <23"
   },
   "devDependencies": {
-    "@cloudflare/containers": "^0.3.7",
-    "@cloudflare/workers-types": "^4.20260620.1",
-    "@eslint/js": "^9.39.4",
+    "@eslint/compat": "^2.1.0",
+    "@eslint/js": "^10.0.1",
     "@next/bundle-analyzer": "^16.2.9",
     "@playwright/test": "^1.61.0",
     "@tailwindcss/postcss": "^4.3.1",
@@ -79,16 +65,16 @@
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.0",
     "cross-env": "^10.1.0",
-    "eslint": "^9.39.4",
+    "eslint": "^10.5.0",
     "eslint-config-next": "^16.2.9",
+    "firebase-tools": "^15.22.0",
     "globals": "^17.6.0",
     "postcss": "^8.5.15",
     "qrcode": "^1.5.4",
     "sharp": "^0.35.2",
     "tailwindcss": "4.3.1",
     "tsx": "^4.22.4",
-    "typescript": "^6.0.3",
-    "wrangler": "4.103.0"
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "postcss": "^8.5.15",

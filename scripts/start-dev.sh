@@ -19,19 +19,10 @@ run_docker() {
 }
 
 if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
-  MIN_NODE_VERSION=22.0.0
-  if ! node -e "
-    const [major, minor, patch] = process.versions.node.split('.').map(Number);
-    const [minMajor, minMinor, minPatch] = process.argv[1].split('.').map(Number);
-    process.exit(
-      major > minMajor ||
-      (major === minMajor && minor > minMinor) ||
-      (major === minMajor && minor === minMinor && patch >= minPatch)
-        ? 0
-        : 1
-    );
-  " "${MIN_NODE_VERSION}" >/dev/null 2>&1; then
-    echo "error: Node.js >= ${MIN_NODE_VERSION} required (got: $(node -v))"
+  MIN_NODE_MAJOR=20
+  CURRENT="$(node -p "parseInt(process.versions.node.split('.')[0], 10)" 2>/dev/null || echo 0)"
+  if [ "${CURRENT}" -lt "${MIN_NODE_MAJOR}" ]; then
+    echo "error: Node.js >= ${MIN_NODE_MAJOR} required (got: $(node -v))"
     exit 1
   fi
   if [ ! -d node_modules ]; then
@@ -50,7 +41,7 @@ fi
 cat <<'EOF'
 Could not start the dev server.
 
-Option A — Install Node.js 22+ (https://nodejs.org/), then from this folder:
+Option A — Install Node.js 20+ (https://nodejs.org/), then from this folder:
   npm install
   npm run dev
 

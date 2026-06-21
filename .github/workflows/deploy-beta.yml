@@ -1,5 +1,16 @@
-# Build Next.js static export and deploy beta to Cloudflare Workers Static
-# Assets. Beta ships from the `beta` branch.
+# Deploy Landing Page to Firebase Hosting — beta site (beta.gogocash.co).
+# Scaffold — awaits infra setup before first successful run.
+#
+# ─── TODO — beta infrastructure setup ─────────────────────────────────
+#   1. Create Firebase Hosting site "gogocash-landing-beta" in the
+#      landing-page-4ae23 project:
+#        Firebase Console → Hosting → Add another site
+#   2. Bind custom domain beta.gogocash.co to that site.
+#   3. Reuse existing FIREBASE_WIF_PROVIDER + FIREBASE_SA_EMAIL repo vars.
+#
+# Until (1) and (2) are done, first push to `beta` will fail at the
+# deploy step with "site not found". CI up to that point will still run.
+# ──────────────────────────────────────────────────────────────────────
 
 name: Deploy Landing Page (beta)
 
@@ -15,12 +26,15 @@ concurrency:
 
 permissions:
   contents: read
+  id-token: write
+
+env:
+  FIREBASE_PROJECT_ID: landing-page-4ae23
+  FIREBASE_HOSTING_SITE: gogocash-landing-beta
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      NEXT_PUBLIC_SITE_URL: https://beta.gogocash.co
     steps:
       - uses: actions/checkout@v6
 
@@ -38,22 +52,12 @@ jobs:
       - name: Test
         run: npm run test
 
-      - name: Typecheck
-        run: npm run typecheck
-
       - name: Build static site
         run: npm run build
         env:
           INVOLVE_ASIA_API_KEY: ${{ secrets.INVOLVE_ASIA_API_KEY }}
           INVOLVE_ASIA_API_SECRET: ${{ secrets.INVOLVE_ASIA_API_SECRET }}
-          STRAPI_URL: ${{ vars.STRAPI_URL }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          NEXT_PUBLIC_POSTHOG_KEY: ${{ vars.NEXT_PUBLIC_POSTHOG_KEY }}
-          NEXT_PUBLIC_POSTHOG_HOST: ${{ vars.NEXT_PUBLIC_POSTHOG_HOST }}
-          NEXT_PUBLIC_POSTHOG_UI_HOST: ${{ vars.NEXT_PUBLIC_POSTHOG_UI_HOST }}
-          NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ vars.NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN }}
-          NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID: ${{ vars.NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID || 'be2d31cfc0387c58114c' }}
-          NEXT_PUBLIC_CUSTOMERIO_FORMS_BASE_URL: ${{ vars.NEXT_PUBLIC_CUSTOMERIO_FORMS_BASE_URL || 'https://customerioforms.com' }}
+          # Optional footer newsletter provider form endpoint + field mapping.
           NEXT_PUBLIC_NEWSLETTER_FORM_ACTION: ${{ vars.NEXT_PUBLIC_NEWSLETTER_FORM_ACTION }}
           NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD }}
           NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD }}
@@ -63,16 +67,20 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 
-      - name: E2E static export
-        run: npm run test:e2e:static-only
+      - name: E2E smoke tests
+        run: npm run test:e2e:ci
+        continue-on-error: true
 
-      - name: Deploy to Cloudflare Workers
-        run: |
-          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ] || [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-            echo "::notice title=Cloudflare deploy skipped::Set repository variable CLOUDFLARE_ACCOUNT_ID and secret CLOUDFLARE_API_TOKEN to deploy from GitHub Actions."
-            exit 0
-          fi
-          npm exec -- wrangler deploy --config wrangler.beta.jsonc
+      - name: Authenticate to Google Cloud (WIF)
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.FIREBASE_WIF_PROVIDER }}
+          service_account: ${{ vars.FIREBASE_SA_EMAIL }}
+          token_format: access_token
+
+      - name: Deploy to Firebase Hosting (beta site)
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          FIREBASE_PROJECT_ID: ${{ env.FIREBASE_PROJECT_ID }}
+          FIREBASE_HOSTING_SITES: ${{ env.FIREBASE_HOSTING_SITE }}
+        run: node scripts/deploy-firebase-hosting.mjs

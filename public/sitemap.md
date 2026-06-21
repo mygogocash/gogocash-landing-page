@@ -36,14 +36,6 @@ GoGoCash exposes public marketing, Learn, legal, and discovery resources for hum
 - [How to choose a cashback app in Southeast Asia](https://gogocash.co/learn/choosing-a-cashback-app-sea)
 - [Travel cashback: hotels and flights with GoGoCash](https://gogocash.co/learn/travel-cashback-sea)
 
-## Partner cashback landing pages
-
-- [Shopee cashback](https://gogocash.co/cashback/shopee)
-- [Lazada cashback](https://gogocash.co/cashback/lazada)
-- [Agoda cashback](https://gogocash.co/cashback/agoda)
-- [Trip.com cashback](https://gogocash.co/cashback/trip-com)
-- [AliExpress cashback](https://gogocash.co/cashback/aliexpress)
-
 ## Localized landing pages
 
 - [English](https://gogocash.co/en)

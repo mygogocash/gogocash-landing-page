@@ -1,6 +1,6 @@
 /**
  * Cookie consent state (issue #7 — PDPA/GDPR). Category preferences gate
- * optional trackers: analytics (PostHog + Cloudflare) and marketing (LINE Tag).
+ * optional trackers: analytics (Firebase + PostHog) and marketing (LINE Tag).
  * Client-only (static export has no server to enforce consent). Mirrors the
  * storage + CustomEvent pattern in `lib/locale-storage.ts`.
  */

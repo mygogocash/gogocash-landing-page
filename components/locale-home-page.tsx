@@ -22,7 +22,6 @@ import {
   LocaleLearnSection,
   LocaleWhySection,
 } from "@/components/landing/locale-home-sections";
-import { INITIAL_PARTNER_GRID_COUNT } from "@/lib/partner-directory";
 
 export type LocaleFaqItem = { question: string; answer: string };
 
@@ -43,10 +42,6 @@ export default function LocaleHomePage({
   partnerLogoAltTemplate,
   learnArticleLang = "en",
 }: LocaleHomePageProps) {
-  const initialPartnerPreview = initialPartners.slice(
-    0,
-    INITIAL_PARTNER_GRID_COUNT,
-  );
   const howItWorksSteps: HowItWorksStep[] = copy.howItWorks.steps.map(
     (step, index) => ({
       ...step,
@@ -70,8 +65,7 @@ export default function LocaleHomePage({
         <LocaleHomeHeroSection copy={copy} />
 
         <MerchantOffersStrip
-          partners={initialPartnerPreview}
-          totalPartnerCount={initialPartners.length}
+          partners={initialPartners}
           sectionBadgeLabel={copy.partners.badge}
           heading={copy.partners.title}
           description={copy.partners.description}

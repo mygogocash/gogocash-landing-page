@@ -2,11 +2,12 @@
 
 import { Suspense, useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { logPageView } from "@/lib/analytics-client";
 import { posthogCapturePageView } from "@/lib/posthog-client";
 
 /**
- * Sends analytics pageviews on client-side route changes (App Router).
- * Initial load is captured by `PostHogInit` after cookie consent.
+ * Sends `page_view` on client-side route changes (App Router).
+ * Initial load is skipped — Firebase Analytics records the first view on init.
  */
 function AnalyticsRouteListenerInner() {
   const pathname = usePathname();
@@ -28,6 +29,7 @@ function AnalyticsRouteListenerInner() {
     lastFullPath.current = full;
 
     const fire = () => {
+      logPageView(full);
       posthogCapturePageView(full);
     };
     const schedule =

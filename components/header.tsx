@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,6 +14,7 @@ import {
   isSectionedLandingPath,
 } from "@/lib/locale-routing";
 import { getHeaderNavLabelsForPathname } from "@/lib/header-nav-labels";
+import { usePrefersReducedMotionAfterMount } from "@/hooks/use-prefers-reduced-motion";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import {
   twCtaPrimaryMotion,
@@ -35,6 +37,8 @@ const NAV_SECTION_ORDER = [
 
 /** Viewport Y (px) used for “which section is active” — aligns ~`scroll-mt-28`. */
 const SPY_Y = 120;
+
+const DRAWER_EASE = [0.23, 1, 0.32, 1] as const;
 
 type SectionId = (typeof NAV_SECTION_ORDER)[number];
 
@@ -61,6 +65,44 @@ export default function Header() {
   );
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const reduceMotion = usePrefersReducedMotionAfterMount();
+  const drawerTransition = useMemo(
+    () =>
+      reduceMotion ? { duration: 0 } : { duration: 0.34, ease: DRAWER_EASE },
+    [reduceMotion],
+  );
+  const navListVariants = useMemo(
+    () =>
+      reduceMotion
+        ? { hidden: {}, show: {} }
+        : {
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.042,
+                delayChildren: 0.06,
+              },
+            },
+          },
+    [reduceMotion],
+  );
+  const navItemVariants = useMemo(
+    () =>
+      reduceMotion
+        ? {
+            hidden: { opacity: 1, x: 0 },
+            show: { opacity: 1, x: 0 },
+          }
+        : {
+            hidden: { opacity: 0, x: -14 },
+            show: {
+              opacity: 1,
+              x: 0,
+              transition: { duration: 0.24, ease: DRAWER_EASE },
+            },
+          },
+    [reduceMotion],
+  );
   const {
     activeSection,
     scrolled,
@@ -202,12 +244,23 @@ export default function Header() {
         </div>
       </div>
 
-      {mobileMenuOpen ? (
-        <div className="origin-top border-t border-gray-100 bg-white px-4 py-4 shadow-[0_18px_50px_-14px_rgba(15,23,42,0.14)] sm:px-6 md:hidden">
-          <nav
-            className="flex flex-col gap-1"
-            aria-label={navLabels.mainNavAria}
+      <AnimatePresence>
+        {mobileMenuOpen ? (
+          <motion.div
+            key="mobile-nav-drawer"
+            initial={reduceMotion ? undefined : { opacity: 0, y: -18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -12 }}
+            transition={drawerTransition}
+            className="origin-top border-t border-gray-100 bg-white px-4 py-4 shadow-[0_18px_50px_-14px_rgba(15,23,42,0.14)] sm:px-6 md:hidden"
           >
+            <motion.nav
+              className="flex flex-col gap-1"
+              aria-label={navLabels.mainNavAria}
+              initial={reduceMotion ? false : "hidden"}
+              animate="show"
+              variants={navListVariants}
+            >
               {navHashItems.map((item) => {
                 const id = item.href.slice(1) as SectionId;
                 const sectionHref = onHomePage
@@ -216,8 +269,9 @@ export default function Header() {
                 const close = () => setMobileMenuOpen(false);
                 if (onHomePage) {
                   return (
-                    <div
+                    <motion.div
                       key={item.href}
+                      variants={navItemVariants}
                       className="min-w-0"
                     >
                       <a
@@ -237,12 +291,13 @@ export default function Header() {
                       >
                         {item.label}
                       </a>
-                    </div>
+                    </motion.div>
                   );
                 }
                 return (
-                  <div
+                  <motion.div
                     key={item.href}
+                    variants={navItemVariants}
                     className="min-w-0"
                   >
                     <Link
@@ -252,10 +307,10 @@ export default function Header() {
                     >
                       {item.label}
                     </Link>
-                  </div>
+                  </motion.div>
                 );
               })}
-              <div className="min-w-0">
+              <motion.div variants={navItemVariants} className="min-w-0">
                 <Link
                   href="/learn"
                   onClick={() => setMobileMenuOpen(false)}
@@ -263,8 +318,8 @@ export default function Header() {
                 >
                   {navLabels.learn}
                 </Link>
-              </div>
-              <div className="min-w-0">
+              </motion.div>
+              <motion.div variants={navItemVariants} className="min-w-0">
                 <a
                   href={WEB_APP_QUEST_HREF}
                   target="_blank"
@@ -274,8 +329,8 @@ export default function Header() {
                 >
                   {navLabels.quest}
                 </a>
-              </div>
-              <div className="min-w-0">
+              </motion.div>
+              <motion.div variants={navItemVariants} className="min-w-0">
                 <a
                   href={LINE_MINI_APP_HREF}
                   target="_blank"
@@ -286,10 +341,11 @@ export default function Header() {
                   {navLabels.startEarning}
                   <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </a>
-              </div>
-            </nav>
-          </div>
+              </motion.div>
+            </motion.nav>
+          </motion.div>
         ) : null}
+      </AnimatePresence>
     </header>
   );
 }

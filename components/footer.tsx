@@ -20,10 +20,10 @@ export default function Footer() {
   const newsletterConfig = newsletterSignupConfig();
 
   return (
-    <footer role="contentinfo" className="bg-white pt-20 pb-8">
+    <footer role="contentinfo" className="bg-white pt-12 pb-8 sm:pt-20">
       <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         {/* Top section */}
-        <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
+        <div className="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:justify-between">
           {/* Left: Logo */}
           <div className="max-w-sm">
             <Link
@@ -39,12 +39,12 @@ export default function Footer() {
           </div>
 
           {/* Right: Link columns */}
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4 lg:gap-12 xl:gap-16">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-4 lg:gap-12 xl:gap-16">
             {Object.entries(FOOTER_LINKS).map(([title, links]) => (
               <div key={title}>
-                <h2 className="text-sm font-semibold text-[#1f2937]">
+                <h4 className="text-sm font-semibold text-[#1f2937]">
                   {title}
-                </h2>
+                </h4>
                 <ul className="mt-4 flex flex-col gap-3">
                   {links.map((link) => {
                     const external = link.href.startsWith("http");
@@ -94,8 +94,6 @@ export default function Footer() {
                         alt=""
                         width={200}
                         height={80}
-                        loading="eager"
-                        decoding="async"
                         className="h-8 w-auto max-w-[min(100%,200px)] object-contain object-left"
                         sizes="200px"
                       />
@@ -128,7 +126,7 @@ export default function Footer() {
         </div>
 
         {/* Risk disclaimer — below copyright / social */}
-        <p className="mt-8 text-xs leading-relaxed text-[#6b7280]">
+        <p className="mt-8 text-xs leading-relaxed text-[#9ca3af]">
           Cashback rates, merchant availability, and product features may
           change. GoGoCash does not provide financial, investment, or tax
           advice. Saving Plus and related offerings involve risk; read terms

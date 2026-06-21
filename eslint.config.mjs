@@ -1,3 +1,4 @@
+import { fixupConfigRules } from "@eslint/compat";
 import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 import nextTypescript from "eslint-config-next/typescript";
 
@@ -8,13 +9,12 @@ const eslintConfig = [
       ".next/**",
       "out/**",
       "coverage/**",
-      "cms/strapi/**",
       "e2e/**",
       "playwright.config.ts",
     ],
   },
-  ...nextCoreWebVitals,
-  ...nextTypescript,
+  ...fixupConfigRules(nextCoreWebVitals),
+  ...fixupConfigRules(nextTypescript),
 ];
 
 export default eslintConfig;

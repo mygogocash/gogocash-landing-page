@@ -1,13 +1,9 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "gogocash-landing-production",
-  "compatibility_date": "2026-06-19",
+  "compatibility_date": "2026-06-20",
   "workers_dev": false,
-  "assets": {
-    "directory": "./out",
-    "not_found_handling": "404-page",
-    "html_handling": "drop-trailing-slash"
-  },
+  "preview_urls": false,
+  "keep_vars": true,
   "observability": {
     "enabled": false,
     "head_sampling_rate": 1,
@@ -23,14 +19,8 @@
       "head_sampling_rate": 1
     }
   },
-  "routes": [
-    {
-      "pattern": "gogocash.co",
-      "custom_domain": true
-    },
-    {
-      "pattern": "www.gogocash.co",
-      "custom_domain": true
-    }
-  ]
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
 }

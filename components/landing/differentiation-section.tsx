@@ -55,7 +55,7 @@ export default function DifferentiationSection() {
             <div className="grid grid-cols-[1fr_4.5rem_4.5rem] items-center gap-x-3 border-b border-gray-100 bg-surface-green px-5 py-4 text-sm font-semibold sm:grid-cols-[1fr_7rem_7rem] sm:gap-x-6 sm:px-8">
               <span className="text-gray-700">What you get</span>
               <span className="text-center text-primary">GoGoCash</span>
-              <span className="text-center text-gray-500">Others</span>
+              <span className="text-center text-gray-400">Others</span>
             </div>
             {ROWS.map((row) => (
               <div
@@ -69,7 +69,7 @@ export default function DifferentiationSection() {
                   <CheckCircle2 className="h-5 w-5 text-primary" />
                   <span className="sr-only">Included with GoGoCash</span>
                 </span>
-                <span className="text-center text-xs text-gray-500">
+                <span className="text-center text-xs text-gray-400">
                   {row.others}
                 </span>
               </div>
@@ -77,7 +77,7 @@ export default function DifferentiationSection() {
           </div>
         </AnimateOnScroll>
 
-        <p className="mx-auto mt-4 max-w-3xl text-center text-xs text-gray-500">
+        <p className="mx-auto mt-4 max-w-3xl text-center text-xs text-gray-400">
           Compared with typical cashback and rewards apps; features vary by
           provider.
         </p>

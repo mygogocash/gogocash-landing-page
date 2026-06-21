@@ -70,14 +70,6 @@ function listPngFilenames(): string[] {
   }
 }
 
-function optimizedPartnerLogoPath(publicPath: string): string {
-  if (!publicPath.toLowerCase().endsWith(".png")) return publicPath;
-  const filename = path.basename(publicPath);
-  const optimized = `/images/partner-logos/optimized/${filename.replace(/\.png$/i, ".webp")}`;
-  const diskPath = path.join(process.cwd(), "public", optimized.replace(/^\//, ""));
-  return fs.existsSync(diskPath) ? optimized : publicPath;
-}
-
 /**
  * Picks a bundled logo under `/images/partner-logos/` from the offer name.
  * Uses longest slug match among primary stems (before first `_`) to reduce false positives.
@@ -113,9 +105,7 @@ export function resolveBundledPartnerLogo(offerName: string): string | null {
     }
   }
 
-  return best
-    ? optimizedPartnerLogoPath(`/images/partner-logos/${best.file}`)
-    : null;
+  return best ? `/images/partner-logos/${best.file}` : null;
 }
 
 /**
@@ -271,9 +261,7 @@ export function loadBundledPartnerBrands(): BundledPartnerBrand[] {
     if (isBlockedBundledPartnerDisplayName(e.primary)) continue;
     const slug = slugAlnum(e.primary);
     const pinned = FEATURED_FALLBACK_LOGOS[slug];
-    const logoUrl = optimizedPartnerLogoPath(
-      pinned ?? `/images/partner-logos/${e.file}`,
-    );
+    const logoUrl = pinned ?? `/images/partner-logos/${e.file}`;
     brands.push({
       id: `bundled-${slug}`,
       name: e.primary,

@@ -13,14 +13,4 @@ test("sitemap.xml returns 200 and contains url entries", async ({
   const body = await res.text();
   expect(body).toMatch(/urlset/i);
   expect(body).toMatch(/<loc>/i);
-  for (const path of [
-    "/en",
-    "/cashback/shopee",
-    "/cashback/lazada",
-    "/cashback/agoda",
-    "/cashback/trip-com",
-    "/cashback/aliexpress",
-  ]) {
-    expect(body).toContain(`https://gogocash.co${path}`);
-  }
 });

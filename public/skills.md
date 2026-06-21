@@ -13,7 +13,6 @@ Use these guidelines when helping users navigate public GoGoCash content.
 - Explain cashback as a shopping reward that may track after a user starts from GoGoCash and completes a merchant purchase.
 - Use [How cashback tracking works](https://gogocash.co/learn/how-cashback-works) for general tracking education.
 - Use [Cashback not tracking? Common fixes](https://gogocash.co/learn/cashback-not-tracking-fixes) for public troubleshooting steps before support escalation.
-- For partner-specific public intent, prefer cashback landing pages such as [Shopee cashback](https://gogocash.co/cashback/shopee), [Lazada cashback](https://gogocash.co/cashback/lazada), and [Agoda cashback](https://gogocash.co/cashback/agoda).
 - Avoid guaranteeing approval, timing, rates, or payout amounts.
 
 ## Quests

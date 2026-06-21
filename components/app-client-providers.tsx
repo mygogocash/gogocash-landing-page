@@ -2,10 +2,12 @@
 
 import type { ReactNode } from "react";
 import { BrowserLocaleBootstrap } from "@/components/browser-locale-bootstrap";
-import { CloudflareWebAnalyticsInit } from "@/components/cloudflare-web-analytics-init";
+import { FirebaseClientInit } from "@/components/firebase-client-init";
 import { PostHogInit } from "@/components/posthog-init";
 import { AnalyticsRouteListener } from "@/components/analytics-route-listener";
 import CookieConsent from "@/components/cookie-consent";
+import PageTransition from "@/components/page-transition";
+import LoadingScreen from "@/components/loading-screen";
 
 /**
  * Client-only providers and shell (analytics, locale, loading).
@@ -15,10 +17,12 @@ export function AppClientProviders({ children }: { children: ReactNode }) {
   return (
     <>
       <BrowserLocaleBootstrap />
-      <CloudflareWebAnalyticsInit />
+      <FirebaseClientInit />
       <PostHogInit />
       <AnalyticsRouteListener />
-      <div className="min-h-[100dvh] min-w-0 overflow-x-clip">{children}</div>
+      <LoadingScreen>
+        <PageTransition>{children}</PageTransition>
+      </LoadingScreen>
       <CookieConsent />
     </>
   );
