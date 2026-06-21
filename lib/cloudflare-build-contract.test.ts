@@ -24,9 +24,26 @@ describe("Cloudflare production build contract", () => {
   it("provides the Wrangler config used by the production deploy command", () => {
     const wranglerConfig = readJsonFile("wrangler.production.jsonc");
     const assets = wranglerConfig.assets as Record<string, unknown>;
+    const observability = wranglerConfig.observability as Record<string, unknown>;
 
     assert.equal(wranglerConfig.name, "gogocash-landing-production");
     assert.equal(assets.directory, "./out");
     assert.equal(assets.not_found_handling, "404-page");
+
+    assert.deepEqual(observability, {
+      enabled: false,
+      head_sampling_rate: 1,
+      logs: {
+        enabled: true,
+        head_sampling_rate: 1,
+        persist: true,
+        invocation_logs: true,
+      },
+      traces: {
+        enabled: false,
+        persist: true,
+        head_sampling_rate: 1,
+      },
+    });
   });
 });
