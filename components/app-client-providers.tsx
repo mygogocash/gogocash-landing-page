@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { BrowserLocaleBootstrap } from "@/components/browser-locale-bootstrap";
 import { FirebaseClientInit } from "@/components/firebase-client-init";
 import { PostHogInit } from "@/components/posthog-init";
+import { MixpanelInit } from "@/components/mixpanel-init";
 import { AnalyticsRouteListener } from "@/components/analytics-route-listener";
 import CookieConsent from "@/components/cookie-consent";
 import PageTransition from "@/components/page-transition";
@@ -19,6 +20,7 @@ export function AppClientProviders({ children }: { children: ReactNode }) {
       <BrowserLocaleBootstrap />
       <FirebaseClientInit />
       <PostHogInit />
+      <MixpanelInit />
       <AnalyticsRouteListener />
       <LoadingScreen>
         <PageTransition>{children}</PageTransition>

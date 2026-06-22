@@ -9,6 +9,9 @@ import {
   publicFirebaseConfig,
   publicFirebaseMeasurementId,
   publicLineTagId,
+  publicMixpanelApiHost,
+  publicMixpanelToken,
+  shouldLoadMixpanel,
   newsletterSignupConfig,
   publicPostHogHost,
   shouldLoadPostHog,
@@ -182,5 +185,50 @@ describe("app-config", () => {
       scriptUrl: "https://customerioforms.com/assets/forms.js",
     });
     assert.equal(newsletterSignupConfig().customerIoFormsEnabled, false);
+  });
+
+  it("exposes the Mixpanel token by default and allows override or disabling", () => {
+    delete process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+    assert.match(publicMixpanelToken() ?? "", /^[a-z0-9]{32}$/i);
+
+    process.env.NEXT_PUBLIC_MIXPANEL_TOKEN = "custom_token_123";
+    assert.equal(publicMixpanelToken(), "custom_token_123");
+
+    process.env.NEXT_PUBLIC_MIXPANEL_TOKEN = "";
+    assert.equal(publicMixpanelToken(), null);
+  });
+
+  it("loads Mixpanel by default (token baked in), honoring overrides", () => {
+    delete process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+    delete process.env.NEXT_PUBLIC_MIXPANEL_ENABLED;
+
+    // Default token present → follows the marketing-analytics gate.
+    process.env = { ...process.env, NODE_ENV: "production" };
+    assert.equal(shouldLoadMixpanel(), true);
+
+    process.env = { ...process.env, NODE_ENV: "development" };
+    assert.equal(shouldLoadMixpanel(), false);
+
+    // Explicit enable in dev.
+    process.env.NEXT_PUBLIC_MIXPANEL_ENABLED = "true";
+    assert.equal(shouldLoadMixpanel(), true);
+
+    // Force off even in production.
+    process.env.NEXT_PUBLIC_MIXPANEL_ENABLED = "false";
+    process.env = { ...process.env, NODE_ENV: "production" };
+    assert.equal(shouldLoadMixpanel(), false);
+
+    // Empty token disables Mixpanel entirely.
+    delete process.env.NEXT_PUBLIC_MIXPANEL_ENABLED;
+    process.env.NEXT_PUBLIC_MIXPANEL_TOKEN = "";
+    assert.equal(shouldLoadMixpanel(), false);
+  });
+
+  it("leaves the Mixpanel api host unset by default and accepts a residency host", () => {
+    delete process.env.NEXT_PUBLIC_MIXPANEL_API_HOST;
+    assert.equal(publicMixpanelApiHost(), null);
+
+    process.env.NEXT_PUBLIC_MIXPANEL_API_HOST = "https://api-eu.mixpanel.com";
+    assert.equal(publicMixpanelApiHost(), "https://api-eu.mixpanel.com");
   });
 });
