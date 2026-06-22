@@ -2,6 +2,7 @@ import { getAnalytics, isSupported, logEvent } from "firebase/analytics";
 import { isMarketingAnalyticsEnabled } from "@/lib/app-config";
 import { isAnalyticsAllowed } from "@/lib/cookie-consent";
 import { posthogCapture } from "@/lib/posthog-client";
+import { mixpanelCapture, mixpanelRegister } from "@/lib/mixpanel-client";
 import { getFirebaseApp } from "@/lib/firebase";
 
 /**
@@ -58,6 +59,7 @@ export function logSiteSearch(searchTerm: string): void {
   if (!term) return;
   logFirebase("search", { search_term: term });
   posthogCapture("site_search", { query: term });
+  mixpanelCapture("search_submitted", { query: term });
 }
 
 export function logLocaleLanguageSelect(lang: string): void {
@@ -66,6 +68,8 @@ export function logLocaleLanguageSelect(lang: string): void {
     item_id: lang,
   });
   posthogCapture("locale_language_selected", { lang });
+  mixpanelCapture("locale_changed", { type: "language", language: lang });
+  mixpanelRegister({ locale_lang: lang });
 }
 
 export function logLocaleRegionSelect(region: string): void {
@@ -74,6 +78,8 @@ export function logLocaleRegionSelect(region: string): void {
     item_id: region,
   });
   posthogCapture("locale_region_selected", { region });
+  mixpanelCapture("locale_changed", { type: "region", region });
+  mixpanelRegister({ locale_region: region });
 }
 
 /**
@@ -90,6 +96,7 @@ export function logLaunchAppClick(
     item_id: destination,
   });
   posthogCapture("cta_clicked", { destination, placement });
+  mixpanelCapture("app_launched", { destination, surface: placement });
 }
 
 export function logBrandsLoadMore(
@@ -104,6 +111,10 @@ export function logBrandsLoadMore(
     visible: visibleCount,
     total: totalBrands,
   });
+  mixpanelCapture("brands_load_more", {
+    visible: visibleCount,
+    total: totalBrands,
+  });
 }
 
 // --- Engagement events (PostHog-focused; drive scroll-depth + content interest) ---
@@ -111,14 +122,17 @@ export function logBrandsLoadMore(
 /** A FAQ question was expanded. */
 export function logFaqOpen(question: string): void {
   posthogCapture("faq_opened", { question });
+  mixpanelCapture("faq_opened", { question });
 }
 
 /** A "How it works" tab was selected. */
 export function logHowItWorksTab(step: number, label: string): void {
   posthogCapture("how_it_works_tab", { step, label });
+  mixpanelCapture("how_it_works_tab_selected", { step, label });
 }
 
 /** A page section first scrolled into view (once per section). */
 export function logSectionView(section: string): void {
   posthogCapture("section_viewed", { section });
+  mixpanelCapture("section_viewed", { section });
 }
