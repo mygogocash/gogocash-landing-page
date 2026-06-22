@@ -17,7 +17,7 @@ export default function TermsOfUsePage() {
   );
 
   return (
-    <LegalDocumentShell title="Terms of Use" effectiveDate="February 1, 2025">
+    <LegalDocumentShell title="Terms of Use" effectiveDate="15 July 2026">
       <LegalMarkdown content={content} />
     </LegalDocumentShell>
   );

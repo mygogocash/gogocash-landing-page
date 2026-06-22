@@ -1,121 +1,375 @@
-###### GoGoCash General Terms of Use
+# Terms of Service
 
-GoGoCash Co., Ltd. ("GoGoCash") provides an online shopping platform through its various platforms including, but not limited to, its website, browser extension, and mobile application (collectively, the "GoGoCash Platforms"), whereby Users may connect with certain merchant partners of GoGoCash ("Merchants") and purchase goods and services through affiliated links on the GoGoCash Platforms ("Merchant Links"). The use of the GoGoCash Platforms, the services offered on or through the GoGoCash Platforms (the "Services"), and your account maintained with GoGoCash (a "GoGoCash Account") shall be subject to these terms and conditions (the "Agreement"). This Agreement constitutes a legally binding agreement between each individual who accesses or uses the GoGoCash Platforms or the Services or who maintains a GoGoCash Account ("you" or a "User"). By using any of the Services or maintaining a GoGoCash Account, you acknowledge that you have read and understand this Agreement and agree to be bound by all of its terms. GoGoCash may modify this Agreement from time to time, with or without notice, and your continued use of any of the Services or continued maintenance of a GoGoCash Account shall constitute and be deemed to be your acceptance of such modification and your consent to abide by any terms thereof.
+**Effective Date:** 15 July 2026
 
-###### 1. Service License
+**Version:** 2.0
 
-Subject to the terms of this Agreement, GoGoCash hereby grants you a revocable, non-exclusive, non-transferable license (without the right to sublicense) to access and use the GoGoCash Platforms and the Services solely for your personal use. You agree that you obtain no rights other than the rights and licenses expressly granted under this Agreement. GoGoCash reserves the right to change, upgrade, discontinue, not offer, or stop offering or supporting any or all of the Services, the Cashback Program, or the GoGoCash Platforms, or any feature of the Services or the GoGoCash Platforms, at any time and for any reason, in its sole discretion, with or without prior notice to you, to the maximum extent permitted by applicable law. All rights not expressly granted under this Agreement are reserved by GoGoCash and its licensors.
+## 1. About These Terms
 
-###### 2. GoGoCash Account
+These Terms of Service ("**Terms**") govern your use of the GoGoCash service, including our website (gogocash.co), mobile applications, browser extensions, and any related features such as the optional GoGoSense feature (collectively, the "**Service**").
 
-Some of the Services require you to open and maintain a GoGoCash Account. The Cashback Program is available to residents of Thailand and other countries where GoGoCash operates. To create a GoGoCash account, you must be at least 18 years old. You may create a GoGoCash Account free of charge by providing the relevant details that GoGoCash may request from time to time. All information you provide GoGoCash must be complete and accurate in all respects. Use of a GoGoCash Account and the Services (including participation in the Cashback Program) are offered at the sole discretion of GoGoCash and subject to, among other things, your compliance with this Agreement and any other terms related to a specific Service or program.
+The Service is operated by **ห้างหุ้นส่วนจำกัด โกโกโฮลดิ้ง ประเทศไทย / GOGO HOLDING Thailand Limited Partnership** ("**GoGoCash**", "**we**", "**our**", "**us**"), a limited partnership registered in Thailand.
 
-Each person is limited to one Account and you may not create or have control and/or custody over multiple GoGoCash Accounts. In particular:
+By creating an account or using the Service, you agree to these Terms. If you do not agree, do not use the Service.
 
-(a) Each mobile number may only be linked to one GoGoCash Account; and (b) Each account to which you designate to receive Payments from GoGoCash (e.g., your bank account, mobile wallet, or payment platform account) (a "Payment Account") may only be linked to one GoGoCash Account.
+These Terms replace and supersede any previous "Terms of Service" or "Terms of Use" published at gogocash.co.
 
-You acknowledge that we may terminate your ability to access or use the Services at any time, and you will forfeit any Cashback, in our sole discretion, including, but not limited to, if you fail to abide by any terms and conditions of this Agreement or of any Service or program, you engage in any fraud or abuse relating to the Services, the Cashback Program, or other rewards, or you misrepresent any information that you furnish to GoGoCash or its affiliates.
+## 2. Definitions
 
-###### 3. The Cashback Program
+- "**Account**" means your GoGoCash user account.
+- "**Affiliate Network**" means our third-party reconciliation partners, currently Involve Asia, Optimise, and TikTok Shop CPS, who attribute and confirm Eligible Purchases.
+- "**Cashback**" means the rewards you can earn through the Service, denominated in Thai Baht.
+- "**ClickID**" means the opaque session identifier generated when you activate Cashback for a Partner session.
+- "**Eligible Purchase**" means a transaction completed at a Partner during a valid Cashback activation session that is confirmed by the relevant Affiliate Network.
+- "**GoGoSense**" means our optional Android-only feature that detects, on your device, when you open a Partner app and prompts you to activate Cashback.
+- "**Partner**" means a third-party retailer or service provider participating in the Cashback program, including Shopee, Lazada, TikTok Shop, Agoda, and Klook.
+- "**User**", "**you**", and "**your**" means an individual using the Service.
 
-The Cashback Program provides you with the opportunity to receive payment from GoGoCash in connection with your use of the Services (a "Payment"), including when you complete a verifiable transaction with a Merchant through the Merchant's associated Merchant Link on the GoGoCash Platforms (a "Qualifying Transaction").
+## 3. Eligibility and Account
 
-Qualifying Transactions will be accounted for in GoGoCash's internal system through the use of "Cashback," which is a unit of measurement that GoGoCash uses to track and record your Qualifying Transactions during a given period. The amount of Cashback that GoGoCash records for your Qualifying Transactions may vary depending on its internal criteria and calculations, which it may modify from time to time in its sole discretion. You may view the estimated amount of Cashback that GoGoCash has recorded for your Qualifying Transactions by going to your GoGoCash Account. Please note that any such amounts are preliminary estimates calculated for GoGoCash's internal recordkeeping purposes. For clarity, Cashback is solely an internal measurement tool utilized by GoGoCash to measure your Qualifying Transactions through the GoGoCash Platforms, and it is not intended to confer or imply any rights or represent any obligations, does not constitute property, is not transferrable or assignable, does not provide you with any proprietary rights over any monies or assets held by GoGoCash, and may not be purchased or the subject of a sale, barter, or exchange.
+To use the Service, you must:
 
-The amount of any Payment we make to you will be based on the final amount of Cashback that GoGoCash has recorded for your Qualifying Transactions during a given period in accordance with its internal, proprietary formula, which may be adjusted by us from time-to-time, and which is based on certain factors, which may include (a) Cashback not being eligible when purchasing promotional items or using other discount codes, coupons or other promotions; (b) any available promotions or campaigns at the given time; and (c) Different tiers of eligible cashback for different users (e.g., different tiers of cashback for new users and existing users). Payments will be made by GoGoCash to the Payment Account that you have linked to your GoGoCash Account. Payments may be funded either by GoGoCash or from a portion of the proceeds we receive from Merchants.
+1. Be at least 18 years of age and legally capable of entering into a binding contract under Thai law;
+2. Provide accurate registration information, including a valid Thai mobile number or email address;
+3. Maintain only one Account per person; and
+4. Keep your account credentials confidential. You are responsible for activity under your Account.
 
-You are responsible for regularly checking your GoGoCash Account to ensure that GoGoCash is properly recognizing potential Qualifying Transactions. You must notify GoGoCash of any omissions or discrepancies concerning any transaction within 30 days after that transaction. GoGoCash reserves the right not to correct any omissions, incorrect entries, or discrepancies brought to its attention after the 30-day period.
+We may verify your identity at any time as required by applicable law (including anti-money-laundering rules) or to investigate suspected fraud.
 
-In addition to the other terms of this Agreement, to participate in the Cashback Program and to be eligible to receive Payments from GoGoCash in connection with the Cashback Program, you must comply with the following requirements:
+## 4. The GoGoCash Service
 
-a) You must create and maintain an active GoGoCash Account and comply with all terms related to maintaining a GoGoCash Account;
+GoGoCash is a multi-brand cashback platform. When you complete an Eligible Purchase at a Partner through the Service, the Partner pays us a commission via an Affiliate Network, and we credit a portion of that commission to your Account as Cashback.
 
-b) You must comply with the terms, conditions and requirements, express or implied, associated with any applicable promotions;
+We do not sell, ship, or fulfill Partner products. Partners are independent businesses solely responsible for their products, services, prices, delivery, refunds, returns, and customer support. Any dispute arising from a Partner transaction is between you and the Partner.
 
-c) You must have cookies enabled throughout when accessing the GoGoCash Platforms and subsequently the Merchant's website;
+## 5. The Cashback Program
 
-d) You must not open a separate tab or browser while accessing the GoGoCash Platforms and subsequently the Merchant's website;
+### 5.1 How Cashback is Earned
 
-e) You must ensure that after being redirected to the Merchant's website, you complete the transaction before proceeding to any other website;
+- You activate a Cashback session for a Partner through the Service (either manually in the app, or via GoGoSense if you have enabled it).
+- You complete a purchase at that Partner during the active session.
+- The Partner reports the transaction to the relevant Affiliate Network.
+- The Affiliate Network confirms the transaction is an Eligible Purchase and pays commission to GoGoCash, typically within 30 to 90 days of purchase.
+- Once confirmed, we credit the corresponding Cashback to your Account.
 
-f) You must complete a purchase on the Merchant's website after being redirected to the site through GoGoCash;
+### 5.2 Cashback Rates
 
-g) You must not engage in any fraudulent or dishonest conduct and you must abide by the terms of this Agreement and any other terms and conditions stipulated by GoGoCash or the applicable Merchant.
+Cashback rates per Partner are displayed in the Service and may change at our discretion or at the Partner's request. The rate applicable to your Eligible Purchase is the rate displayed at the time you activated the Cashback session.
 
-Subject to your compliance with this Agreement, you may request a Payment at any time by selecting the relevant option in your GoGoCash Account, provided that GoGoCash must first have recorded and attributed to your GoGoCash Account at least enough Cashback to meet a minimum Payment amount that GoGoCash has indicated and communicated to you from time to time. However, any Cashback that we have recorded and attributed to your GoGoCash Account will be forfeited, and not eligible for Payment, if you have not engaged in a Qualifying Transaction for a period of more than 12 months.
+### 5.3 Pending and Confirmed Cashback
 
-Further, in addition to other rights and remedies, we may, to the extent permitted by applicable law, and without providing prior notice, withhold, offset, adjust, or exclude any Payments to you under this Agreement for activity in violation of this Agreement, failure to comply with this Agreement, any excess Payments made to you in error, or to offset such amounts against fees you may owe us under any other agreements.
+Cashback first appears in your Account as "**Pending**" once the session is activated and the Partner reports the transaction. It becomes "**Confirmed**" once the Affiliate Network completes reconciliation. Only Confirmed Cashback may be withdrawn.
 
-###### 4. Merchant Partner Policies
+### 5.4 Cancelled, Returned, or Refunded Purchases
 
-Any products or services purchased from any Merchant, whether through the GoGoCash Platforms or otherwise, is governed by and subject to the applicable Merchant's policies and terms and conditions, including, but not limited to, the applicable return, cancelation, exchange, and shipping policies. You agree that GoGoCash is not an agent of any Merchant and that Merchants operate independently and not under GoGoCash's control. Accordingly, your participation in offers or promotions of, or correspondence with, any Merchant is solely between you and that Merchant. GoGoCash does not assume any liability, obligation or responsibility for any part of such correspondence, offer or promotion, including, without limitation, the withdrawal or modification of any such offer or promotion. GoGoCash is not responsible for changes to, or discontinuance of, any Merchant from any of the GoGoCash Platforms or the termination of any promotion offered by any Merchant on or through any of the GoGoCash Platforms, or for any effect on the Cashback Program caused by such changes, discontinuance, or withdrawal. GoGoCash assumes no responsibility and shall not be liable for any content, product and/or services on a Merchant's platforms (including but not limited to the quality, merchantability or fitness of such products or services or that such content, product and/or services does not breach any laws or regulations).
+If a purchase is cancelled, returned, refunded, or otherwise reversed by the Partner, the corresponding Cashback will be reversed. If the Cashback has already been withdrawn, the resulting negative balance may be deducted from future Cashback.
 
-###### 5. Personal Data Protection
+### 5.5 Minimum Withdrawal and Payout
 
-Personal Data collected is subject to our Privacy Policy, which is hereby incorporated by reference, and a copy of which is located on GoGoCash's website.
+- The minimum withdrawal threshold is THB 100, or such amount as displayed in the Service.
+- Withdrawals are paid to your verified bank account, PromptPay account, or e-wallet, as available in the Service.
+- We may delay or hold a withdrawal pending verification, fraud checks, or compliance review.
 
-###### 6. Bonuses and Rewards
+### 5.6 Inactive Accounts
 
-GoGoCash periodically offers bonuses or rewards for performing certain actions (such as referring new users to GoGoCash or completing quests). The terms and conditions accompanying such offers will govern how they are earned and paid. You are prohibited from bidding on keywords containing "GoGoCash" or other similar words or marks for the purpose of driving traffic to your page. You shall not send any paid traffic directly to your referral link. You may not include your referral link or distribute your referral link on any website or platform that does not belong to you, such as social media pages belonging to merchants or forum pages belonging to third parties.
+If your Account has had no log-in or qualifying activity for 24 consecutive months, we may notify you and, after a further 60 days of inactivity, close the Account and forfeit any unwithdrawn Cashback, to the extent permitted by Thai law.
 
-###### 7. Taxes
+## 6. GoGoSense (Optional Feature)
 
-You are solely responsible and liable for any and all taxes, duties, or fees that apply or relate to any Payments or other amounts you may receive pursuant to this Agreement. GoGoCash makes no representation as to the tax treatment of such amounts. Payments to you are inclusive of any applicable sales, use, excise, value added, or similar taxes or amounts payable to you.
+### 6.1 What GoGoSense Does
 
-###### 8. Fraud
+GoGoSense is an **optional, Android-only** feature that detects, **on your device**, when you open a Partner shopping app and prompts you to activate Cashback in one tap. Detection uses the Android **Usage Access** permission (`PACKAGE_USAGE_STATS`), which you grant manually in your device Settings.
 
-GoGoCash may suspend or terminate your account if it has reason to believe you are involved in any fraudulent or dishonest activities. Any failure to comply with this Agreement, any fraud, dishonesty or abuse relating to the use of the services or your account, or any misrepresentation of any information furnished to GoGoCash or its affiliates by you or anyone acting on your behalf may result in the termination of your account and forfeiture of your accrued cashback rewards.
+### 6.2 Cashback Is Not Conditional on GoGoSense
 
-###### 9. Third Party Rights
+**Your decision to enable GoGoSense has no effect on the Cashback or rewards you earn.** You may use the entire Cashback program without enabling GoGoSense by activating Cashback manually in the app. We will not reduce, withhold, or condition any reward on your decision to enable, refuse, or revoke GoGoSense.
 
-A person who is not party to this Agreement has no rights to enforce any terms of this Agreement.
+### 6.3 What GoGoSense Sees and Sends
 
-###### 10. Communications
+GoGoSense detects the foreground app on your device only to match it against our list of Partners. It does **not** read your screen content, keystrokes, browsing history, messages, or the content of any Partner app. When you choose to activate Cashback, the only information sent to our servers is an internal Partner identifier (for example, "shopee_th"), a session identifier, and a timestamp. Detailed handling of your personal data is described in our Privacy Policy.
 
-By becoming a GoGoCash user, you agree to receive communications that are account and user related (e.g., that we've added cashback to your account, that we have paid out money to your payment account) as well as periodic shopping related communications that highlight coupons or special deals available to GoGoCash users. We may communicate with you regarding your account by electronic communications or direct mail using information you provide during the registration process. Your consent to receive electronic communications include any notices or other information that we may be required by law to provide you in writing or otherwise. You agree to keep us appraised of your current contact information should the same change subsequent to the date you become a User. We may also send you push notifications if you install the mobile application.
+### 6.4 Turning GoGoSense Off
 
-###### 11. Ownership
+You can disable GoGoSense at any time by:
+- toggling it off in the app under **Settings → GoGoSense**;
+- revoking Usage Access in **Android Settings → Apps with usage access**; or
+- deleting your Account.
 
-All rights, title, and interest in the Services, the GoGoCash Platforms and the Content associated with or on the same belong to GoGoCash or its licensors. Additionally, GoGoCash shall maintain all rights, title, and interest in "GOGOCASH", the GoGoCash logo, and any other marks, service marks, trademarks, or logos of GoGoCash (the "GoGoCash Marks") that are registered in Thailand and other countries. The GoGoCash Marks may not be used in connection with any non-GoGoCash product or service in any manner that is likely to cause confusion among customers, or in any manner that disparages or discredits GoGoCash. You shall not by any means bid on, apply for, register, own or control any keywords or marks containing "GOGOCASH" or anything substantially similar to "GOGOCASH" or any other GoGoCash Mark including, without limitation, gogocash.co, gogocash.com, or any other GoGoCash domain with any search engine, domain service provider or any intellectual property office whatsoever. You shall not mention or use GoGoCash in any ad text, extension, or banner ad without express written consent of GoGoCash. All other trademarks not owned by GoGoCash that are used in providing the Services are the property of their respective owners, who may or may not be affiliated with, connected to, or sponsored by GoGoCash.
+Disabling GoGoSense is free, takes effect immediately, and does not affect Cashback you have already earned.
 
-###### 12. Community Standards
+### 6.5 No iOS Version
 
-By creating a GoGoCash account, you are becoming a member of a community that depends on the goodwill and responsible behaviour of each of our users. Users are required to refrain from transmission or communication of images or text constituting ethnic slurs, obscenities, sexually explicit material, inflammatory or derogatory comments, anything that may be defamatory or libelous, or anything else that may be construed as harassing or offensive, which is targeted at the Services, the GoGoCash Platforms, our employees, contractors or agents, our merchant partners, or other users. This includes communications by means of social media or other internet posts which violate the above community standards or promote or encourage gaming or fraudulent behaviour. Users who violate this provision, as determined by us in our absolute discretion, may have their accounts suspended or terminated without prior notice. GoGoCash reserves the right to disclose any illegal activity detected to the appropriate law enforcement authorities.
+GoGoSense is currently Android-only. We do not promise an iOS version. If we release one, it will operate under different technical constraints, and the Terms applicable to it will be made available at that time.
 
-###### 13. Indemnification
+## 7. Affiliate Partners
 
-You agree to indemnify GoGoCash, any merchant partners, as well as their respective officers, directors, employees, successors, agents, and affiliates, for any and all claims, damages, losses and causes of action (including attorneys' fees and court costs) arising out of or relating to your breach of this Agreement or for any materials in any form whatsoever that are provided by you (or through your username and/or password). You agree to cooperate as fully as reasonably required in our defense and/or settlement of any claim. We reserve the right, in our reasonable discretion, to assume exclusive control over the defense and settlement of any matter subject to indemnification by you.
+To attribute and pay your Cashback, we work with the Affiliate Networks listed in Section 2. When you activate Cashback, we share an **opaque ClickID** with the relevant Affiliate Network and, where applicable, the Partner. **We do not share your name, email, phone number, device identifier, or any other personal data with these networks** for the purpose of attribution. They use the ClickID only to match a qualifying purchase back to GoGoCash so your Cashback can be reconciled.
 
-###### 14. Warranty Disclaimer
+## 8. Acceptable Use
 
-The Services, content, and the GoGoCash Platforms are provided "as is" and without warranty of any kind, express or implied, including without limitation, warranties of title, merchantability, fitness for a particular purpose or non-infringement. We make no warranty as to the quality, accuracy, currentness, completeness, reliability or validity of the Services, content or the GoGoCash Platforms, including without limitation, any product search results, product descriptions, product availability, pricing information advice, opinion, statement, recommendations, or other information displayed, uploaded or distributed in connection with the Services. GoGoCash does not warrant that the functionality of the GoGoCash Platforms will be uninterrupted or error-free, that defects will be corrected, or that they will be free of viruses or other harmful content. Further, GoGoCash does not warrant, guarantee or make any representations regarding the quality of, or accuracy of advertisements for, any products or services offered or provided by its affiliate stores in conjunction with the services.
+You agree not to:
 
-###### 15. Limitation of Liability
+1. Use the Service to commit fraud, including by self-purchasing through your own Cashback link to generate rewards;
+2. Use bots, scripts, scrapers, or automated means to interact with the Service or its Partners;
+3. Create multiple Accounts or impersonate another person;
+4. Manipulate or attempt to reverse-engineer the attribution, reconciliation, or detection systems;
+5. Use the Service in violation of Thai law, including the Personal Data Protection Act B.E. 2562 and the Computer-Related Crime Act;
+6. Resell, sublicense, or commercially exploit the Service or its data; or
+7. Interfere with the security or integrity of the Service.
 
-To the maximum extent permitted by applicable law, in no event shall GoGoCash be liable for any special, incidental, consequential, exemplary, punitive or other indirect damages or for any loss profits, loss data or loss of use damages, even if it has been advised of the possibility of such damages. To the maximum extent permitted by applicable law, GoGoCash's maximum aggregate liability arising out of this agreement will not exceed 3,000 Thai Baht.
+## 9. Fraud Prevention and Account Suspension
 
-###### 16. Class Action Waiver
+We may, at our reasonable discretion and on notice where practicable, suspend, restrict, or close your Account, void Pending or Confirmed Cashback, or reverse a withdrawal where we have a reasonable basis to believe you have engaged in fraud, abuse, or a material breach of these Terms. Where we close an Account for fraud, we may retain transaction records as required by anti-money-laundering and tax laws.
 
-To the extent permitted under applicable law, you agree that any dispute, claim, or controversy arising out of or relating to your use of the Services, the GoGoCash Platform, or this Agreement may be brought by you or GoGoCash against the other only on an individual basis and not by any form of class, collective, representative, or consolidated action or proceeding, and that, unless both you and GoGoCash agree otherwise, the arbitrator may not certify, consolidate, or join any more than one person's or party's claims. Also, the arbitrator may only award relief (including monetary, injunctive, and declaratory relief) in favor of the individual party seeking relief and only to the extent necessary to provide the relief sought by that party's individual claim(s), and that the arbitrator may not award any relief that affects any person or entity other than you and GoGoCash.
+## 10. Intellectual Property
 
-This class action waiver is a material and essential part of these terms and conditions. If any portion of this class action waiver is found to be invalid or unenforceable or a court decides that applicable law precludes enforcement of any of this paragraph's limitations as to a particular claim or a particular request for a remedy, then that claim or that remedy request must be severed from the arbitration and may be brought in court, subject to your and GoGoCash's right to appeal the decision. This class action waiver shall survive any termination of these terms and conditions and any arbitration.
+The Service, including its software, designs, text, graphics, logos, and trade marks, is owned by GoGoCash or its licensors and is protected by Thai and international law. We grant you a limited, personal, non-transferable, revocable licence to use the Service for its intended purpose. You retain ownership of content you submit to the Service, and grant us a worldwide, royalty-free licence to use that content as necessary to operate the Service.
 
-###### 17. Governing Law and Arbitration
+## 11. Privacy
 
-This Agreement, including any amendments thereto that GoGoCash may from time to time make at its discretion, are governed by and construed in accordance with the laws of Thailand. Any dispute arising out of or in connection with this contract, including any question regarding its existence, validity or termination, shall be resolved in accordance with the dispute resolution processes available under Thai law. The parties agree to first attempt to resolve disputes through good faith negotiations. If negotiations fail, either party may submit the dispute to mediation or arbitration in Thailand in accordance with the applicable rules of the Thai Arbitration Institute or other mutually agreed arbitration body. The language of any arbitration proceedings shall be Thai or English as agreed by the parties.
+Your use of the Service is also governed by our **[Privacy Policy](https://gogocash.co/privacy-policy)**, which describes how we handle your personal data in compliance with the Thailand Personal Data Protection Act B.E. 2562. By using the Service, you acknowledge the Privacy Policy. Consent to specific data processing (including GoGoSense) is collected separately, in the app.
 
-###### 18. Assignment
+## 12. Changes to These Terms
 
-You may not assign your rights and obligations under this Agreement, in whole or in part, without prior written consent, and any such assignment without such consent will be null and void.
+We may amend these Terms from time to time. Material changes will be notified to you at least 14 days before they take effect, by email, in-app notice, or both. Continued use of the Service after the effective date of the amended Terms constitutes acceptance. If you do not agree to the amended Terms, you may close your Account.
 
-###### 19. Headings
+## 13. Termination
 
-Headings under this Agreement are intended only for convenience and shall not affect the interpretation of this Agreement.
+- **By you:** You may close your Account at any time in the Service. On closure, any Confirmed Cashback above the withdrawal threshold will be paid to your verified withdrawal method, less any reversed or fraudulent amounts.
+- **By us:** We may terminate your access for material breach, fraud, regulatory reasons, or after 24 months of inactivity as described in Section 5.6. Termination does not extinguish your statutory rights under the Personal Data Protection Act B.E. 2562.
 
-###### 20. Waivers / Severability
+## 14. Disclaimers
 
-Any failure to enforce any provision of this Agreement on the part of GoGoCash will not be deemed a waiver of that provision. Any waiver of any provision of this Agreement by GoGoCash on one occasion will not be deemed a waiver of any other provision or of such provision on any other occasion. If any provision of this Agreement is held to be invalid, such invalidity shall not affect the remaining provisions.
+To the maximum extent permitted by Thai law:
 
-###### 21. Entire Agreement
+- The Service is provided **"as is"** and **"as available"**;
+- We do not warrant that Cashback rates, Partner availability, or detection accuracy will be uninterrupted, error-free, or unchanged;
+- We do not warrant any Partner's products, services, prices, delivery, or refund policies;
+- Cashback is a marketing reward and does not constitute a security, financial instrument, or store of value;
+- We are not a payment service provider, money remitter, or licensed financial institution.
 
-This Agreement (together with the additional terms and conditions referred hereto or generally) represents the entire agreement of the parties with respect to the subject matter hereof, and supersedes all prior or contemporaneous agreements and representations, written or oral (including without limitation, earlier version of this Agreement that may have been accepted by you). We reserve the right to modify this Agreement at any time. Your continued use of any of the GoGoCash services or continued maintenance of an account with GoGoCash shall constitute and be deemed to be your acceptance of such modification and your consent to abide by any terms thereof.
+## 15. Limitation of Liability
+
+To the maximum extent permitted by Thai law, our total aggregate liability to you arising out of or in connection with the Service, the Cashback program, or these Terms is limited to the greater of:
+
+(a) the total Cashback paid to your Account in the 12 months preceding the event giving rise to the claim; or
+(b) THB 10,000.
+
+Nothing in this Section limits liability that cannot be excluded under Thai consumer protection law, the Personal Data Protection Act B.E. 2562, or for fraud or wilful misconduct.
+
+We are not liable for any indirect, incidental, special, consequential, or punitive damages, loss of profits, loss of goodwill, or loss of data.
+
+## 16. Indemnification
+
+You agree to indemnify and hold GoGoCash harmless against any claim arising from your breach of these Terms, your misuse of the Service, your violation of law, or your interaction with any Partner, except to the extent caused by our wilful misconduct or gross negligence.
+
+## 17. Governing Law and Disputes
+
+These Terms are governed by the laws of the Kingdom of Thailand. Disputes will be submitted to the exclusive jurisdiction of the Thai courts, subject to your statutory rights as a consumer under Thai law. We encourage you to contact us first at **support@gogocash.co** so that we can attempt to resolve any concern amicably.
+
+## 18. Miscellaneous
+
+- **Assignment:** You may not assign your rights or obligations under these Terms. We may assign these Terms to an affiliate or successor in connection with a corporate transaction.
+- **Severability:** If any provision of these Terms is held unenforceable, the remainder remains in full force.
+- **No waiver:** Our failure to enforce a right is not a waiver of that right.
+- **Entire agreement:** These Terms, together with the Privacy Policy and any in-app disclosures, constitute the entire agreement between you and GoGoCash regarding the Service.
+- **Language:** These Terms are published in English and Thai. In the event of any inconsistency, the Thai version prevails for users resident in Thailand.
+
+## 19. Contact
+
+**ห้างหุ้นส่วนจำกัด โกโกโฮลดิ้ง ประเทศไทย / GOGO HOLDING Thailand Limited Partnership**
+
+Email: **support@gogocash.co**
+
+Privacy: **dpo@gogocash.co**
+
+Website: **gogocash.co**
+
+---
+
+# เงื่อนไขการให้บริการ
+
+**วันที่มีผลบังคับใช้:** 15 กรกฎาคม 2569
+
+**เวอร์ชัน:** 2.0
+
+## 1. เกี่ยวกับเงื่อนไขนี้
+
+เงื่อนไขการให้บริการนี้ ("**เงื่อนไข**") กำกับการใช้บริการ GoGoCash ของคุณ ซึ่งรวมถึงเว็บไซต์ (gogocash.co) แอปพลิเคชันบนมือถือ ส่วนขยายเบราว์เซอร์ และฟีเจอร์ที่เกี่ยวข้อง เช่น ฟีเจอร์เสริม GoGoSense (รวมเรียกว่า "**บริการ**")
+
+บริการนี้ดำเนินการโดย **ห้างหุ้นส่วนจำกัด โกโกโฮลดิ้ง ประเทศไทย / GOGO HOLDING Thailand Limited Partnership** ("**GoGoCash**" "**เรา**" "**ของเรา**" "**พวกเรา**") ซึ่งเป็นห้างหุ้นส่วนจำกัดจดทะเบียนในประเทศไทย
+
+การสร้างบัญชีหรือการใช้บริการ ถือว่าคุณตกลงตามเงื่อนไขนี้ หากคุณไม่ตกลง โปรดอย่าใช้บริการ
+
+เงื่อนไขนี้ใช้แทนและยกเลิก "เงื่อนไขการให้บริการ" หรือ "เงื่อนไขการใช้งาน" ที่เผยแพร่ก่อนหน้านี้บน gogocash.co
+
+## 2. คำนิยาม
+
+- "**บัญชี**" หมายถึง บัญชีผู้ใช้ GoGoCash ของคุณ
+- "**เครือข่ายพันธมิตร**" หมายถึง พันธมิตรกระทบยอดของเรา ซึ่งปัจจุบันได้แก่ Involve Asia, Optimise และ TikTok Shop CPS ที่ทำหน้าที่ระบุแหล่งที่มาและยืนยันการซื้อที่เข้าเงื่อนไข
+- "**เงินคืน**" หมายถึง รางวัลที่คุณสามารถได้รับผ่านบริการ คำนวณเป็นเงินบาท
+- "**ClickID**" หมายถึง รหัสเซสชันแบบไม่ระบุตัวตนที่สร้างขึ้นเมื่อคุณเปิดใช้งานเงินคืนสำหรับเซสชันของพันธมิตร
+- "**การซื้อที่เข้าเงื่อนไข**" หมายถึง ธุรกรรมที่เสร็จสมบูรณ์ที่ร้านพันธมิตรในระหว่างเซสชันการเปิดใช้งานเงินคืนที่ถูกต้อง และได้รับการยืนยันโดยเครือข่ายพันธมิตรที่เกี่ยวข้อง
+- "**GoGoSense**" หมายถึง ฟีเจอร์เสริมสำหรับระบบ Android เท่านั้น ที่ตรวจจับบนอุปกรณ์ของคุณว่าคุณเปิดแอปพันธมิตรเมื่อใด และแสดงข้อความให้คุณเปิดใช้งานเงินคืน
+- "**พันธมิตร**" หมายถึง ผู้ค้าปลีกหรือผู้ให้บริการบุคคลภายนอกที่เข้าร่วมโปรแกรมเงินคืน รวมถึง Shopee, Lazada, TikTok Shop, Agoda และ Klook
+- "**ผู้ใช้**" "**คุณ**" และ "**ของคุณ**" หมายถึง บุคคลที่ใช้บริการ
+
+## 3. คุณสมบัติและบัญชี
+
+ในการใช้บริการ คุณต้อง:
+
+1. มีอายุไม่ต่ำกว่า 18 ปี และมีความสามารถตามกฎหมายไทยในการเข้าทำสัญญาที่มีผลผูกพัน
+2. ให้ข้อมูลการลงทะเบียนที่ถูกต้อง รวมถึงหมายเลขโทรศัพท์มือถือไทยหรืออีเมลที่ใช้งานได้
+3. มีบัญชีเพียงหนึ่งบัญชีต่อหนึ่งบุคคล และ
+4. รักษาข้อมูลรับรองบัญชีของคุณเป็นความลับ คุณรับผิดชอบต่อกิจกรรมที่เกิดขึ้นภายใต้บัญชีของคุณ
+
+เราอาจยืนยันตัวตนของคุณได้ตลอดเวลาตามที่กฎหมายกำหนด (รวมถึงกฎหมายป้องกันการฟอกเงิน) หรือเพื่อสอบสวนการฉ้อโกงที่ต้องสงสัย
+
+## 4. บริการ GoGoCash
+
+GoGoCash เป็นแพลตฟอร์มเงินคืนหลายแบรนด์ เมื่อคุณทำการซื้อที่เข้าเงื่อนไขที่ร้านพันธมิตรผ่านบริการ พันธมิตรจะจ่ายค่าคอมมิชชันให้เราผ่านเครือข่ายพันธมิตร และเราจะให้เครดิตส่วนหนึ่งของค่าคอมมิชชันนั้นเข้าบัญชีของคุณเป็นเงินคืน
+
+เราไม่ได้ขาย จัดส่ง หรือจัดการสินค้าของพันธมิตร พันธมิตรเป็นธุรกิจอิสระที่รับผิดชอบโดยลำพังต่อสินค้า บริการ ราคา การจัดส่ง การคืนเงิน การรับคืน และการดูแลลูกค้าของตน ข้อพิพาทใด ๆ ที่เกิดจากธุรกรรมกับพันธมิตรเป็นเรื่องระหว่างคุณกับพันธมิตร
+
+## 5. โปรแกรมเงินคืน
+
+### 5.1 การได้รับเงินคืน
+
+- คุณเปิดใช้งานเซสชันเงินคืนสำหรับพันธมิตรผ่านบริการ (ด้วยตนเองในแอป หรือผ่าน GoGoSense หากคุณเปิดใช้งาน)
+- คุณทำการซื้อที่พันธมิตรนั้นในระหว่างเซสชันที่ใช้งานอยู่
+- พันธมิตรรายงานธุรกรรมให้เครือข่ายพันธมิตรที่เกี่ยวข้อง
+- เครือข่ายพันธมิตรยืนยันว่าธุรกรรมเป็นการซื้อที่เข้าเงื่อนไข และจ่ายค่าคอมมิชชันให้ GoGoCash โดยปกติภายใน 30 ถึง 90 วันนับจากวันที่ซื้อ
+- เมื่อได้รับการยืนยันแล้ว เราจะให้เครดิตเงินคืนที่สอดคล้องเข้าบัญชีของคุณ
+
+### 5.2 อัตราเงินคืน
+
+อัตราเงินคืนของแต่ละพันธมิตรจะแสดงในบริการ และอาจมีการเปลี่ยนแปลงตามดุลยพินิจของเราหรือตามคำขอของพันธมิตร อัตราที่ใช้กับการซื้อที่เข้าเงื่อนไขของคุณคืออัตราที่แสดงในขณะที่คุณเปิดใช้งานเซสชันเงินคืน
+
+### 5.3 เงินคืนที่รอดำเนินการและที่ยืนยันแล้ว
+
+เงินคืนจะปรากฏในบัญชีของคุณเป็น "**รอดำเนินการ**" ในตอนแรก เมื่อเซสชันได้รับการเปิดใช้งานและพันธมิตรรายงานธุรกรรม จะกลายเป็น "**ยืนยันแล้ว**" เมื่อเครือข่ายพันธมิตรกระทบยอดเสร็จสมบูรณ์ เฉพาะเงินคืนที่ยืนยันแล้วเท่านั้นที่สามารถถอนได้
+
+### 5.4 การยกเลิก การคืนสินค้า หรือการคืนเงิน
+
+หากการซื้อถูกยกเลิก คืนสินค้า คืนเงิน หรือกลับรายการโดยพันธมิตร เงินคืนที่สอดคล้องจะถูกกลับรายการตามไปด้วย หากเงินคืนนั้นถูกถอนไปแล้ว ยอดติดลบที่เกิดขึ้นอาจถูกหักจากเงินคืนในอนาคต
+
+### 5.5 ยอดถอนขั้นต่ำและการจ่ายเงิน
+
+- ยอดถอนขั้นต่ำคือ 100 บาท หรือยอดที่แสดงในบริการ
+- การถอนจะจ่ายเข้าบัญชีธนาคาร บัญชี PromptPay หรือ e-wallet ที่ได้รับการยืนยันของคุณ ตามที่บริการเปิดให้ใช้งาน
+- เราอาจหน่วงเวลาหรือระงับการถอนระหว่างรอการยืนยัน การตรวจสอบการฉ้อโกง หรือการทบทวนเพื่อปฏิบัติตามกฎระเบียบ
+
+### 5.6 บัญชีที่ไม่มีการเคลื่อนไหว
+
+หากบัญชีของคุณไม่มีการเข้าสู่ระบบหรือกิจกรรมที่เข้าเงื่อนไขเป็นเวลา 24 เดือนติดต่อกัน เราอาจแจ้งให้คุณทราบ และหลังจากไม่มีการเคลื่อนไหวต่ออีก 60 วัน อาจปิดบัญชีและริบเงินคืนที่ยังไม่ได้ถอน เท่าที่กฎหมายไทยอนุญาต
+
+## 6. GoGoSense (ฟีเจอร์เสริม)
+
+### 6.1 สิ่งที่ GoGoSense ทำ
+
+GoGoSense เป็น **ฟีเจอร์เสริมสำหรับระบบ Android เท่านั้น** ที่ตรวจจับ **บนอุปกรณ์ของคุณ** ว่าคุณเปิดแอปพันธมิตรเมื่อใด และแสดงข้อความให้คุณเปิดใช้งานเงินคืนได้ด้วยการแตะเพียงครั้งเดียว การตรวจจับใช้สิทธิ์ **การเข้าถึงการใช้งาน (Usage Access)** ของ Android (`PACKAGE_USAGE_STATS`) ซึ่งคุณเป็นผู้ให้สิทธิ์ด้วยตนเองในการตั้งค่าของอุปกรณ์
+
+### 6.2 เงินคืนไม่ขึ้นอยู่กับ GoGoSense
+
+**การตัดสินใจเปิดใช้งาน GoGoSense ของคุณไม่มีผลต่อเงินคืนหรือรางวัลที่คุณได้รับ** คุณสามารถใช้โปรแกรมเงินคืนทั้งหมดได้โดยไม่ต้องเปิดใช้งาน GoGoSense โดยการเปิดใช้งานเงินคืนด้วยตนเองในแอป เราจะไม่ลด ระงับ หรือกำหนดเงื่อนไขรางวัลใด ๆ โดยอ้างอิงกับการตัดสินใจเปิดใช้งาน ปฏิเสธ หรือเพิกถอน GoGoSense ของคุณ
+
+### 6.3 สิ่งที่ GoGoSense เห็นและส่ง
+
+GoGoSense ตรวจจับแอปที่แสดงเบื้องหน้าบนอุปกรณ์ของคุณเพียงเพื่อจับคู่กับรายการพันธมิตรของเราเท่านั้น โดย **ไม่** อ่านเนื้อหาหน้าจอ การพิมพ์ ประวัติการเข้าเว็บ ข้อความ หรือเนื้อหาภายในแอปพันธมิตรใด ๆ เมื่อคุณเลือกเปิดใช้งานเงินคืน ข้อมูลเดียวที่ส่งไปยังเซิร์ฟเวอร์ของเราคือรหัสพันธมิตรภายใน (เช่น "shopee_th") รหัสเซสชัน และการประทับเวลา การจัดการข้อมูลส่วนบุคคลของคุณอย่างละเอียดอธิบายไว้ในนโยบายความเป็นส่วนตัวของเรา
+
+### 6.4 การปิด GoGoSense
+
+คุณสามารถปิด GoGoSense ได้ตลอดเวลาโดย:
+- สลับปิดในแอปที่ **การตั้งค่า → GoGoSense**
+- เพิกถอน Usage Access ใน **การตั้งค่า Android → แอปที่มีสิทธิ์เข้าถึงการใช้งาน** หรือ
+- ลบบัญชีของคุณ
+
+การปิด GoGoSense ไม่มีค่าใช้จ่าย มีผลทันที และไม่กระทบต่อเงินคืนที่คุณได้รับไปแล้ว
+
+### 6.5 ไม่มีเวอร์ชัน iOS
+
+ปัจจุบัน GoGoSense รองรับเฉพาะระบบ Android เท่านั้น เราไม่ได้ให้คำมั่นว่าจะมีเวอร์ชัน iOS หากเราเปิดตัว เวอร์ชันนั้นจะทำงานภายใต้ข้อจำกัดทางเทคนิคที่แตกต่างออกไป และจะมีการเผยแพร่เงื่อนไขที่ใช้บังคับในขณะนั้น
+
+## 7. พันธมิตรเครือข่ายพันธมิตร
+
+เพื่อระบุแหล่งที่มาและจ่ายเงินคืนของคุณ เราทำงานร่วมกับเครือข่ายพันธมิตรที่ระบุไว้ในข้อ 2 เมื่อคุณเปิดใช้งานเงินคืน เราแบ่งปัน **ClickID แบบไม่ระบุตัวตน** กับเครือข่ายพันธมิตรที่เกี่ยวข้อง และในกรณีที่เกี่ยวข้อง กับพันธมิตรด้วย **เราไม่แบ่งปันชื่อ อีเมล หมายเลขโทรศัพท์ รหัสอุปกรณ์ หรือข้อมูลส่วนบุคคลอื่นใดของคุณกับเครือข่ายเหล่านี้** เพื่อวัตถุประสงค์ในการระบุแหล่งที่มา พวกเขาใช้ ClickID เพียงเพื่อจับคู่การซื้อที่เข้าเงื่อนไขกลับมายัง GoGoCash เพื่อให้สามารถกระทบยอดเงินคืนของคุณได้
+
+## 8. การใช้งานที่ยอมรับได้
+
+คุณตกลงที่จะไม่:
+
+1. ใช้บริการเพื่อกระทำการฉ้อโกง รวมถึงการซื้อเองผ่านลิงก์เงินคืนของคุณเพื่อสร้างรางวัล
+2. ใช้บอท สคริปต์ เครื่องมือ Scrape หรือวิธีการอัตโนมัติในการโต้ตอบกับบริการหรือพันธมิตร
+3. สร้างบัญชีหลายบัญชีหรือแอบอ้างเป็นบุคคลอื่น
+4. ดัดแปลงหรือพยายามทำวิศวกรรมย้อนกลับระบบการระบุแหล่งที่มา การกระทบยอด หรือการตรวจจับ
+5. ใช้บริการในลักษณะที่ฝ่าฝืนกฎหมายไทย รวมถึงพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 และพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์
+6. ขายต่อ ให้อนุญาตช่วง หรือแสวงหาประโยชน์เชิงพาณิชย์จากบริการหรือข้อมูลของบริการ หรือ
+7. รบกวนความปลอดภัยหรือความสมบูรณ์ของบริการ
+
+## 9. การป้องกันการฉ้อโกงและการระงับบัญชี
+
+เราอาจระงับ จำกัด หรือปิดบัญชีของคุณ ยกเลิกเงินคืนที่รอดำเนินการหรือที่ยืนยันแล้ว หรือกลับรายการการถอน ตามดุลยพินิจที่สมเหตุสมผลของเรา โดยการแจ้งให้ทราบล่วงหน้าหากสามารถกระทำได้ ในกรณีที่เรามีเหตุผลอันสมควรที่จะเชื่อว่าคุณได้กระทำการฉ้อโกง การใช้ในทางมิชอบ หรือการละเมิดเงื่อนไขนี้อย่างมีนัยสำคัญ ในกรณีที่เราปิดบัญชีเนื่องจากการฉ้อโกง เราอาจเก็บบันทึกธุรกรรมตามที่กฎหมายป้องกันการฟอกเงินและกฎหมายภาษีกำหนด
+
+## 10. ทรัพย์สินทางปัญญา
+
+บริการ ซึ่งรวมถึงซอฟต์แวร์ การออกแบบ ข้อความ กราฟิก โลโก้ และเครื่องหมายการค้า เป็นของ GoGoCash หรือผู้ให้สิทธิ์ของเรา และได้รับการคุ้มครองโดยกฎหมายไทยและกฎหมายระหว่างประเทศ เราให้สิทธิ์การใช้งานบริการแก่คุณอย่างจำกัด ส่วนบุคคล ไม่สามารถโอนได้ และเพิกถอนได้ เพื่อวัตถุประสงค์ที่ตั้งใจไว้ คุณยังคงเป็นเจ้าของเนื้อหาที่คุณส่งไปยังบริการ และให้สิทธิ์เราในการใช้เนื้อหานั้นทั่วโลก โดยไม่มีค่าลิขสิทธิ์ เท่าที่จำเป็นในการดำเนินบริการ
+
+## 11. ความเป็นส่วนตัว
+
+การใช้บริการของคุณยังอยู่ภายใต้ **[นโยบายความเป็นส่วนตัว](https://gogocash.co/privacy-policy)** ของเรา ซึ่งอธิบายวิธีที่เราจัดการข้อมูลส่วนบุคคลของคุณ ตามที่กำหนดในพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 การใช้บริการถือว่าคุณรับทราบนโยบายความเป็นส่วนตัว ความยินยอมสำหรับการประมวลผลข้อมูลเฉพาะ (รวมถึง GoGoSense) จะถูกขอแยกต่างหากในแอป
+
+## 12. การเปลี่ยนแปลงเงื่อนไข
+
+เราอาจแก้ไขเงื่อนไขนี้เป็นครั้งคราว การเปลี่ยนแปลงที่เป็นสาระสำคัญจะแจ้งให้คุณทราบล่วงหน้าอย่างน้อย 14 วันก่อนมีผลบังคับใช้ ผ่านอีเมล การแจ้งเตือนในแอป หรือทั้งสองอย่าง การใช้บริการต่อไปหลังวันที่มีผลบังคับใช้ของเงื่อนไขที่แก้ไขถือว่ายอมรับ หากคุณไม่ตกลงตามเงื่อนไขที่แก้ไข คุณสามารถปิดบัญชีของคุณได้
+
+## 13. การสิ้นสุด
+
+- **โดยคุณ:** คุณสามารถปิดบัญชีของคุณได้ตลอดเวลาในบริการ เมื่อปิดบัญชี เงินคืนที่ยืนยันแล้วซึ่งเกินยอดถอนขั้นต่ำจะถูกจ่ายไปยังวิธีการถอนที่ได้รับการยืนยันของคุณ หักจำนวนที่ถูกกลับรายการหรือฉ้อโกง
+- **โดยเรา:** เราอาจยุติการเข้าถึงของคุณกรณีละเมิดอย่างมีนัยสำคัญ การฉ้อโกง เหตุผลด้านกฎระเบียบ หรือหลังจากไม่มีการเคลื่อนไหว 24 เดือนตามที่อธิบายไว้ในข้อ 5.6 การสิ้นสุดไม่ระงับสิทธิตามกฎหมายของคุณภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+
+## 14. ข้อยกเว้นความรับผิด
+
+เท่าที่กฎหมายไทยอนุญาต:
+
+- บริการนี้ให้ **"ตามที่เป็น"** และ **"ตามที่มี"**
+- เราไม่รับประกันว่าอัตราเงินคืน การมีพันธมิตรอยู่ หรือความแม่นยำของการตรวจจับจะไม่หยุดชะงัก ปราศจากข้อผิดพลาด หรือไม่มีการเปลี่ยนแปลง
+- เราไม่รับประกันสินค้า บริการ ราคา การจัดส่ง หรือนโยบายการคืนเงินของพันธมิตรใด ๆ
+- เงินคืนเป็นรางวัลทางการตลาด ไม่ใช่หลักทรัพย์ เครื่องมือทางการเงิน หรือสื่อกลางเก็บมูลค่า
+- เราไม่ใช่ผู้ให้บริการชำระเงิน ผู้โอนเงิน หรือสถาบันการเงินที่ได้รับใบอนุญาต
+
+## 15. การจำกัดความรับผิด
+
+เท่าที่กฎหมายไทยอนุญาต ความรับผิดรวมสูงสุดของเราต่อคุณที่เกิดจากหรือเกี่ยวข้องกับบริการ โปรแกรมเงินคืน หรือเงื่อนไขนี้ จำกัดไว้ที่จำนวนที่สูงกว่าระหว่าง:
+
+(ก) เงินคืนรวมที่จ่ายเข้าบัญชีของคุณใน 12 เดือนก่อนเหตุการณ์ที่ก่อให้เกิดข้อเรียกร้อง หรือ
+(ข) 10,000 บาท
+
+ไม่มีข้อใดในข้อนี้จำกัดความรับผิดที่ไม่อาจยกเว้นได้ภายใต้กฎหมายคุ้มครองผู้บริโภคของไทย พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 หรือกรณีการฉ้อโกงหรือการประพฤติผิดโดยจงใจ
+
+เราไม่รับผิดต่อความเสียหายทางอ้อม ความเสียหายโดยบังเอิญ ความเสียหายพิเศษ ความเสียหายต่อเนื่อง หรือความเสียหายเชิงลงโทษ การสูญเสียกำไร การสูญเสียค่าความนิยม หรือการสูญเสียข้อมูล
+
+## 16. การชดใช้
+
+คุณตกลงชดใช้และปกป้อง GoGoCash จากข้อเรียกร้องใด ๆ ที่เกิดจากการละเมิดเงื่อนไขนี้ของคุณ การใช้บริการในทางที่ผิดของคุณ การฝ่าฝืนกฎหมาย หรือการมีปฏิสัมพันธ์กับพันธมิตรใด ๆ ยกเว้นกรณีที่เกิดจากการประพฤติผิดโดยจงใจหรือความประมาทเลินเล่ออย่างร้ายแรงของเรา
+
+## 17. กฎหมายที่ใช้บังคับและข้อพิพาท
+
+เงื่อนไขนี้อยู่ภายใต้กฎหมายของราชอาณาจักรไทย ข้อพิพาทจะถูกส่งให้ศาลไทยพิจารณาในเขตอำนาจเด็ดขาด ภายใต้สิทธิตามกฎหมายของคุณในฐานะผู้บริโภคตามกฎหมายไทย เราขอเชิญให้คุณติดต่อเราก่อนที่ **support@gogocash.co** เพื่อให้เราพยายามแก้ไขข้อกังวลใด ๆ อย่างฉันมิตร
+
+## 18. เบ็ดเตล็ด
+
+- **การโอนสิทธิ์:** คุณไม่อาจโอนสิทธิ์หรือหน้าที่ของคุณภายใต้เงื่อนไขนี้ เราอาจโอนเงื่อนไขนี้ให้แก่บริษัทในเครือหรือผู้รับช่วงต่อในกรณีที่มีธุรกรรมขององค์กร
+- **การแยกส่วน:** หากข้อใดในเงื่อนไขนี้ถูกพิจารณาว่าไม่สามารถบังคับใช้ได้ ส่วนที่เหลือยังคงมีผลบังคับใช้สมบูรณ์
+- **ไม่ถือเป็นการสละสิทธิ์:** การที่เราไม่บังคับใช้สิทธิ์ไม่ถือเป็นการสละสิทธิ์นั้น
+- **ข้อตกลงทั้งหมด:** เงื่อนไขนี้ ร่วมกับนโยบายความเป็นส่วนตัวและประกาศในแอป ถือเป็นข้อตกลงทั้งหมดระหว่างคุณและ GoGoCash เกี่ยวกับบริการ
+- **ภาษา:** เงื่อนไขนี้เผยแพร่เป็นภาษาอังกฤษและภาษาไทย หากมีความไม่สอดคล้องกัน ฉบับภาษาไทยจะมีผลเหนือกว่าสำหรับผู้ใช้ที่อาศัยอยู่ในประเทศไทย
+
+## 19. ติดต่อ
+
+**ห้างหุ้นส่วนจำกัด โกโกโฮลดิ้ง ประเทศไทย / GOGO HOLDING Thailand Limited Partnership**
+
+อีเมล: **support@gogocash.co**
+
+ความเป็นส่วนตัว: **dpo@gogocash.co**
+
+เว็บไซต์: **gogocash.co**
