@@ -6,6 +6,7 @@ import {
   shouldLoadPostHog,
 } from "@/lib/app-config";
 import { isAnalyticsAllowed } from "@/lib/cookie-consent";
+import { resolveLocaleForPathname } from "@/lib/locale-routing";
 
 let client: PostHog | null = null;
 let initializing = false;
@@ -13,6 +14,18 @@ let initializing = false;
 /** PostHog may capture only when configured/enabled AND cookie consent is granted. */
 export function posthogAllowed(): boolean {
   return shouldLoadPostHog() && isAnalyticsAllowed();
+}
+
+/**
+ * locale_lang / locale_region super properties from the current path. PostHog
+ * auto-captures device/browser/UTM, but not the app's locale — register it so
+ * every event can be broken down by language/region.
+ */
+function localeSuperProps(): Record<string, string> {
+  const locale = resolveLocaleForPathname(window.location.pathname);
+  return locale
+    ? { locale_lang: locale.lang, locale_region: locale.region }
+    : {};
 }
 
 /**
@@ -33,6 +46,8 @@ async function initPostHog(): Promise<void> {
       capture_pageleave: true,
       autocapture: true,
       enable_heatmaps: true, // clickmaps for the landing page
+      capture_exceptions: true, // error tracking: unhandled errors + promise rejections
+      capture_performance: { web_vitals: true }, // $web_vitals (LCP/INP/CLS/FCP)
       disable_session_recording: false, // replay on, masked (consent-gated)
       session_recording: {
         maskAllInputs: true,
@@ -74,6 +89,8 @@ export async function syncPostHogConsent(): Promise<void> {
 export function posthogCapturePageView(path: string): void {
   if (!client || !posthogAllowed()) return;
   try {
+    // Keep locale super-properties current across SPA navigations.
+    client.register(localeSuperProps());
     client.capture("$pageview", {
       path,
       $current_url: window.location.href,
