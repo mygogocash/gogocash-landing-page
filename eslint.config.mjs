@@ -10,6 +10,7 @@ const eslintConfig = [
       "out/**",
       "coverage/**",
       "e2e/**",
+      "infra/**",
       "playwright.config.ts",
     ],
   },
