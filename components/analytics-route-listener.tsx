@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { logPageView } from "@/lib/analytics-client";
 import { posthogCapturePageView } from "@/lib/posthog-client";
+import { mixpanelCapturePageView } from "@/lib/mixpanel-client";
 
 /**
  * Sends `page_view` on client-side route changes (App Router).
@@ -31,6 +32,7 @@ function AnalyticsRouteListenerInner() {
     const fire = () => {
       logPageView(full);
       posthogCapturePageView(full);
+      mixpanelCapturePageView(full);
     };
     const schedule =
       typeof requestAnimationFrame !== "undefined"
