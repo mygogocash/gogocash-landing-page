@@ -1,5 +1,6 @@
 {
   "name": "gogocash-landing-production",
+  "main": "workers/production-geo-locale.ts",
   "account_id": "187ab61ed9dbc6e616cb23e6b95aa8f1",
   "compatibility_date": "2026-06-20",
   "workers_dev": false,

@@ -4,10 +4,12 @@ import {
   DEFAULT_LOCALE,
   getSectionedLandingBasePath,
   isSectionedLandingPath,
+  isThailandTimezone,
   matchBrowserLocaleTagForRedirect,
   resolveAutoRedirectFromBrowserLocales,
   resolveLanguageSelection,
   resolveLocaleForPathname,
+  resolveThailandClientRedirect,
 } from "./locale-routing";
 
 describe("locale-routing", () => {
@@ -87,5 +89,37 @@ describe("locale-routing", () => {
     assert.equal(resolveAutoRedirectFromBrowserLocales(["zh", "ja"]), "/ja");
     assert.equal(resolveAutoRedirectFromBrowserLocales(["zh-CN", "zh-TW"]), "/cn");
     assert.equal(resolveAutoRedirectFromBrowserLocales([]), null);
+  });
+
+  it("isThailandTimezone matches Asia/Bangkok only", () => {
+    assert.equal(isThailandTimezone("Asia/Bangkok"), true);
+    assert.equal(isThailandTimezone("America/New_York"), false);
+  });
+
+  it("resolveThailandClientRedirect prefers browser tags then Bangkok timezone", () => {
+    assert.equal(
+      resolveThailandClientRedirect("Asia/Bangkok", ["en-US"]),
+      "/th",
+    );
+    assert.equal(
+      resolveThailandClientRedirect("America/New_York", ["en-US"]),
+      "/",
+    );
+    assert.equal(
+      resolveThailandClientRedirect("Asia/Bangkok", ["th-TH"]),
+      "/th",
+    );
+    assert.equal(
+      resolveThailandClientRedirect("Asia/Bangkok", ["ja-JP"]),
+      "/ja",
+    );
+    assert.equal(
+      resolveThailandClientRedirect("Asia/Bangkok", ["fr-FR"]),
+      "/th",
+    );
+    assert.equal(
+      resolveThailandClientRedirect("Europe/Paris", ["fr-FR"]),
+      null,
+    );
   });
 });

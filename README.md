@@ -106,6 +106,21 @@ npm run dev
 
 Open `http://127.0.0.1:3000` (dev server binds `0.0.0.0:3000`).
 
+### Locale defaults
+
+| Route | Language |
+|-------|----------|
+| `/` | English (default marketing homepage) |
+| `/th` | Thai |
+
+On first visit to `/`, locale is inferred in this order:
+
+1. **Browser language** — BCP-47 tags from `navigator.languages` (e.g. `th-TH` → `/th`).
+2. **Client timezone** — `Asia/Bangkok` redirects to `/th` when browser tags only imply English.
+3. **Edge geo (production)** — Cloudflare Worker redirects Thailand IP (`CF-IPCountry=TH`) from `/` to `/th`.
+
+**Force English:** choose **English** in the header locale menu. The choice is saved in `localStorage` and mirrored to the `gogocash.locale` cookie so both the client bootstrap and the production Worker skip Thailand defaults and keep `/`.
+
 ---
 
 ## Environment variables

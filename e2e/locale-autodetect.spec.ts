@@ -74,18 +74,50 @@ test.describe("locale auto-detect from /", () => {
   }
 
   test("English browser stays on /", async ({ page }) => {
+    await installTimezonePatch(page, "America/New_York");
     await installNavigatorPatch(page, { languages: ["en-US"], language: "en-US" });
     await openHome(page);
     await expectRootPathname(page);
   });
 
+  test("English browser with Bangkok timezone redirects to /th", async ({ page }) => {
+    await installTimezonePatch(page, "Asia/Bangkok");
+    await installNavigatorPatch(page, { languages: ["en-US"], language: "en-US" });
+    await openHome(page);
+    await expect(page).toHaveURL(pathnameEndsWithPattern("/th"), {
+      timeout: REDIRECT_TIMEOUT,
+    });
+  });
+
+  test("saved English locale preference stays on / despite Bangkok timezone", async ({
+    page,
+  }) => {
+    await page.addInitScript(
+      ([localeKey, autoKey, payload]) => {
+        localStorage.setItem(localeKey, payload);
+        localStorage.removeItem(autoKey);
+      },
+      [
+        LOCALE_STORAGE_KEY,
+        AUTO_LOCALE_DONE_KEY,
+        JSON.stringify({ lang: "en", region: "TH" }),
+      ],
+    );
+    await installTimezonePatch(page, "Asia/Bangkok");
+    await installNavigatorPatch(page, { languages: ["th-TH"], language: "th-TH" });
+    await openHome(page);
+    await expectRootPathname(page);
+  });
+
   test("bare zh stays on / (ambiguous)", async ({ page }) => {
+    await installTimezonePatch(page, "America/New_York");
     await installNavigatorPatch(page, { languages: ["zh"], language: "zh" });
     await openHome(page);
     await expectRootPathname(page);
   });
 
   test("Googlebot user agent does not redirect from /", async ({ page }) => {
+    await installTimezonePatch(page, "Asia/Bangkok");
     await installNavigatorPatch(page, {
       languages: ["th-TH"],
       language: "th-TH",
@@ -172,6 +204,16 @@ async function installNavigatorPatch(page: Page, patch: NavigatorPatch) {
     },
     patch,
   );
+}
+
+async function installTimezonePatch(page: Page, timeZone: string) {
+  await page.addInitScript((tz: string) => {
+    const realResolvedOptions = Intl.DateTimeFormat.prototype.resolvedOptions;
+    Intl.DateTimeFormat.prototype.resolvedOptions = function resolvedOptions() {
+      const options = realResolvedOptions.call(this);
+      return { ...options, timeZone: tz };
+    };
+  }, timeZone);
 }
 
 async function openHome(page: Page) {

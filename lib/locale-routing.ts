@@ -155,3 +155,21 @@ export function resolveAutoRedirectFromBrowserLocales(tags: string[]): string | 
   }
   return null;
 }
+
+export function isThailandTimezone(timeZone: string): boolean {
+  return timeZone === "Asia/Bangkok";
+}
+
+/**
+ * Browser locale tags first; if none imply a non-English marketing route, fall back
+ * to Bangkok timezone for visitors likely in Thailand.
+ */
+export function resolveThailandClientRedirect(
+  timeZone: string,
+  browserTags: string[],
+): string | null {
+  const browserPath = resolveAutoRedirectFromBrowserLocales(browserTags);
+  if (browserPath && browserPath !== "/") return browserPath;
+  if (isThailandTimezone(timeZone)) return "/th";
+  return browserPath;
+}
