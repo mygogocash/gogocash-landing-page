@@ -20,12 +20,20 @@ PostHog US uses two upstreams: `us.i.posthog.com` (events/flags) and
 
 ## Option A — Cloudflare Worker (recommended here)
 
-This site already fronts on Cloudflare, and a Worker needs **no Blaze plan** and no
-change to the Firebase deploy. Use PostHog's official Worker:
+This site fronts on Cloudflare, and a Worker needs **no Blaze plan** and no change to
+the Firebase deploy. A ready-to-deploy Worker lives in
+[`infra/posthog-proxy/`](../infra/posthog-proxy/) (proxies `/static/*` to the asset
+host and everything else to the event host):
 
-1. PostHog → **Settings → Project → Reverse proxy → Cloudflare**, copy the Worker.
-2. Deploy it on a route like `gogocash.co/ingest/*`.
-3. Set the two env vars above in the build env; redeploy the site.
+```bash
+cd infra/posthog-proxy
+npx wrangler deploy          # binds the route gogocash.co/ingest/*
+```
+
+Then set `NEXT_PUBLIC_POSTHOG_HOST` + `NEXT_PUBLIC_POSTHOG_UI_HOST` as GitHub Actions
+variables and redeploy the site. The CI build env already forwards both vars (empty =
+direct to US cloud), so activation is just filling in the values — **after** you've
+confirmed the Worker responds on `gogocash.co/ingest/*`.
 
 Docs: https://posthog.com/docs/advanced/proxy/cloudflare
 
