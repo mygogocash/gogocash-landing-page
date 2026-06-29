@@ -27,6 +27,7 @@ describe("Cloudflare production build contract", () => {
     const observability = wranglerConfig.observability as Record<string, unknown>;
 
     assert.equal(wranglerConfig.name, "gogocash-landing-production");
+    assert.equal(wranglerConfig.main, "workers/production-geo-locale.ts");
     assert.equal(wranglerConfig.account_id, "187ab61ed9dbc6e616cb23e6b95aa8f1");
     assert.equal(assets.directory, "./out");
     assert.equal(assets.not_found_handling, "404-page");

@@ -1,4 +1,8 @@
 import {
+  formatLocaleCookie,
+  localeCookieAttributes,
+} from "@/lib/locale-cookie";
+import {
   DEFAULT_LOCALE,
   isLangCode,
   isRegionCode,
@@ -6,6 +10,9 @@ import {
   type RegionCode,
   type StoredLocale,
 } from "@/lib/locale-routing";
+
+export const AUTOMATED_CLIENT_UA_PATTERN =
+  /bot|crawler|spider|googlebot|bingbot|slurp|duckduckbot|facebookexternalhit|preview/i;
 
 /** User-chosen language + region (header dropdown). */
 export const LOCALE_STORAGE_KEY = "gogocash.locale";
@@ -44,10 +51,15 @@ export function readStoredLocale(): StoredLocale {
   }
 }
 
+export function isLikelyAutomatedUserAgent(userAgent: string): boolean {
+  return AUTOMATED_CLIENT_UA_PATTERN.test(userAgent.toLowerCase());
+}
+
 /** Persists locale and notifies `LocaleDropdown` listeners. */
 export function persistLocale(locale: StoredLocale): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(LOCALE_STORAGE_KEY, JSON.stringify(locale));
+  document.cookie = `${formatLocaleCookie(locale)}; ${localeCookieAttributes()}`;
   document.documentElement.lang = locale.lang;
   window.dispatchEvent(
     new CustomEvent<StoredLocale>(LOCALE_EVENT_NAME, {
@@ -94,8 +106,5 @@ export function readPrimaryBrowserLanguage(): string {
 
 export function isLikelyAutomatedClient(): boolean {
   if (typeof navigator === "undefined") return true;
-  const ua = (navigator.userAgent ?? "").toLowerCase();
-  return /bot|crawler|spider|googlebot|bingbot|slurp|duckduckbot|facebookexternalhit|preview/i.test(
-    ua,
-  );
+  return isLikelyAutomatedUserAgent(navigator.userAgent ?? "");
 }

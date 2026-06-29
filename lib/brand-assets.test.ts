@@ -16,6 +16,10 @@ function publicFile(assetPath: string): string {
 
 function assertPngSignature(assetPath: string): void {
   const file = publicFile(assetPath);
+  assert.ok(
+    fs.existsSync(file),
+    `${assetPath}: file not found at ${file}`,
+  );
   const signature = fs.readFileSync(file).subarray(0, PNG_SIGNATURE.length);
   assert.deepEqual(
     signature,
@@ -31,7 +35,10 @@ describe("brand image assets", () => {
 
   it("serves bundled partner logos from existing PNG files", () => {
     const partners = loadBundledPartnerBrands();
-    assert.ok(partners.length > 0);
+    assert.ok(
+      partners.length > 0,
+      "loadBundledPartnerBrands() returned no partners — check partner-logo-resolve.ts",
+    );
 
     for (const partner of partners) {
       assertPngSignature(partner.logoUrl);

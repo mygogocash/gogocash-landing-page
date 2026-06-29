@@ -9,8 +9,8 @@ import {
   readBrowserLocaleTags,
 } from "@/lib/locale-storage";
 import {
-  resolveAutoRedirectFromBrowserLocales,
   resolveLocaleForPathname,
+  resolveThailandClientRedirect,
 } from "@/lib/locale-routing";
 
 /**
@@ -36,7 +36,10 @@ export function BrowserLocaleBootstrap() {
     if (!autoDone) {
       if (path === "/") {
         const redirectPath = !userChose
-          ? resolveAutoRedirectFromBrowserLocales(readBrowserLocaleTags())
+          ? resolveThailandClientRedirect(
+              Intl.DateTimeFormat().resolvedOptions().timeZone,
+              readBrowserLocaleTags(),
+            )
           : null;
         if (redirectPath && redirectPath !== path) {
           localStorage.setItem(AUTO_LOCALE_DONE_KEY, "1");
