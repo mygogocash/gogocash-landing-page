@@ -6,6 +6,7 @@ import SectionBadge from "@/components/section-badge";
 import CommunitySocialLinks from "@/components/community-social-links";
 import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/components/social-data";
 import type { LocaleHomeCopy } from "@/lib/locale-home-copy";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 import {
   ArrowUpRight,
   Coins,
@@ -220,7 +221,7 @@ export function LocaleDownloadSection({
                 aria-label={copy.download.qrAria}
               >
                 <Image
-                  src="/images/qr-gogocash-line-miniapp.webp"
+                  src={publicAssetUrl("/images/qr-gogocash-line-miniapp.webp")}
                   alt={copy.download.qrAlt}
                   width={224}
                   height={224}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import GoGoCashLogo from "./gogocash-logo";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 import {
   twFocusRingPrimary,
   twNavTextMotion,
@@ -90,7 +91,7 @@ export default function Footer() {
                       aria-label="Cloudflare"
                     >
                       <Image
-                        src="/branding/cloudflare-logo.png"
+                        src={publicAssetUrl("/branding/cloudflare-logo.png")}
                         alt=""
                         width={200}
                         height={80}

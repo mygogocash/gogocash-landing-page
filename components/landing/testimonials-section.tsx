@@ -2,6 +2,7 @@ import Image from "next/image";
 import SectionBadge from "@/components/section-badge";
 import AnimateOnScroll from "@/components/animate-on-scroll";
 import { uiSectionTitle } from "@/lib/ui-classes";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 
 const TESTIMONIALS = [
   {
@@ -59,7 +60,7 @@ export default function TestimonialsSection() {
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
                   <Image
-                    src={t.imageSrc}
+                    src={publicAssetUrl(t.imageSrc)}
                     alt={`${t.name} profile`}
                     width={48}
                     height={48}
