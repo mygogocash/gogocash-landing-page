@@ -11,6 +11,12 @@ import { resolveLocaleForPathname } from "@/lib/locale-routing";
 let client: PostHog | null = null;
 let initializing = false;
 
+function logPostHogDebug(context: string, err: unknown): void {
+  if (process.env.NODE_ENV === "development") {
+    console.debug(`[posthog] ${context}:`, err);
+  }
+}
+
 /** PostHog may capture only when configured/enabled AND cookie consent is granted. */
 export function posthogAllowed(): boolean {
   return shouldLoadPostHog() && isAnalyticsAllowed();
@@ -44,7 +50,11 @@ async function initPostHog(): Promise<void> {
       ui_host: publicPostHogUiHost(), // correct toolbar/links when proxied
       capture_pageview: false, // SPA pageviews fired manually (App Router)
       capture_pageleave: true,
-      autocapture: true,
+      autocapture: {
+        dom_event_allowlist: ["click"],
+        element_allowlist: ["a", "button"],
+        css_selector_allowlist: ["[data-ph-capture]"],
+      },
       enable_heatmaps: true, // clickmaps for the landing page
       capture_exceptions: true, // error tracking: unhandled errors + promise rejections
       capture_performance: { web_vitals: true }, // $web_vitals (LCP/INP/CLS/FCP)
@@ -64,8 +74,8 @@ async function initPostHog(): Promise<void> {
     posthogCapturePageView(
       `${window.location.pathname}${window.location.search}`,
     );
-  } catch {
-    /* SDK failed to load — analytics simply stays off */
+  } catch (err) {
+    logPostHogDebug("init failed", err);
   } finally {
     initializing = false;
   }
@@ -95,8 +105,8 @@ export function posthogCapturePageView(path: string): void {
       path,
       $current_url: window.location.href,
     });
-  } catch {
-    /* noop */
+  } catch (err) {
+    logPostHogDebug("pageview capture failed", err);
   }
 }
 
@@ -108,7 +118,7 @@ export function posthogCapture(
   if (!client || !posthogAllowed()) return;
   try {
     client.capture(event, props);
-  } catch {
-    /* noop */
+  } catch (err) {
+    logPostHogDebug(`capture "${event}" failed`, err);
   }
 }

@@ -1,4 +1,4 @@
-import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/components/social-data";
+import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/lib/destinations";
 
 export type PartnerLandingPage = {
   slug: string;

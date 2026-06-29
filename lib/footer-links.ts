@@ -1,7 +1,7 @@
 import {
   LINE_MINI_APP_HREF,
   WEB_APP_HREF,
-} from "@/components/social-data";
+} from "@/lib/destinations";
 
 export type FooterLink = { label: string; href: string };
 export type FooterColumns = Record<string, readonly FooterLink[]>;

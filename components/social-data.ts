@@ -1,15 +1,11 @@
-/** Web app — desktop / large screens (Launch App CTA) */
-export const WEB_APP_HREF = "https://app.gogocash.co";
+export {
+  LINE_MINI_APP_HREF,
+  LINE_OFFICIAL_ACCOUNT_HREF,
+  WEB_APP_HREF,
+  WEB_APP_QUEST_HREF,
+} from "@/lib/destinations";
 
-/** Web app Quests route */
-export const WEB_APP_QUEST_HREF = "https://app.gogocash.co/en/quest";
-
-/** LINE Official Account (add friend / contact) */
-export const LINE_OFFICIAL_ACCOUNT_HREF = "https://lin.ee/7om5sAr";
-
-/** LINE Mini App (in-chat app) */
-export const LINE_MINI_APP_HREF =
-  "https://miniapp.line.me/2008237918-mpplkp5Q";
+import { LINE_OFFICIAL_ACCOUNT_HREF } from "@/lib/destinations";
 
 export const SOCIAL_ICONS = [
   { label: "X", href: "https://x.com/mygogocash", icon: "X" },
