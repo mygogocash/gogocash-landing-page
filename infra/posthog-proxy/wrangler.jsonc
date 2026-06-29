@@ -1,0 +1,11 @@
+{
+  // PostHog reverse proxy Worker. Deploy from this dir: `npx wrangler deploy`.
+  // Requires a Cloudflare API token with Workers Scripts + Workers Routes on the
+  // gogocash.co zone. See ./README.md and docs/posthog-reverse-proxy.md.
+  "name": "gogocash-posthog-proxy",
+  "main": "worker.js",
+  "compatibility_date": "2026-06-20",
+  "workers_dev": false,
+  "routes": [{ "pattern": "gogocash.co/ingest/*", "zone_name": "gogocash.co" }],
+  "observability": { "enabled": true }
+}

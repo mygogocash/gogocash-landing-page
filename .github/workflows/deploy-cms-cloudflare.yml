@@ -1,0 +1,60 @@
+name: Deploy Learn CMS to Cloudflare
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to deploy
+        required: true
+        default: production
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      RAW_CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      DATABASE_URL: ${{ secrets.CMS_DATABASE_URL }}
+      APP_KEYS: ${{ secrets.CMS_APP_KEYS }}
+      API_TOKEN_SALT: ${{ secrets.CMS_API_TOKEN_SALT }}
+      ADMIN_JWT_SECRET: ${{ secrets.CMS_ADMIN_JWT_SECRET }}
+      TRANSFER_TOKEN_SALT: ${{ secrets.CMS_TRANSFER_TOKEN_SALT }}
+      JWT_SECRET: ${{ secrets.CMS_JWT_SECRET }}
+      ENCRYPTION_KEY: ${{ secrets.CMS_ENCRYPTION_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install CMS
+        run: npm --prefix cms/strapi ci
+
+      - name: Validate landing and CMS config
+        run: npm run test && npm run typecheck && npm run cms:build
+
+      - name: Normalize Cloudflare API token
+        shell: bash
+        run: |
+          token="$(node -e 'const raw = process.env.RAW_CLOUDFLARE_API_TOKEN || ""; const token = raw.replace(/[\r\n]/g, "").trim().replace(/^Bearer\s+/i, "").trim(); if (!token || /\s/.test(token)) process.exit(1); process.stdout.write(token);')"
+          echo "::add-mask::$token"
+          printf 'CLOUDFLARE_API_TOKEN=%s\n' "$token" >> "$GITHUB_ENV"
+
+      - name: Publish CMS secrets
+        run: npm run cms:cloudflare:secrets
+
+      - name: Deploy CMS container
+        run: npm run cms:cloudflare:deploy
