@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 
 interface GoGoCashLogoProps {
   className?: string;
@@ -49,12 +50,13 @@ export function GoGoCashLogoMark({
   return (
     <span className={`relative inline-block ${className}`}>
       <Image
-        src="/images/gogocash-logo-mark.png"
+        src={publicAssetUrl("/images/gogocash-logo-mark.png")}
         alt={alt}
         fill
         sizes={sizes}
         decoding="async"
         priority={priority}
+        unoptimized
         className="object-contain object-center select-none"
         {...(decorative ? { "aria-hidden": true as const } : {})}
       />

@@ -13,6 +13,7 @@ import {
   twTransitionButton,
 } from "@/lib/motion-styles";
 import { uiCtaOutlineBrand, uiSectionTitle } from "@/lib/ui-classes";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 
 export default function AppDownloadSection() {
   return (
@@ -85,7 +86,7 @@ export default function AppDownloadSection() {
                 aria-label="Open GoGoCash LINE Mini App (QR code)"
               >
                 <Image
-                  src="/images/qr-gogocash-line-miniapp.webp"
+                  src={publicAssetUrl("/images/qr-gogocash-line-miniapp.webp")}
                   alt="QR code to open GoGoCash LINE Mini App"
                   width={224}
                   height={224}

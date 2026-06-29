@@ -13,6 +13,7 @@ import {
   twPressSm,
   twTransitionButton,
 } from "@/lib/motion-styles";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 
 const easeStandard = [0.4, 0, 0.2, 1] as const;
 
@@ -143,7 +144,7 @@ export default function HowItWorksInteractive({
               {hasIllustration && block.illustrationSrc ? (
                 <div className="flex min-h-0 items-center justify-center lg:justify-end">
                   <Image
-                    src={block.illustrationSrc}
+                    src={publicAssetUrl(block.illustrationSrc)}
                     alt={
                       block.illustrationAlt ??
                       `${block.title} — step illustration`

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 
 const HERO_IMAGE_SIZES = "(max-width: 1200px) calc(100vw - 3rem), 1120px";
 const HERO_IMAGE_CLASS =
@@ -38,7 +39,7 @@ export function LandingHeroPhonesImage({
   return (
     <div className="w-full min-w-0 shrink-0 leading-none">
       <Image
-        src="/images/hero-dashboard-phones.svg"
+        src={publicAssetUrl("/images/hero-dashboard-phones.svg")}
         alt="GoGoCash app preview on two phones"
         width={800}
         height={600}

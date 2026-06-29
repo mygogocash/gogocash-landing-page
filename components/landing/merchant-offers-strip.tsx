@@ -5,7 +5,7 @@ import Image from "next/image";
 import AnimateOnScroll from "@/components/animate-on-scroll";
 import SectionBadge from "@/components/section-badge";
 import { Search, Users } from "@/components/icons";
-import { encodePublicPath } from "@/lib/encode-public-path";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 import {
   buildPartnerCountLine,
   fillTemplate,
@@ -56,7 +56,7 @@ function PartnerLogo({
     );
   }
 
-  const src = encodePublicPath(logoUrl);
+  const src = publicAssetUrl(logoUrl);
 
   return (
     <Image

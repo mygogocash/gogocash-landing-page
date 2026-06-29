@@ -162,6 +162,45 @@ export function shouldLoadPostHog(): boolean {
   return isMarketingAnalyticsEnabled();
 }
 
+/**
+ * Mixpanel project token (publishable, client-side ingestion id — not a secret,
+ * same category as the Firebase web apiKey or LINE Tag id). The provided default
+ * makes tracking work out of the box; override per environment with
+ * `NEXT_PUBLIC_MIXPANEL_TOKEN`, or set it to an empty string to disable Mixpanel.
+ */
+const DEFAULT_MIXPANEL_TOKEN = "d97bbf4f9cd7512b562b6f0ddc723c4b";
+
+export function publicMixpanelToken(): string | null {
+  return readPublicIntegrationIdEnv(
+    "NEXT_PUBLIC_MIXPANEL_TOKEN",
+    DEFAULT_MIXPANEL_TOKEN,
+  );
+}
+
+/**
+ * Optional Mixpanel ingestion host for data residency (e.g.
+ * `https://api-eu.mixpanel.com`). Defaults to Mixpanel US cloud when unset.
+ */
+export function publicMixpanelApiHost(): string | null {
+  const url = firstValidOptionalUrl([
+    readTrimmedEnv("NEXT_PUBLIC_MIXPANEL_API_HOST"),
+  ]);
+  return url ? url.replace(/\/$/, "") : null;
+}
+
+/**
+ * Load Mixpanel when a token is configured and either marketing analytics is on
+ * or `NEXT_PUBLIC_MIXPANEL_ENABLED=true`. Force off with `false`. Runtime capture
+ * is additionally gated on cookie consent (see `lib/mixpanel-client.ts`).
+ */
+export function shouldLoadMixpanel(): boolean {
+  if (!publicMixpanelToken()) return false;
+  const override = readTrimmedEnv("NEXT_PUBLIC_MIXPANEL_ENABLED");
+  if (override === "false") return false;
+  if (override === "true") return true;
+  return isMarketingAnalyticsEnabled();
+}
+
 export type NewsletterSignupConfig = {
   actionUrl: string | null;
   emailField: string;

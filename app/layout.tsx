@@ -14,6 +14,7 @@ import {
   SOCIAL_PREVIEW_TITLE,
 } from "@/lib/social-preview";
 import { siteOrigin } from "@/lib/site";
+import { publicAssetUrl } from "@/lib/public-asset-url";
 import "./globals.css";
 
 function metadataBaseUrl(): URL {
@@ -116,25 +117,30 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var h=location.hostname;if(h.charAt(h.length-1)!==".")return;location.replace(location.protocol+"//"+h.slice(0,-1)+location.pathname+location.search+location.hash);})();`,
+          }}
+        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/apple-touch-icon.png"
+          href={publicAssetUrl("/apple-touch-icon.png")}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon-32x32.png"
+          href={publicAssetUrl("/favicon-32x32.png")}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/favicon-16x16.png"
+          href={publicAssetUrl("/favicon-16x16.png")}
         />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="manifest" href={publicAssetUrl("/site.webmanifest")} />
+        <link rel="icon" href={publicAssetUrl("/favicon.ico")} sizes="any" />
         <SchemaMarkup />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">

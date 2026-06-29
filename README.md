@@ -1,6 +1,6 @@
 # GoGoCash — Marketing landing (Next.js)
 
-Production marketing site for **GoGoCash**, built as a **static export** from **Next.js 16** and served from **Firebase Hosting** (custom domain: `gogocash.co`). The stack emphasizes fast static delivery, localized landing paths, optional partner data at build time, and pluggable marketing analytics (Firebase Analytics, LINE Tag).
+Production marketing site for **GoGoCash**, built as a **static export** from **Next.js 16** and served from **Cloudflare Workers** (static assets on worker `gogocash-landing-production`, custom domains `gogocash.co` and `www.gogocash.co`). The stack emphasizes fast static delivery, localized landing paths, optional partner data at build time, and pluggable marketing analytics (Firebase Analytics, LINE Tag).
 
 **Canonical source repository:** [github.com/mygogocash/landing-page](https://github.com/mygogocash/landing-page)
 
@@ -18,15 +18,16 @@ This document is the **canonical onboarding guide** for the repo. Topic-specific
 6. [npm scripts](#npm-scripts)
 7. [Local development](#local-development)
 8. [Production build](#production-build)
-9. [Firebase Hosting](#firebase-hosting)
-10. [Cloudflare DNS (apex → Firebase)](#cloudflare-dns-apex--firebase)
-11. [CI/CD (GitHub Actions)](#cicd-github-actions)
-12. [Testing](#testing)
-13. [Linting & typecheck](#linting--typecheck)
-14. [Patches & tooling notes](#patches--tooling-notes)
-15. [Further reading](#further-reading)
-16. [Troubleshooting](#troubleshooting)
-17. [Social preview (Open Graph)](#social-preview-open-graph)
+9. [Cloudflare Workers (production hosting)](#cloudflare-workers-production-hosting)
+10. [Firebase Hosting (legacy / staging)](#firebase-hosting-legacy--staging)
+11. [Cloudflare DNS](#cloudflare-dns)
+12. [CI/CD (GitHub Actions)](#cicd-github-actions)
+13. [Testing](#testing)
+14. [Linting & typecheck](#linting--typecheck)
+15. [Patches & tooling notes](#patches--tooling-notes)
+16. [Further reading](#further-reading)
+17. [Troubleshooting](#troubleshooting)
+18. [Social preview (Open Graph)](#social-preview-open-graph)
 
 ---
 
@@ -39,8 +40,8 @@ This document is the **canonical onboarding guide** for the repo. Topic-specific
 | Motion | Framer Motion | Tree-shaken via `experimental.optimizePackageImports` in [`next.config.mjs`](./next.config.mjs) |
 | Content | React 19, `react-markdown` | Learn hub and legal pages |
 | SEO / link previews | Next.js `metadata` + shared constants | Default title, description, `og:image`, and Twitter cards; see [Social preview](#social-preview-open-graph) |
-| Hosting | Firebase Hosting | `public: "out"` in [`firebase.json`](./firebase.json) |
-| Server/API in prod | None for this export | Static files only on Firebase Hosting unless you add a separate backend |
+| Hosting | Cloudflare Workers (static assets) | Worker `gogocash-landing-production`; config in [`wrangler.production.jsonc`](./wrangler.production.jsonc); serves `out/` |
+| Server/API in prod | None for this export | Static files only at the edge unless you add a separate backend |
 | E2E | Playwright | Serves `out/` with `serve` when `CI=true` — see [`playwright.config.ts`](./playwright.config.ts) |
 
 High-level deploy path:
@@ -52,17 +53,17 @@ flowchart LR
     B --> C["next build"]
     C --> D["out/"]
     D --> E["Playwright e2e"]
-    E --> F["deploy-firebase-hosting.mjs"]
+    E --> F["wrangler deploy"]
   end
-  subgraph cloud["Google Cloud"]
-    F --> G["Firebase Hosting"]
+  subgraph cloud["Cloudflare"]
+    F --> G["Worker gogocash-landing-production"]
   end
   subgraph users["Visitors"]
     G --> H["gogocash.co"]
   end
 ```
 
-**Important:** This app is **not** Firebase App Hosting and **not** a Node server in production. There is no `next start` on Firebase; the live site is **static files** only.
+**Important:** This app is **not** a Node server in production. There is no `next start` on the live site; visitors receive **static files** from the Cloudflare Worker assets binding.
 
 ---
 
@@ -75,18 +76,20 @@ flowchart LR
 | [`lib/`](./lib/) | Config (`app-config.ts`), SEO helpers ([`social-preview.ts`](./lib/social-preview.ts) for OG/Twitter defaults), analytics helpers, routing utilities, tests colocated as `*.test.ts` |
 | [`public/`](./public/) | Static assets (images, icons) copied into `out/` |
 | [`e2e/`](./e2e/) | Playwright specs |
-| [`scripts/`](./scripts/) | Deploy helper, Cloudflare DNS, dev helpers, optional Strapi push |
+| [`scripts/`](./scripts/) | Deploy helpers, Cloudflare DNS, dev helpers, optional Strapi push |
+| [`wrangler.production.jsonc`](./wrangler.production.jsonc) | Cloudflare Worker config for production static deploy (`out/`) |
 | [`docs/`](./docs/) | Deploy, migration from Framer, learn content, etc. |
-| [`.github/workflows/`](./.github/workflows/) | `build-landing.yml` — build, test, e2e, artifact, Firebase deploy |
+| [`.github/workflows/`](./.github/workflows/) | Build/test workflows; production ships via Cloudflare (see [CI/CD](#cicd-github-actions)) |
 
 ---
 
 ## Prerequisites
 
-- **Node.js 20.x** (use [`.nvmrc`](./.nvmrc) / `fnm` / `nvm`; `package.json` `engines` is `>=20 <21` so CI and local tooling stay aligned with Firebase-related deps.)
+- **Node.js 22.x** (use [`.nvmrc`](./.nvmrc) / `fnm` / `nvm`; `package.json` `engines` is `>=22 <23`).
 - **npm** (lockfile is `package-lock.json`; use `npm ci` in CI and for reproducible installs).
-- For **local Firebase deploy**: Firebase CLI is available as a **devDependency** — prefer `npm exec -- firebase` from the repo root.
-- For **Cloudflare DNS scripts**: `curl`, `jq`, and a Cloudflare API token (see [Cloudflare DNS](#cloudflare-dns-apex--firebase)).
+- For **production deploy to Cloudflare**: [Wrangler](https://developers.cloudflare.com/workers/wrangler/) (`npx wrangler`) and access to the GoGoCash Cloudflare account. Run `npx wrangler login` once locally, or set `CLOUDFLARE_API_TOKEN` in CI.
+- For **legacy Firebase deploy** (staging/beta sites): Firebase CLI is a **devDependency** — prefer `npm exec -- firebase` from the repo root.
+- For **Cloudflare DNS scripts**: `curl`, `jq`, and a Cloudflare API token (see [Cloudflare DNS](#cloudflare-dns)).
 - For **Playwright locally**: after `npm ci`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npx playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
 
 ---
@@ -135,7 +138,7 @@ Variables are documented inline in **[`.env.example`](./.env.example)**. Below i
 |------|---------|
 | `.env.local` | Local Next.js overrides (gitignored by default pattern). |
 | `.env.production.local` | Production-like local builds without committing keys. |
-| `.env.cloudflare` | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ZONE_ID` for DNS automation (gitignored). Template: [`.env.cloudflare.example`](./.env.cloudflare.example). |
+| `.env.cloudflare` | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ZONE_ID`, optional `CLOUDFLARE_ACCOUNT_ID` for DNS automation and Wrangler (gitignored). Template: [`.env.cloudflare.example`](./.env.cloudflare.example). |
 
 ---
 
@@ -148,7 +151,7 @@ Variables are documented inline in **[`.env.example`](./.env.example)**. Below i
 | `npm run build:webpack` | Same as `build` but **Webpack** (used by `analyze`; default build uses Turbopack). |
 | `npm run analyze` | Webpack build with `@next/bundle-analyzer` (`ANALYZE=true`); writes HTML under `.next/analyze/` (e.g. `client.html`; `.next/` is gitignored). |
 | `npm run analyze:turbopack` | `next experimental-analyze` — interactive Turbopack bundle UI (no `out/` artifact). |
-| `npm run start` | `next start` — **not** used for Firebase production (static hosting only). |
+| `npm run start` | `next start` — **not** used for production (static Worker hosting only). |
 | `npm run lint` | ESLint (flat config in [`eslint.config.mjs`](./eslint.config.mjs)). |
 | `npm run test` | Node test runner via `tsx` on `lib/**/*.test.ts`. |
 | `npm run typecheck` | `tsc --noEmit`. |
@@ -156,9 +159,10 @@ Variables are documented inline in **[`.env.example`](./.env.example)**. Below i
 | `npm run test:e2e` | Playwright (local: tries dev server with reuse). |
 | `npm run test:e2e:ci` | Playwright with `CI=true` behavior from config (serves `out/`). |
 | `npm run test:e2e:install` | Install Chromium + WebKit for Playwright. |
-| `npm run deploy:firebase` | `build` + [`scripts/deploy-firebase-hosting.mjs`](./scripts/deploy-firebase-hosting.mjs) (hosting only). |
-| `npm run deploy:firebase:full` | Alias for `deploy:firebase` (hosting only). |
-| `npm run dns:cloudflare-firebase-apex` | Load `.env.cloudflare` and run Cloudflare apex DNS helper. |
+| `npm run deploy:cloudflare` | `build` + `wrangler deploy --config wrangler.production.jsonc` (production Worker). |
+| `npm run deploy:firebase` | `build` + [`scripts/deploy-firebase-hosting.mjs`](./scripts/deploy-firebase-hosting.mjs) — **legacy** staging/beta Firebase sites only. |
+| `npm run deploy:firebase:full` | Alias for `deploy:firebase`. |
+| `npm run dns:cloudflare-firebase-apex` | Load `.env.cloudflare` and run legacy Firebase apex DNS helper (historical migration). |
 | `npm run learn:strapi-push` | Push local learn Markdown to Strapi (see [`docs/learn-content.md`](./docs/learn-content.md)). |
 | `npm run lh:mobile` | Lighthouse mobile preset against `http://127.0.0.1:3000/` (requires dev server + `npx` download). |
 
@@ -192,38 +196,71 @@ npx --yes serve@14 out -l 3000
 
 ---
 
-## Firebase Hosting
+## Cloudflare Workers (production hosting)
+
+Production traffic for **`gogocash.co`** and **`www.gogocash.co`** is served by the Cloudflare Worker **`gogocash-landing-production`**, which publishes the static export in **`out/`** via the assets binding in [`wrangler.production.jsonc`](./wrangler.production.jsonc).
 
 | Item | Value |
 |------|--------|
-| Default GCP / Firebase project | `landing-page-4ae23` ([`.firebaserc`](./.firebaserc)) |
-| Hosting site id | `landing-page-4ae23` ([`firebase.json`](./firebase.json)) |
-| Deployed static root | `out/` |
+| Worker name | `gogocash-landing-production` |
+| Wrangler config | [`wrangler.production.jsonc`](./wrangler.production.jsonc) |
+| Cloudflare account | GoGoCash (`187ab61ed9dbc6e616cb23e6b95aa8f1`) |
+| Deployed static root | `out/` (from `npm run build`) |
+| Custom domains | `gogocash.co`, `www.gogocash.co` (Worker custom domains on the zone) |
 
-**Deploy hosting only (after build):**
+**Deploy production (build + upload):**
+
+```bash
+npm run deploy:cloudflare
+```
+
+Equivalent manual steps:
+
+```bash
+npm run build
+npx wrangler deploy --config wrangler.production.jsonc
+```
+
+Authenticate once with `npx wrangler login`, or set `CLOUDFLARE_API_TOKEN` (Workers Scripts write + account read). The GoGoCash account id is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc); set `CLOUDFLARE_ACCOUNT_ID` only if you use a different config without `account_id`.
+
+Production builds emit **canonical asset URLs** (`https://gogocash.co/...`) via [`lib/public-asset-url.ts`](./lib/public-asset-url.ts) so images and icons still load when the hostname has a trailing dot (`gogocash.co.`).
+
+Related Cloudflare pieces (separate from the landing deploy):
+
+- [`infra/posthog-proxy/`](./infra/posthog-proxy/) — optional PostHog reverse proxy Worker on `gogocash.co/ingest/*` (see [`docs/posthog-reverse-proxy.md`](./docs/posthog-reverse-proxy.md)).
+- [`.github/workflows/deploy-cms-cloudflare.yml`](./.github/workflows/deploy-cms-cloudflare.yml) — Learn CMS (Strapi) container deploy.
+
+---
+
+## Firebase Hosting (legacy / staging)
+
+[`firebase.json`](./firebase.json) and [`scripts/deploy-firebase-hosting.mjs`](./scripts/deploy-firebase-hosting.mjs) remain for **non-production** Firebase Hosting sites (e.g. staging `gogocash-landing-staging`, beta). **Do not use this path for `gogocash.co`** — production is on Cloudflare Workers (above).
+
+| Item | Value |
+|------|--------|
+| GCP / Firebase project | `landing-page-4ae23` ([`.firebaserc`](./.firebaserc)) |
+| Default hosting site id in repo | `landing-page-4ae23` ([`firebase.json`](./firebase.json)) |
 
 ```bash
 npm run deploy:firebase
 ```
 
-Full operational detail and “do not run `firebase init` for App Hosting” notes: **[`docs/firebase-deploy.md`](./docs/firebase-deploy.md)**.
+Operational detail: **[`docs/firebase-deploy.md`](./docs/firebase-deploy.md)**.
 
 ---
 
-## Cloudflare DNS (apex → Firebase)
+## Cloudflare DNS
 
-Firebase **Quick setup** for a custom apex domain expects an **`A` record** for the apex pointing to **`199.36.158.100`**, and (for verification / SSL) traffic must reach **Firebase**, not Cloudflare’s reverse proxy.
+The **`gogocash.co`** zone is managed in Cloudflare. Production landing hostnames (`gogocash.co`, `www.gogocash.co`) are attached to the **`gogocash-landing-production`** Worker as custom domains in the Cloudflare dashboard — not via Firebase apex `A` records.
 
-**Common mistake:** Creating the correct `A` record but leaving **Proxied** (orange cloud) **on**. Public DNS then returns **Cloudflare anycast IPs**, Firebase’s ACME HTTP checks fail (e.g. **526**), and the console still asks to remove old `A`/`AAAA` answers.
+Legacy scripts from the Framer → Next → Firebase migration still exist if you need to adjust old apex records:
 
-This repo includes:
-
-- [`scripts/cloudflare-firebase-dns-setup.sh`](./scripts/cloudflare-firebase-dns-setup.sh) — removes legacy Framer-style apex `A`/`AAAA` targets when present, ensures Firebase apex `A`, and **turns off proxy** if the Firebase `A` exists but is still proxied.
-- [`scripts/run-cloudflare-firebase-dns.sh`](./scripts/run-cloudflare-firebase-dns.sh) — sources **`.env.cloudflare`** then runs the setup script.
+- [`scripts/cloudflare-firebase-dns-setup.sh`](./scripts/cloudflare-firebase-dns-setup.sh)
+- [`scripts/run-cloudflare-firebase-dns.sh`](./scripts/run-cloudflare-firebase-dns.sh)
 
 ```bash
 cp .env.cloudflare.example .env.cloudflare
-# edit .env.cloudflare — use a token with Zone → DNS → Edit for the zone only
+# edit .env.cloudflare — token needs Zone → DNS → Edit for gogocash.co
 
 npm run dns:cloudflare-firebase-apex
 # optional: DRY_RUN=1 npm run dns:cloudflare-firebase-apex
@@ -233,24 +270,27 @@ npm run dns:cloudflare-firebase-apex
 
 ## CI/CD (GitHub Actions)
 
-Workflow: **[`.github/workflows/build-landing.yml`](./.github/workflows/build-landing.yml)** (`Build and deploy landing`).
+| Workflow | Branch | Deploy target |
+|----------|--------|---------------|
+| **[`build-landing.yml`](./.github/workflows/build-landing.yml)** | `production` | Build + test + e2e; **Firebase deploy step is legacy** (production site is on Cloudflare — use `npm run deploy:cloudflare` or add a Cloudflare deploy step) |
+| **[`deploy-staging.yml`](./.github/workflows/deploy-staging.yml)** | `staging` | Firebase Hosting site `gogocash-landing-staging` |
+| **[`deploy-beta.yml`](./.github/workflows/deploy-beta.yml)** | `beta` | Firebase Hosting site `gogocash-landing-beta` (scaffold) |
+| **[`deploy-cms-cloudflare.yml`](./.github/workflows/deploy-cms-cloudflare.yml)** | manual | Learn CMS on Cloudflare |
 
-| Step | Action |
-|------|--------|
-| Trigger | Push to `main`, or `workflow_dispatch` |
-| Install | `npm ci` |
-| Quality | `npm run lint`, `npm run test` |
-| Build | `npm run build` (optional `INVOLVE_ASIA_*` from secrets) |
-| E2E | `npx playwright install --with-deps chromium webkit` then `npm run test:e2e:ci` (Ubuntu runners need `--with-deps` for WebKit) |
-| Artifact | Uploads `out/` as `landing-page-out` (1-day retention) |
-| Deploy | OIDC → Google Cloud WIF, then `node scripts/deploy-firebase-hosting.mjs` |
+**Recommended production release today:**
+
+1. Merge to `production` (or build from a clean checkout).
+2. Run `npm run verify` locally or rely on CI build/test/e2e steps.
+3. Deploy: `npm run deploy:cloudflare` with Wrangler auth (see [Cloudflare Workers](#cloudflare-workers-production-hosting)).
 
 **GitHub repository secrets (optional but recommended for partner data):**
 
 - `INVOLVE_ASIA_API_KEY`
 - `INVOLVE_ASIA_API_SECRET`
 
-**Google Cloud:** The workflow uses **Workload Identity Federation** (no long-lived JSON key in the repo). Pool / provider / service account IDs are pinned in the YAML; changing projects requires updating those values and IAM bindings in GCP.
+**Cloudflare (production deploy):** set repository variable `CLOUDFLARE_ACCOUNT_ID` and secret `CLOUDFLARE_API_TOKEN` if you wire Wrangler into CI. The GoGoCash account id is `187ab61ed9dbc6e616cb23e6b95aa8f1`.
+
+**Google Cloud (Firebase staging/beta only):** staging/beta workflows use **Workload Identity Federation**. Pool / provider / service account IDs are in workflow YAML and repo variables (`FIREBASE_WIF_PROVIDER`, `FIREBASE_SA_EMAIL`).
 
 ---
 
@@ -277,7 +317,8 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 ## Patches & tooling notes
 
 - **Tailwind CSS 4**: Global styles import Tailwind from [`app/globals.css`](./app/globals.css) and load the project config with `@config "../tailwind.config.ts"`. PostCSS uses `@tailwindcss/postcss`; no `patch-package` patch is currently required.
-- **Firebase CLI**: Use the **project-local** version (`npm exec -- firebase`) to avoid global/CLI version skew.
+- **Firebase CLI**: Use the **project-local** version (`npm exec -- firebase`) for legacy Firebase Hosting deploys only.
+- **Wrangler**: Use `npx wrangler` from the repo root for production; config is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc) and tested in [`lib/cloudflare-build-contract.test.ts`](./lib/cloudflare-build-contract.test.ts).
 
 ---
 
@@ -285,7 +326,8 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 
 | Document | Topic |
 |----------|--------|
-| [`docs/firebase-deploy.md`](./docs/firebase-deploy.md) | End-to-end Firebase Hosting deploy |
+| [`docs/firebase-deploy.md`](./docs/firebase-deploy.md) | Legacy Firebase Hosting deploy (staging/beta) |
+| [`docs/posthog-reverse-proxy.md`](./docs/posthog-reverse-proxy.md) | Optional PostHog proxy Worker on Cloudflare |
 | [`docs/framer-to-next-migration.md`](./docs/framer-to-next-migration.md) | Migration notes from Framer |
 | [`docs/learn-content.md`](./docs/learn-content.md) | Learn articles: local files vs Strapi, CI, `learn:strapi-push` |
 
@@ -295,10 +337,12 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 
 | Symptom | Things to check |
 |---------|------------------|
-| Firebase domain verification / SSL **526** or “remove AAAA” | Apex `A` must be **DNS only** (grey cloud) to `199.36.158.100`. Re-run `npm run dns:cloudflare-firebase-apex` after fixing `.env.cloudflare`. |
+| Broken logos / 403 on static assets | Production uses canonical URLs from [`lib/public-asset-url.ts`](./lib/public-asset-url.ts). Rebuild and run `npm run deploy:cloudflare`. Trailing-dot hostnames (`gogocash.co.`) should redirect or load assets from `https://gogocash.co/...`. |
+| Wrangler: “unable to select account” | Ensure [`wrangler.production.jsonc`](./wrangler.production.jsonc) includes `account_id`, or set `CLOUDFLARE_ACCOUNT_ID`. |
+| Firebase domain verification / SSL **526** (legacy) | Only relevant for Firebase-hosted sites. Apex `A` must be **DNS only** (grey cloud) to `199.36.158.100`. See `npm run dns:cloudflare-firebase-apex`. |
 | `npm run lint` crashes with `expand is not a function` | Broken `minimatch` / `brace-expansion` mix — remove incompatible `overrides` in `package.json` and run `npm install`. |
-| Build works locally, CI fails | Compare Node version (CI uses 20), ensure `npm ci` lockfile is committed, check GitHub Actions logs for the failing step. |
-| Firebase deploy auth errors in CI | WIF provider, service account permissions, and `google-github-actions/auth` settings must match the Firebase/GCP project. |
+| Build works locally, CI fails | Compare Node version (22.x), ensure `npm ci` lockfile is committed, check GitHub Actions logs for the failing step. |
+| Firebase deploy auth errors in CI | Staging/beta WIF only. Production landing deploy is Cloudflare Wrangler, not Firebase. |
 | Empty partner data in build | Set `INVOLVE_ASIA_*` for build, or accept static fallback documented in `.env.example`. |
 | E2E WebKit: “Host system is missing dependencies” (CI/Linux) | Run `npx playwright install --with-deps chromium webkit` (see workflow); `playwright install` alone is not enough for WebKit on Ubuntu. |
 
@@ -321,4 +365,4 @@ After changing copy or the image, rebuild and redeploy. Social platforms cache p
 
 ## License
 
-Proprietary — **GoGoCash**. Do not deploy to unauthorized Firebase projects or domains without explicit approval.
+Proprietary — **GoGoCash**. Do not deploy to unauthorized Cloudflare accounts, Firebase projects, or domains without explicit approval.

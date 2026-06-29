@@ -20,4 +20,11 @@ describe("encodePublicPath", () => {
   it("returns non-root paths as-is", () => {
     assert.equal(encodePublicPath("relative"), "relative");
   });
+
+  it("does not double-encode already encoded segments", () => {
+    assert.equal(
+      encodePublicPath("/images/partner-logos/Air%20India%20-%20CPS.png"),
+      "/images/partner-logos/Air%20India%20-%20CPS.png",
+    );
+  });
 });
