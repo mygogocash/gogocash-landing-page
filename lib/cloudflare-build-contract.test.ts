@@ -12,19 +12,77 @@ function readJsonFile(filePath: string): Record<string, unknown> {
 }
 
 describe("Cloudflare production build contract", () => {
-  it("pins the build image to the Node 22 runtime required by current tooling", () => {
+  it("pins the build image to the Node 26 runtime required by current tooling", () => {
     const packageJson = readJsonFile("package.json");
     const engines = packageJson.engines as Record<string, unknown>;
 
-    assert.equal(readRepoFile(".nvmrc"), "22");
-    assert.equal(readRepoFile(".node-version"), "22");
-    assert.equal(engines.node, ">=22 <23");
-    assert.match(readRepoFile("Dockerfile.dev"), /^FROM node:22-/m);
+    assert.equal(readRepoFile(".nvmrc"), "26");
+    assert.equal(readRepoFile(".node-version"), "26");
+    assert.equal(engines.node, ">=26 <27");
+    assert.match(readRepoFile("Dockerfile.dev"), /^FROM node:26-/m);
     for (const script of ["scripts/dev-local.sh", "scripts/start-dev.sh"]) {
       const source = readRepoFile(script);
-      assert.match(source, /REQUIRED_NODE_MAJOR=22/);
+      assert.match(source, /REQUIRED_NODE_MAJOR=26/);
       assert.match(source, /-ne "\$\{REQUIRED_NODE_MAJOR\}"/);
     }
+  });
+
+  it("uses the explicit npm peer-resolution flag for controlled installs", () => {
+    for (const filePath of [
+      "Dockerfile.dev",
+      ".github/workflows/ci.yml",
+      ".github/workflows/deploy-production.yml",
+      ".github/workflows/deploy-staging.yml",
+      ".github/workflows/deploy-cms-cloudflare.yml",
+      "scripts/dev-local.sh",
+      "scripts/start-dev.sh",
+    ]) {
+      const installCommands = readRepoFile(filePath)
+        .split("\n")
+        .filter((line) => /\bnpm(?:\s+--prefix\s+\S+)?\s+(?:ci|install)\b/.test(line));
+
+      assert.ok(installCommands.length > 0, `${filePath} must install dependencies`);
+      for (const command of installCommands) {
+        assert.match(command, /\s--force(?:\s|$)/, `${filePath}: ${command.trim()}`);
+      }
+    }
+
+    const packageJson = readJsonFile("package.json");
+    const scripts = packageJson.scripts as Record<string, string>;
+    assert.match(scripts.setup, /npm install --force/);
+    assert.match(scripts.local, /npm install --force/);
+  });
+
+  it("keeps TypeScript 7 as the gate while legacy API consumers use a shim", () => {
+    const packageJson = readJsonFile("package.json");
+    const scripts = packageJson.scripts as Record<string, string>;
+    const devDependencies = packageJson.devDependencies as Record<string, string>;
+
+    assert.equal(devDependencies.typescript, "^7.0.2");
+    assert.equal(
+      devDependencies["@typescript/native-preview"],
+      "7.0.0-dev.20260707.2",
+    );
+    assert.equal(devDependencies["@typescript/typescript6"], "^6.0.2");
+    assert.match(
+      scripts.typecheck,
+      /node \.\/node_modules\/typescript\/bin\/tsc --noEmit/,
+    );
+    assert.match(scripts.build, /^npm run typecheck && /);
+    assert.match(scripts["build:webpack"], /^npm run typecheck && /);
+    assert.match(
+      scripts.lint,
+      /--import \.\/scripts\/register-eslint-typescript-compat\.mjs/,
+    );
+
+    const compatibilityLoader = readRepoFile(
+      "scripts/register-eslint-typescript-compat.mjs",
+    );
+    assert.match(compatibilityLoader, /registerHooks/);
+    assert.match(
+      compatibilityLoader,
+      /require\.resolve\("@typescript\/typescript6"\)/,
+    );
   });
 
   it("provides the Wrangler config used by the production deploy command", () => {

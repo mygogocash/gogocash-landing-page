@@ -8,13 +8,13 @@ Static-export Next.js 16 marketing site for GoGoCash (cashback rewards). No back
 
 ### Node version
 
-Requires **Node.js 22.x** (pinned in `.nvmrc`, `.node-version`, and `package.json` `engines`). Activate with `source ~/.nvm/nvm.sh && nvm use 22` if the default shell version differs.
+Requires **Node.js 26.x** (pinned in `.nvmrc`, `.node-version`, and `package.json` `engines`). Activate with `source ~/.nvm/nvm.sh && nvm use 26` if the default shell version differs.
 
 ### Key commands
 
 | Task | Command |
 |------|---------|
-| Install deps | `npm ci` |
+| Install deps | `npm ci --force` |
 | Dev server | `npm run dev` (Turbopack, port 3000) |
 | Lint | `npm run lint` |
 | Unit tests | `npm run test` |
@@ -28,6 +28,9 @@ Requires **Node.js 22.x** (pinned in `.nvmrc`, `.node-version`, and `package.jso
 
 - **E2E tests need a running dev server.** Start `npm run dev` in a separate terminal/tmux session before running `npm run test:e2e`. The Playwright config reuses the dev server on port 3000. Use `PLAYWRIGHT_SERVE_STATIC=1` (and `PORT` if 3000 is busy) to test against the static `out/` build.
 - **Playwright browsers must be installed** with `npx playwright install --with-deps chromium webkit` on first setup. The `--with-deps` flag is essential on Linux to pull WebKit system libraries.
+- **Dependency installs require `--force` temporarily** because TypeScript 7 exceeds TypeScript-ESLint's declared `<6.1.0` peer range. This is only an npm peer-resolution policy; never skip or weaken lint, tests, typecheck, or build verification.
+- **TypeScript 7 compatibility is deliberately split:** `npm run typecheck` executes the TypeScript 7 binary, ESLint preloads `@typescript/typescript6` for the legacy Compiler API, and Next detects `@typescript/native-preview`. Every build runs the TypeScript 7 gate first; do not remove that ordering until Next and TypeScript-ESLint support TypeScript 7 directly.
+- **Audit boundary:** `npm audit --omit=dev` is clean. The latest `firebase-tools` development tree inherits GHSA-8988-4f7v-96qf through `@opentelemetry/core`; track the upstream fix, but do not run `npm audit fix --force` or downgrade Firebase Tools.
 - **No environment variables are required** for local dev. All optional secrets (Involve Asia, Strapi, Firebase) fall back to sensible defaults. See `.env.example` for reference.
 - **Tailwind CSS 4** uses the `@tailwindcss/postcss` adapter. If styles fail after dependency work, check `app/globals.css`, `postcss.config.mjs`, and `tailwind.config.ts`.
 - **Static export only:** `next start` is not used in production. Always validate with `npm run build` since the live site is `output: "export"` static HTML.

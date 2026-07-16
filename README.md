@@ -49,7 +49,7 @@ High-level deploy path:
 ```mermaid
 flowchart LR
   subgraph dev["Developer / CI"]
-    A["npm ci"] --> B["lint + unit tests"]
+    A["npm ci --force"] --> B["lint + unit tests"]
     B --> C["next build"]
     C --> D["out/"]
     D --> E["Playwright e2e"]
@@ -85,11 +85,17 @@ flowchart LR
 
 ## Prerequisites
 
-- **Node.js 22.x** (use [`.nvmrc`](./.nvmrc) / `fnm` / `nvm`; `package.json` `engines` is `>=22 <23`).
-- **npm** (lockfile is `package-lock.json`; use `npm ci` in CI and for reproducible installs).
+- **Node.js 26.x** (use [`.nvmrc`](./.nvmrc) / `fnm` / `nvm`; `package.json` `engines` is `>=26 <27`).
+- **npm** (lockfile is `package-lock.json`; use `npm ci --force` in CI and for reproducible installs).
 - For **production deploy to Cloudflare**: [Wrangler](https://developers.cloudflare.com/workers/wrangler/) (`npx wrangler`) and access to the GoGoCash Cloudflare account. Run `npx wrangler login` once locally, or set `CLOUDFLARE_API_TOKEN` in CI.
 - For **legacy Firebase deploy** (staging only): Firebase CLI is a **devDependency** — prefer `npm exec -- firebase` from the repo root.
-- For **Playwright locally**: after `npm ci`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npx playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
+- For **Playwright locally**: after `npm ci --force`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npx playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
+
+> **Temporary peer-install policy:** TypeScript 7 is newer than TypeScript-ESLint's
+> declared `>=4.8.4 <6.1.0` peer range. Use the explicit `--force` flag for repository
+> installs until that range includes TypeScript 7. This permits npm to construct the
+> reviewed dependency tree; it does **not** permit skipping or weakening lint,
+> typecheck, tests, or the production build.
 
 ---
 
@@ -98,7 +104,7 @@ flowchart LR
 ```bash
 git clone https://github.com/mygogocash/landing-page.git
 cd landing-page
-npm ci
+npm ci --force
 cp .env.example .env.local   # optional; see Environment variables
 npm run dev
 ```
@@ -307,7 +313,8 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 
 ## Linting & typecheck
 
-- **ESLint 9** with [`eslint.config.mjs`](./eslint.config.mjs) extending `eslint-config-next` (Core Web Vitals + TypeScript).
+- **ESLint 10** with [`eslint.config.mjs`](./eslint.config.mjs) extending `eslint-config-next` (Core Web Vitals + TypeScript).
+- **TypeScript 7 compatibility boundary**: `npm run typecheck` invokes `typescript@7` directly. ESLint preloads [`scripts/register-eslint-typescript-compat.mjs`](./scripts/register-eslint-typescript-compat.mjs), which supplies Microsoft’s `@typescript/typescript6` package only to API-dependent lint tooling. Next detects `@typescript/native-preview`, while every build command runs the TypeScript 7 typecheck first. Remove these bridges only after Next and TypeScript-ESLint support TypeScript 7’s native compiler directly.
 - **Ignored paths** in config: `e2e/`, `out/`, etc. Do not remove `node_modules` / `.next` ignore flags from the `lint` script without cause.
 - Avoid forcing incompatible **npm overrides** on transitive deps used by ESLint (historically `brace-expansion@5` broke `minimatch` inside `@eslint/config-array`).
 
@@ -317,6 +324,7 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 
 - **Tailwind CSS 4**: Global styles import Tailwind from [`app/globals.css`](./app/globals.css) and load the project config with `@config "../tailwind.config.ts"`. PostCSS uses `@tailwindcss/postcss`; no `patch-package` patch is currently required.
 - **Firebase CLI**: Use the **project-local** version (`npm exec -- firebase`) for legacy Firebase Hosting deploys only.
+- **Dependency audit**: `npm audit --omit=dev` is clean. The latest `firebase-tools` development tree currently inherits [GHSA-8988-4f7v-96qf](https://github.com/advisories/GHSA-8988-4f7v-96qf) through `@google-cloud/pubsub` → `@opentelemetry/core`; track the upstream fix, but do **not** run `npm audit fix --force` or downgrade Firebase Tools.
 - **Wrangler**: Use `npx wrangler` from the repo root for production; config is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc) and tested in [`lib/cloudflare-build-contract.test.ts`](./lib/cloudflare-build-contract.test.ts).
 
 ---
@@ -339,8 +347,8 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 | Broken logos / 403 on static assets | Production uses canonical URLs from [`lib/public-asset-url.ts`](./lib/public-asset-url.ts). Rebuild and run `npm run deploy:cloudflare`. Trailing-dot hostnames (`gogocash.co.`) should redirect or load assets from `https://gogocash.co/...`. |
 | Wrangler: “unable to select account” | Ensure [`wrangler.production.jsonc`](./wrangler.production.jsonc) includes `account_id`, or set `CLOUDFLARE_ACCOUNT_ID`. |
 | Firebase domain verification / SSL errors (staging) | Verify only the staging hostname in Firebase; do not change the Cloudflare production apex/custom-domain routes. |
-| `npm run lint` crashes with `expand is not a function` | Broken `minimatch` / `brace-expansion` mix — remove incompatible `overrides` in `package.json` and run `npm install`. |
-| Build works locally, CI fails | Compare Node version (22.x), ensure `npm ci` lockfile is committed, check GitHub Actions logs for the failing step. |
+| `npm run lint` crashes with `expand is not a function` | Broken `minimatch` / `brace-expansion` mix — remove incompatible `overrides` in `package.json` and run `npm install --force`. |
+| Build works locally, CI fails | Compare Node version (26.x), ensure `npm ci --force` succeeds and the lockfile is committed, then check GitHub Actions logs for the failing step. |
 | Firebase deploy auth errors in CI | Staging WIF only. Production landing deploy is Cloudflare Wrangler, not Firebase. |
 | Empty partner data in build | Set `INVOLVE_ASIA_*` for build, or accept static fallback documented in `.env.example`. |
 | E2E WebKit: “Host system is missing dependencies” (CI/Linux) | Run `npx playwright install --with-deps chromium webkit` (see workflow); `playwright install` alone is not enough for WebKit on Ubuntu. |
