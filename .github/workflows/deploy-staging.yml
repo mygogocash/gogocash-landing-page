@@ -66,19 +66,11 @@ jobs:
           # proxy Worker is deployed (infra/posthog-proxy + docs/posthog-reverse-proxy.md).
           NEXT_PUBLIC_POSTHOG_HOST: ${{ vars.NEXT_PUBLIC_POSTHOG_HOST }}
           NEXT_PUBLIC_POSTHOG_UI_HOST: ${{ vars.NEXT_PUBLIC_POSTHOG_UI_HOST }}
-          # Optional footer newsletter provider form endpoint + field mapping.
-          NEXT_PUBLIC_NEWSLETTER_FORM_ACTION: ${{ vars.NEXT_PUBLIC_NEWSLETTER_FORM_ACTION }}
-          NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD }}
-          NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD }}
-          NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD: ${{ vars.NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD }}
-          NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE: ${{ vars.NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE }}
-
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 
       - name: E2E smoke tests
         run: npm run test:e2e:ci
-        continue-on-error: true
 
       - name: Authenticate to Google Cloud (WIF)
         id: auth

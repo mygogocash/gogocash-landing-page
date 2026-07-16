@@ -5,6 +5,7 @@ import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 import {
   SOCIAL_PREVIEW_DESCRIPTION,
   SOCIAL_PREVIEW_TITLE,
+  buildWebsiteSocialMetadata,
 } from "@/lib/social-preview";
 
 /** Same content as `/`; canonical points home to avoid duplicate English URLs in search. */
@@ -12,11 +13,12 @@ export const metadata: Metadata = {
   title: SOCIAL_PREVIEW_TITLE,
   description: SOCIAL_PREVIEW_DESCRIPTION,
   alternates: { canonical: "/", languages: HREFLANG_LANDING_ALTERNATES },
-  openGraph: {
+  ...buildWebsiteSocialMetadata({
     locale: "en_US",
     title: SOCIAL_PREVIEW_TITLE,
     description: SOCIAL_PREVIEW_DESCRIPTION,
-  },
+    url: "/",
+  }),
 };
 
 export default async function EnglishPage() {

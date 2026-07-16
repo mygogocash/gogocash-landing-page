@@ -2,12 +2,16 @@
  * Single source of truth for marketing copy, schema, and FAQ consistency (SEO / AEO).
  * Update here first, then align visible copy if needed.
  */
+const MAX_CASHBACK_PERCENT = 30;
+
 export const SITE_FACTS = {
   brandName: "GoGoCash",
   partnerCountMin: 70,
   /** Shown in copy as "70+" */
   partnerCountLabel: "70+",
-  maxCashbackPhrase: "up to 30%",
+  maxCashbackPercent: MAX_CASHBACK_PERCENT,
+  maxCashbackLabel: `${MAX_CASHBACK_PERCENT}%`,
+  maxCashbackPhrase: `up to ${MAX_CASHBACK_PERCENT}%`,
   keyMerchantsShort: "Shopee, Lazada, Agoda",
   regionLabel: "Southeast Asia",
   countriesIso: ["TH", "ID", "MY", "SG", "PH", "VN"] as const,

@@ -2,10 +2,12 @@ import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import {
   COOKIE_CONSENT_EVENT,
+  COOKIE_CONSENT_OPEN_EVENT,
   COOKIE_CONSENT_VERSION,
   hasDecidedConsent,
   isAnalyticsAllowed,
   isMarketingAllowed,
+  openCookiePreferences,
   parseConsent,
   persistConsent,
   readConsent,
@@ -136,5 +138,44 @@ describe("cookie-consent storage", () => {
     );
     persistConsent(true);
     assert.equal(fired, true);
+  });
+
+  it("passes the invoking control when reopening preferences", () => {
+    const trigger = { focus() {} } as HTMLElement;
+    let received: HTMLElement | null = null;
+    (globalThis.window as unknown as EventTarget).addEventListener(
+      COOKIE_CONSENT_OPEN_EVENT,
+      (event) => {
+        received = (event as CustomEvent<HTMLElement | null>).detail;
+      },
+    );
+
+    openCookiePreferences(trigger);
+
+    assert.equal(received, trigger);
+  });
+
+  it("keeps the decision for this tab when localStorage is blocked", () => {
+    const blockedWindow = Object.assign(new EventTarget(), {
+      localStorage: {
+        getItem: () => {
+          throw new DOMException("blocked", "SecurityError");
+        },
+        setItem: () => {
+          throw new DOMException("blocked", "SecurityError");
+        },
+      },
+    });
+    Object.defineProperty(globalThis, "window", {
+      value: blockedWindow,
+      configurable: true,
+      writable: true,
+    });
+
+    persistConsent({ analytics: true, marketing: false });
+
+    assert.equal(hasDecidedConsent(), true);
+    assert.equal(isAnalyticsAllowed(), true);
+    assert.equal(isMarketingAllowed(), false);
   });
 });

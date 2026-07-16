@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import {
-  customerIoFormsConfig,
   involveAsiaConfig,
   isMarketingAnalyticsEnabled,
   marketingSiteOrigin,
@@ -12,7 +11,6 @@ import {
   publicMixpanelApiHost,
   publicMixpanelToken,
   shouldLoadMixpanel,
-  newsletterSignupConfig,
   publicPostHogHost,
   shouldLoadPostHog,
   strapiBaseUrl,
@@ -115,76 +113,6 @@ describe("app-config", () => {
 
     process.env.NEXT_PUBLIC_POSTHOG_HOST = "https://eu.i.posthog.com";
     assert.equal(publicPostHogHost(), "https://eu.i.posthog.com");
-  });
-
-  it("loads Customer.io connected forms by default", () => {
-    delete process.env.NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID;
-    delete process.env.NEXT_PUBLIC_CUSTOMERIO_FORMS_BASE_URL;
-
-    assert.deepEqual(customerIoFormsConfig(), {
-      siteId: "be2d31cfc0387c58114c",
-      baseUrl: "https://customerioforms.com",
-      scriptUrl: "https://customerioforms.com/assets/forms.js",
-    });
-  });
-
-  it("defaults newsletter signup to Customer.io connected forms", () => {
-    delete process.env.NEXT_PUBLIC_NEWSLETTER_FORM_ACTION;
-    delete process.env.NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID;
-
-    assert.deepEqual(newsletterSignupConfig(), {
-      actionUrl: null,
-      emailField: "email",
-      consentField: "pdpa_consent",
-      sourceField: "source",
-      sourceValue: "footer",
-      customerIoFormsEnabled: true,
-    });
-  });
-
-  it("normalizes newsletter provider action and field names", () => {
-    process.env.NEXT_PUBLIC_NEWSLETTER_FORM_ACTION =
-      " https://email.example.com/forms/signup ";
-    process.env.NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD = "EMAIL";
-    process.env.NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD = "consent[gdpr]";
-    process.env.NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD = "meta-source";
-    process.env.NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE = "footer-newsletter";
-
-    assert.deepEqual(newsletterSignupConfig(), {
-      actionUrl: "https://email.example.com/forms/signup",
-      emailField: "EMAIL",
-      consentField: "consent[gdpr]",
-      sourceField: "meta-source",
-      sourceValue: "footer-newsletter",
-      customerIoFormsEnabled: true,
-    });
-  });
-
-  it("rejects invalid newsletter provider config", () => {
-    process.env.NEXT_PUBLIC_NEWSLETTER_FORM_ACTION = "not a url";
-    process.env.NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD = "bad field";
-    process.env.NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD = "";
-    process.env.NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD = "source<script>";
-
-    assert.deepEqual(newsletterSignupConfig(), {
-      actionUrl: null,
-      emailField: "email",
-      consentField: "pdpa_consent",
-      sourceField: "source",
-      sourceValue: "footer",
-      customerIoFormsEnabled: true,
-    });
-  });
-
-  it("can disable Customer.io connected forms with an empty site id", () => {
-    process.env.NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID = "";
-
-    assert.deepEqual(customerIoFormsConfig(), {
-      siteId: null,
-      baseUrl: "https://customerioforms.com",
-      scriptUrl: "https://customerioforms.com/assets/forms.js",
-    });
-    assert.equal(newsletterSignupConfig().customerIoFormsEnabled, false);
   });
 
   it("exposes the Mixpanel token by default and allows override or disabling", () => {

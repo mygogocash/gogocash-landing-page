@@ -35,7 +35,8 @@ export async function generateMetadata({
   const data = await getLearnArticlePageData(slug);
   if (!data) return {};
   const { meta } = data;
-  const iso = learnArticleDateIso(meta.updated);
+  const published = learnArticleDateIso(meta.published);
+  const modified = learnArticleDateIso(meta.updated);
   return {
     title: meta.metaTitle,
     description: meta.metaDescription,
@@ -53,9 +54,8 @@ export async function generateMetadata({
           alt: OG_IMAGE_ALT,
         },
       ],
-      ...(iso
-        ? { modifiedTime: iso, publishedTime: iso }
-        : {}),
+      ...(published ? { publishedTime: published } : {}),
+      ...(modified ? { modifiedTime: modified } : {}),
     },
     twitter: {
       card: "summary_large_image",

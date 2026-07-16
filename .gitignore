@@ -13,6 +13,7 @@ out/
 
 # Cloudflare API (DNS automation — never commit)
 .env.cloudflare
+.wrangler/
 
 # Debug / OS
 .DS_Store
@@ -38,6 +39,7 @@ coverage/
 playwright-report/
 test-results/
 playwright/.cache/
+.playwright-mcp/
 
 # TypeScript / Next generated files
 *.tsbuildinfo

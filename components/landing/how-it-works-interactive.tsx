@@ -1,11 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import { useId, useState } from "react";
+import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowUpRight, CheckCircle2 } from "@/components/icons";
 import { logHowItWorksTab } from "@/lib/analytics-client";
-import { usePrefersReducedMotionAfterMount } from "@/hooks/use-prefers-reduced-motion";
 import { uiCtaPrimarySurface } from "@/lib/ui-classes";
 import {
   twCtaPrimaryMotion,
@@ -13,9 +10,8 @@ import {
   twPressSm,
   twTransitionButton,
 } from "@/lib/motion-styles";
-import { publicAssetUrl } from "@/lib/public-asset-url";
-
-const easeStandard = [0.4, 0, 0.2, 1] as const;
+import { ResponsiveMarketingPicture } from "@/components/responsive-marketing-picture";
+import { howItWorksIllustrationCandidates } from "@/lib/how-it-works-illustrations";
 
 export type HowItWorksStep = {
   summary: string;
@@ -39,14 +35,33 @@ export default function HowItWorksInteractive({
   const reactId = useId().replace(/:/g, "");
   const tabPrefix = `howit-tab-${reactId}`;
   const panelId = `howit-panel-${reactId}`;
-  const reduceMotion = usePrefersReducedMotionAfterMount();
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const block = steps[active];
   const hasIllustration = Boolean(block.illustrationSrc);
 
-  const panelTransition = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.28, ease: easeStandard };
+  const activateTab = (index: number) => {
+    const step = steps[index];
+    if (!step) return;
+    setActive(index);
+    logHowItWorksTab(index, step.summary);
+  };
+
+  const handleTabKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    let nextIndex: number | null = null;
+    if (event.key === "ArrowRight") nextIndex = (index + 1) % steps.length;
+    if (event.key === "ArrowLeft") nextIndex = (index - 1 + steps.length) % steps.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = steps.length - 1;
+    if (nextIndex === null) return;
+
+    event.preventDefault();
+    activateTab(nextIndex);
+    tabRefs.current[nextIndex]?.focus();
+  };
 
   return (
     <>
@@ -59,6 +74,9 @@ export default function HowItWorksInteractive({
           const selected = active === i;
           return (
             <button
+              ref={(element) => {
+                tabRefs.current[i] = element;
+              }}
               key={step.summary}
               type="button"
               role="tab"
@@ -66,10 +84,8 @@ export default function HowItWorksInteractive({
               aria-selected={selected}
               aria-controls={panelId}
               tabIndex={selected ? 0 : -1}
-              onClick={() => {
-                setActive(i);
-                logHowItWorksTab(i, step.summary);
-              }}
+              onClick={() => activateTab(i)}
+              onKeyDown={(event) => handleTabKeyDown(event, i)}
               className={`inline-flex min-h-11 shrink-0 items-center justify-center whitespace-nowrap rounded-full border px-3 py-2 text-xs font-medium shadow-sm sm:px-5 sm:text-sm ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary} md:text-base ${
                 selected
                   ? "border-primary bg-surface-green text-primary"
@@ -89,18 +105,13 @@ export default function HowItWorksInteractive({
           aria-labelledby={`${tabPrefix}-${active}`}
           className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 py-6 shadow-sm sm:px-6 sm:py-8 md:px-10 md:py-12 lg:px-14 lg:py-14"
         >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
+            <div
               key={active}
-              initial={reduceMotion ? undefined : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? undefined : { opacity: 0, y: -10 }}
-              transition={panelTransition}
-              className={
+              className={`animate-tab-panel-enter motion-reduce:animate-none ${
                 hasIllustration
                   ? "grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12"
                   : "grid gap-8"
-              }
+              }`}
             >
               <div className="flex min-w-0 gap-4 md:gap-10">
                 <span
@@ -143,22 +154,28 @@ export default function HowItWorksInteractive({
 
               {hasIllustration && block.illustrationSrc ? (
                 <div className="flex min-h-0 items-center justify-center lg:justify-end">
-                  <Image
-                    src={publicAssetUrl(block.illustrationSrc)}
+                  <ResponsiveMarketingPicture
+                    fallback={block.illustrationSrc}
+                    avif={howItWorksIllustrationCandidates(
+                      block.illustrationSrc,
+                      "avif",
+                    )}
+                    webp={howItWorksIllustrationCandidates(
+                      block.illustrationSrc,
+                      "webp",
+                    )}
                     alt={
                       block.illustrationAlt ??
                       `${block.title} — step illustration`
                     }
-                    width={640}
-                    height={480}
+                    width={1024}
+                    height={1024}
                     className="h-auto w-full max-w-lg object-contain max-h-[min(28rem,50vh)]"
-                    loading="lazy"
                     sizes="(max-width: 1024px) 100vw, 40rem"
                   />
                 </div>
               ) : null}
-            </motion.div>
-          </AnimatePresence>
+            </div>
         </div>
       </div>
     </>

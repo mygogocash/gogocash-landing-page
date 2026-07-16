@@ -19,8 +19,9 @@ describe("locale-routing", () => {
     assert.equal(isSectionedLandingPath("/ja/offers"), true);
     assert.equal(isSectionedLandingPath("/cn"), true);
     assert.equal(isSectionedLandingPath("/cn/about"), true);
+    assert.equal(isSectionedLandingPath("/id"), true);
+    assert.equal(isSectionedLandingPath("/id/offers"), true);
     assert.equal(isSectionedLandingPath("/learn"), false);
-    assert.equal(isSectionedLandingPath("/id"), false);
   });
 
   it("returns the base path for sectioned landing routes", () => {
@@ -28,6 +29,7 @@ describe("locale-routing", () => {
     assert.equal(getSectionedLandingBasePath("/tw"), "/tw");
     assert.equal(getSectionedLandingBasePath("/ja/anything"), "/ja");
     assert.equal(getSectionedLandingBasePath("/cn/offers"), "/cn");
+    assert.equal(getSectionedLandingBasePath("/id/offers"), "/id");
     assert.equal(getSectionedLandingBasePath("/learn"), "/");
   });
 
@@ -38,7 +40,7 @@ describe("locale-routing", () => {
       region: "TH",
     });
     assert.deepEqual(resolveLocaleForPathname("/id"), {
-      lang: "en",
+      lang: "id",
       region: "ID",
     });
     assert.deepEqual(resolveLocaleForPathname("/cn"), {
@@ -60,6 +62,10 @@ describe("locale-routing", () => {
     assert.deepEqual(resolveLanguageSelection("zh-CN", "SG"), {
       path: "/cn",
       locale: { lang: "zh-CN", region: "CN" },
+    });
+    assert.deepEqual(resolveLanguageSelection("id", "TH"), {
+      path: "/id",
+      locale: { lang: "id", region: "ID" },
     });
   });
 

@@ -18,7 +18,12 @@ export default async function LearnHubPage() {
   return (
     <>
       <Header />
-      <main role="main" className="min-h-[60vh] min-w-0 bg-white">
+      <main
+        id="main-content"
+        role="main"
+        tabIndex={-1}
+        className="min-h-[60vh] min-w-0 bg-white"
+      >
         <div className="mx-auto min-w-0 max-w-site px-4 pb-24 pt-28 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-8">
             <Link

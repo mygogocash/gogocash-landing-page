@@ -25,7 +25,7 @@ export function parseLocaleCookie(cookieHeader: string | null): StoredLocale | n
       const parsed = JSON.parse(decodeURIComponent(cookie.slice(eq + 1))) as Partial<
         StoredLocale
       >;
-      if (!parsed.lang || !isLangCode(parsed.lang)) return null;
+      if (!parsed.lang || !isLangCode(parsed.lang)) continue;
       return {
         lang: parsed.lang,
         region:
@@ -34,7 +34,7 @@ export function parseLocaleCookie(cookieHeader: string | null): StoredLocale | n
             : DEFAULT_LOCALE.region,
       };
     } catch {
-      return null;
+      continue;
     }
   }
 
@@ -48,9 +48,11 @@ export function formatLocaleCookie(locale: StoredLocale): string {
 
 /** Explicit English via locale menu should keep `/` even for Thailand signals. */
 export function shouldSkipThailandDefaultRedirect(locale: StoredLocale | null): boolean {
-  return locale?.lang === "en";
+  return locale !== null;
 }
 
-export function localeCookieAttributes(): string {
-  return `Path=/; SameSite=Lax; Max-Age=${LOCALE_COOKIE_MAX_AGE_SECONDS}`;
+export function localeCookieAttributes(
+  secure = typeof window !== "undefined" && window.location.protocol === "https:",
+): string {
+  return `Path=/; SameSite=Lax; Max-Age=${LOCALE_COOKIE_MAX_AGE_SECONDS}${secure ? "; Secure" : ""}`;
 }

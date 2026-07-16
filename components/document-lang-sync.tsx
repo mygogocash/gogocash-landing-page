@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { documentLanguageForPathname } from "@/lib/document-language";
 
-export default function DocumentLangSync({ lang }: { lang: string }) {
+/** Keep document language correct after client-side navigation. */
+export default function DocumentLangSync() {
+  const pathname = usePathname();
+  const language = documentLanguageForPathname(pathname);
+
   useEffect(() => {
-    const previous = document.documentElement.lang;
-    document.documentElement.lang = lang;
-    return () => {
-      document.documentElement.lang = previous;
-    };
-  }, [lang]);
+    document.documentElement.lang = language;
+  }, [language]);
 
   return null;
 }

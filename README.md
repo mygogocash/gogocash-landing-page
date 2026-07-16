@@ -37,7 +37,7 @@ This document is the **canonical onboarding guide** for the repo. Topic-specific
 |--------|--------|--------|
 | Framework | Next.js 16 (App Router) | `output: "export"` → static HTML in `out/` |
 | Styling | Tailwind CSS 4 | `tailwind.config.ts` plus the `@tailwindcss/postcss` adapter in [`postcss.config.mjs`](./postcss.config.mjs) |
-| Motion | Framer Motion | Tree-shaken via `experimental.optimizePackageImports` in [`next.config.mjs`](./next.config.mjs) |
+| Motion | CSS + IntersectionObserver | Tailwind motion tokens and reduced-motion fallbacks; no shared animation runtime |
 | Content | React 19, `react-markdown` | Learn hub and legal pages |
 | SEO / link previews | Next.js `metadata` + shared constants | Default title, description, `og:image`, and Twitter cards; see [Social preview](#social-preview-open-graph) |
 | Hosting | Cloudflare Workers (static assets) | Worker `gogocash-landing-production`; config in [`wrangler.production.jsonc`](./wrangler.production.jsonc); serves `out/` |
@@ -71,12 +71,12 @@ flowchart LR
 
 | Path | Purpose |
 |------|---------|
-| [`app/`](./app/) | App Router routes: home, locale roots (`/en`, `/th`, `/id`, `/ja`, `/tw`), learn hub, search, legal, about, etc. |
+| [`app/`](./app/) | App Router routes: home, locale roots (`/en`, `/th`, `/id`, `/ja`, `/tw`, `/cn`), learn hub, search, legal, about, etc. |
 | [`components/`](./components/) | Shared UI: header, footer, landing sections, analytics wrappers, locale menu, legal shell |
 | [`lib/`](./lib/) | Config (`app-config.ts`), SEO helpers ([`social-preview.ts`](./lib/social-preview.ts) for OG/Twitter defaults), analytics helpers, routing utilities, tests colocated as `*.test.ts` |
 | [`public/`](./public/) | Static assets (images, icons) copied into `out/` |
 | [`e2e/`](./e2e/) | Playwright specs |
-| [`scripts/`](./scripts/) | Deploy helpers, Cloudflare DNS, dev helpers, optional Strapi push |
+| [`scripts/`](./scripts/) | Deploy helpers, dev helpers, static-export postprocessing, optional Strapi push |
 | [`wrangler.production.jsonc`](./wrangler.production.jsonc) | Cloudflare Worker config for production static deploy (`out/`) |
 | [`docs/`](./docs/) | Deploy, migration from Framer, learn content, etc. |
 | [`.github/workflows/`](./.github/workflows/) | Build/test workflows; production ships via Cloudflare (see [CI/CD](#cicd-github-actions)) |
@@ -88,8 +88,7 @@ flowchart LR
 - **Node.js 22.x** (use [`.nvmrc`](./.nvmrc) / `fnm` / `nvm`; `package.json` `engines` is `>=22 <23`).
 - **npm** (lockfile is `package-lock.json`; use `npm ci` in CI and for reproducible installs).
 - For **production deploy to Cloudflare**: [Wrangler](https://developers.cloudflare.com/workers/wrangler/) (`npx wrangler`) and access to the GoGoCash Cloudflare account. Run `npx wrangler login` once locally, or set `CLOUDFLARE_API_TOKEN` in CI.
-- For **legacy Firebase deploy** (staging/beta sites): Firebase CLI is a **devDependency** — prefer `npm exec -- firebase` from the repo root.
-- For **Cloudflare DNS scripts**: `curl`, `jq`, and a Cloudflare API token (see [Cloudflare DNS](#cloudflare-dns)).
+- For **legacy Firebase deploy** (staging only): Firebase CLI is a **devDependency** — prefer `npm exec -- firebase` from the repo root.
 - For **Playwright locally**: after `npm ci`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npx playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
 
 ---
@@ -112,6 +111,10 @@ Open `http://127.0.0.1:3000` (dev server binds `0.0.0.0:3000`).
 |-------|----------|
 | `/` | English (default marketing homepage) |
 | `/th` | Thai |
+| `/ja` | Japanese |
+| `/tw` | Traditional Chinese |
+| `/cn` | Simplified Chinese |
+| `/id` | Indonesian |
 
 On first visit to `/`, locale is inferred in this order:
 
@@ -138,14 +141,10 @@ Variables are documented inline in **[`.env.example`](./.env.example)**. Below i
 | `NEXT_PUBLIC_ANALYTICS_ENABLED` | Optional | `true` / `false` — gates marketing analytics defaults. |
 | `NEXT_PUBLIC_LINE_TAG_ID` | Optional | Empty string disables LINE Tag; must look like a UUID when set. |
 | `NEXT_PUBLIC_LINE_TAG_ENABLED` | Optional | Force LINE Tag on/off when an id exists. |
-| `NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID` / `NEXT_PUBLIC_CUSTOMERIO_FORMS_BASE_URL` | Optional | Customer.io Connected Forms config for the footer newsletter form. Defaults to the GoGoCash Customer.io Forms snippet; empty site id disables it. |
-| `NEXT_PUBLIC_NEWSLETTER_FORM_ACTION` | Optional | Hosted footer newsletter form endpoint from Mailchimp, Brevo, Customer.io, etc. Visitors can enter an email and click Subscribe after consent; provider-backed submission shows a setup notice until this is configured. |
-| `NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD` / `NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD` | Optional | Provider-specific field names for the footer newsletter email and PDPA consent checkbox. Defaults to `email` and `pdpa_consent`. |
-| `NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD` / `NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE` | Optional | Provider-specific source tracking field/value for the footer newsletter form. Defaults to `source=footer`. |
 | `STRAPI_URL` | Optional | If set at build time, Learn hub/articles may load from Strapi; otherwise local Markdown. See [`docs/learn-content.md`](./docs/learn-content.md). |
 | `STRAPI_API_TOKEN` | Optional | Strapi API token for protected content types (build-time only). |
 
-**Critical:** `NEXT_PUBLIC_*` values are **inlined at `next build`**. Changing them requires a **rebuild** and **redeploy**. For GitHub Actions, set repository secrets and pass them into the build step as in [`.github/workflows/build-landing.yml`](./.github/workflows/build-landing.yml).
+**Critical:** `NEXT_PUBLIC_*` values are **inlined at `next build`**. Changing them requires a **rebuild** and **redeploy**. For GitHub Actions, set repository variables/secrets consumed by [`.github/workflows/deploy-production.yml`](./.github/workflows/deploy-production.yml).
 
 ### Local-only files (never commit secrets)
 
@@ -153,7 +152,6 @@ Variables are documented inline in **[`.env.example`](./.env.example)**. Below i
 |------|---------|
 | `.env.local` | Local Next.js overrides (gitignored by default pattern). |
 | `.env.production.local` | Production-like local builds without committing keys. |
-| `.env.cloudflare` | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ZONE_ID`, optional `CLOUDFLARE_ACCOUNT_ID` for DNS automation and Wrangler (gitignored). Template: [`.env.cloudflare.example`](./.env.cloudflare.example). |
 
 ---
 
@@ -175,9 +173,8 @@ Variables are documented inline in **[`.env.example`](./.env.example)**. Below i
 | `npm run test:e2e:ci` | Playwright with `CI=true` behavior from config (serves `out/`). |
 | `npm run test:e2e:install` | Install Chromium + WebKit for Playwright. |
 | `npm run deploy:cloudflare` | `build` + `wrangler deploy --config wrangler.production.jsonc` (production Worker). |
-| `npm run deploy:firebase` | `build` + [`scripts/deploy-firebase-hosting.mjs`](./scripts/deploy-firebase-hosting.mjs) — **legacy** staging/beta Firebase sites only. |
+| `npm run deploy:firebase` | `build` + [`scripts/deploy-firebase-hosting.mjs`](./scripts/deploy-firebase-hosting.mjs) — **legacy staging-only** Firebase site. |
 | `npm run deploy:firebase:full` | Alias for `deploy:firebase`. |
-| `npm run dns:cloudflare-firebase-apex` | Load `.env.cloudflare` and run legacy Firebase apex DNS helper (historical migration). |
 | `npm run learn:strapi-push` | Push local learn Markdown to Strapi (see [`docs/learn-content.md`](./docs/learn-content.md)). |
 | `npm run lh:mobile` | Lighthouse mobile preset against `http://127.0.0.1:3000/` (requires dev server + `npx` download). |
 
@@ -249,12 +246,12 @@ Related Cloudflare pieces (separate from the landing deploy):
 
 ## Firebase Hosting (legacy / staging)
 
-[`firebase.json`](./firebase.json) and [`scripts/deploy-firebase-hosting.mjs`](./scripts/deploy-firebase-hosting.mjs) remain for **non-production** Firebase Hosting sites (e.g. staging `gogocash-landing-staging`, beta). **Do not use this path for `gogocash.co`** — production is on Cloudflare Workers (above).
+[`firebase.json`](./firebase.json) and [`scripts/deploy-firebase-hosting.mjs`](./scripts/deploy-firebase-hosting.mjs) remain for the **non-production** Firebase Hosting site `gogocash-landing-staging`. **Do not use this path for `gogocash.co`** — production is on Cloudflare Workers (above).
 
 | Item | Value |
 |------|--------|
 | GCP / Firebase project | `landing-page-4ae23` ([`.firebaserc`](./.firebaserc)) |
-| Default hosting site id in repo | `landing-page-4ae23` ([`firebase.json`](./firebase.json)) |
+| Hosting site id in repo | `gogocash-landing-staging` ([`firebase.json`](./firebase.json)) |
 
 ```bash
 npm run deploy:firebase
@@ -266,20 +263,7 @@ Operational detail: **[`docs/firebase-deploy.md`](./docs/firebase-deploy.md)**.
 
 ## Cloudflare DNS
 
-The **`gogocash.co`** zone is managed in Cloudflare. Production landing hostnames (`gogocash.co`, `www.gogocash.co`) are attached to the **`gogocash-landing-production`** Worker as custom domains in the Cloudflare dashboard — not via Firebase apex `A` records.
-
-Legacy scripts from the Framer → Next → Firebase migration still exist if you need to adjust old apex records:
-
-- [`scripts/cloudflare-firebase-dns-setup.sh`](./scripts/cloudflare-firebase-dns-setup.sh)
-- [`scripts/run-cloudflare-firebase-dns.sh`](./scripts/run-cloudflare-firebase-dns.sh)
-
-```bash
-cp .env.cloudflare.example .env.cloudflare
-# edit .env.cloudflare — token needs Zone → DNS → Edit for gogocash.co
-
-npm run dns:cloudflare-firebase-apex
-# optional: DRY_RUN=1 npm run dns:cloudflare-firebase-apex
-```
+The **`gogocash.co`** zone is managed in Cloudflare. Production landing hostnames (`gogocash.co`, `www.gogocash.co`) are declared as Worker custom domains in [`wrangler.production.jsonc`](./wrangler.production.jsonc). Firebase staging DNS is managed separately and must never replace the production apex records.
 
 ---
 
@@ -287,25 +271,25 @@ npm run dns:cloudflare-firebase-apex
 
 | Workflow | Branch | Deploy target |
 |----------|--------|---------------|
-| **[`build-landing.yml`](./.github/workflows/build-landing.yml)** | `production` | Build + test + e2e; **Firebase deploy step is legacy** (production site is on Cloudflare — use `npm run deploy:cloudflare` or add a Cloudflare deploy step) |
+| **[`ci.yml`](./.github/workflows/ci.yml)** | `main` + pull requests | Required repo gate: lint, unit tests, typecheck, and static build |
+| **[`deploy-production.yml`](./.github/workflows/deploy-production.yml)** | `production` + manual | Verify, blocking static Playwright, then deploy the tested artifact to Cloudflare Worker |
 | **[`deploy-staging.yml`](./.github/workflows/deploy-staging.yml)** | `staging` | Firebase Hosting site `gogocash-landing-staging` |
-| **[`deploy-beta.yml`](./.github/workflows/deploy-beta.yml)** | `beta` | Firebase Hosting site `gogocash-landing-beta` (scaffold) |
 | **[`deploy-cms-cloudflare.yml`](./.github/workflows/deploy-cms-cloudflare.yml)** | manual | Learn CMS on Cloudflare |
 
-**Recommended production release today:**
+**Production release:**
 
 1. Merge to `production` (or build from a clean checkout).
-2. Run `npm run verify` locally or rely on CI build/test/e2e steps.
-3. Deploy: `npm run deploy:cloudflare` with Wrangler auth (see [Cloudflare Workers](#cloudflare-workers-production-hosting)).
+2. The production workflow runs `npm run verify` and blocking Playwright checks against `out/`.
+3. Wrangler deploys that verified artifact to `gogocash-landing-production`.
 
 **GitHub repository secrets (optional but recommended for partner data):**
 
 - `INVOLVE_ASIA_API_KEY`
 - `INVOLVE_ASIA_API_SECRET`
 
-**Cloudflare (production deploy):** set repository variable `CLOUDFLARE_ACCOUNT_ID` and secret `CLOUDFLARE_API_TOKEN` if you wire Wrangler into CI. The GoGoCash account id is `187ab61ed9dbc6e616cb23e6b95aa8f1`.
+**Cloudflare (production deploy):** set repository variable `CLOUDFLARE_ACCOUNT_ID` and secret `CLOUDFLARE_API_TOKEN`. The GoGoCash account id is `187ab61ed9dbc6e616cb23e6b95aa8f1`.
 
-**Google Cloud (Firebase staging/beta only):** staging/beta workflows use **Workload Identity Federation**. Pool / provider / service account IDs are in workflow YAML and repo variables (`FIREBASE_WIF_PROVIDER`, `FIREBASE_SA_EMAIL`).
+**Google Cloud (Firebase staging only):** the staging workflow uses **Workload Identity Federation**. Pool / provider / service account IDs are in workflow YAML and repo variables (`FIREBASE_WIF_PROVIDER`, `FIREBASE_SA_EMAIL`).
 
 ---
 
@@ -341,7 +325,7 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 
 | Document | Topic |
 |----------|--------|
-| [`docs/firebase-deploy.md`](./docs/firebase-deploy.md) | Legacy Firebase Hosting deploy (staging/beta) |
+| [`docs/firebase-deploy.md`](./docs/firebase-deploy.md) | Legacy Firebase Hosting deploy (staging only) |
 | [`docs/posthog-reverse-proxy.md`](./docs/posthog-reverse-proxy.md) | Optional PostHog proxy Worker on Cloudflare |
 | [`docs/framer-to-next-migration.md`](./docs/framer-to-next-migration.md) | Migration notes from Framer |
 | [`docs/learn-content.md`](./docs/learn-content.md) | Learn articles: local files vs Strapi, CI, `learn:strapi-push` |
@@ -354,10 +338,10 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 |---------|------------------|
 | Broken logos / 403 on static assets | Production uses canonical URLs from [`lib/public-asset-url.ts`](./lib/public-asset-url.ts). Rebuild and run `npm run deploy:cloudflare`. Trailing-dot hostnames (`gogocash.co.`) should redirect or load assets from `https://gogocash.co/...`. |
 | Wrangler: “unable to select account” | Ensure [`wrangler.production.jsonc`](./wrangler.production.jsonc) includes `account_id`, or set `CLOUDFLARE_ACCOUNT_ID`. |
-| Firebase domain verification / SSL **526** (legacy) | Only relevant for Firebase-hosted sites. Apex `A` must be **DNS only** (grey cloud) to `199.36.158.100`. See `npm run dns:cloudflare-firebase-apex`. |
+| Firebase domain verification / SSL errors (staging) | Verify only the staging hostname in Firebase; do not change the Cloudflare production apex/custom-domain routes. |
 | `npm run lint` crashes with `expand is not a function` | Broken `minimatch` / `brace-expansion` mix — remove incompatible `overrides` in `package.json` and run `npm install`. |
 | Build works locally, CI fails | Compare Node version (22.x), ensure `npm ci` lockfile is committed, check GitHub Actions logs for the failing step. |
-| Firebase deploy auth errors in CI | Staging/beta WIF only. Production landing deploy is Cloudflare Wrangler, not Firebase. |
+| Firebase deploy auth errors in CI | Staging WIF only. Production landing deploy is Cloudflare Wrangler, not Firebase. |
 | Empty partner data in build | Set `INVOLVE_ASIA_*` for build, or accept static fallback documented in `.env.example`. |
 | E2E WebKit: “Host system is missing dependencies” (CI/Linux) | Run `npx playwright install --with-deps chromium webkit` (see workflow); `playwright install` alone is not enough for WebKit on Ubuntu. |
 

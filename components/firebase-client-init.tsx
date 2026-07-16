@@ -1,25 +1,19 @@
 "use client";
 
 import { useEffect } from "react";
-import { initFirebaseAnalytics } from "@/lib/analytics-client";
-import { COOKIE_CONSENT_EVENT, isAnalyticsAllowed } from "@/lib/cookie-consent";
-import { getFirebaseApp } from "@/lib/firebase";
+import { syncFirebaseAnalyticsConsent } from "@/lib/analytics-client";
+import { COOKIE_CONSENT_EVENT } from "@/lib/cookie-consent";
 
 /**
- * Browser-only: `initializeApp` + GA4 via `initFirebaseAnalytics()` (modular SDK).
- * Gated on cookie consent (#7): nothing initializes until the visitor accepts.
+ * Browser-only Firebase/GA4 consent bridge. The SDK itself is dynamically loaded
+ * by `syncFirebaseAnalyticsConsent`, so it is absent before an analytics opt-in.
  */
 export function FirebaseClientInit() {
   useEffect(() => {
-    const start = () => {
-      if (!isAnalyticsAllowed()) return;
-      getFirebaseApp();
-      initFirebaseAnalytics();
-    };
-
-    start(); // returning visitors who already accepted
-    window.addEventListener(COOKIE_CONSENT_EVENT, start);
-    return () => window.removeEventListener(COOKIE_CONSENT_EVENT, start);
+    void syncFirebaseAnalyticsConsent();
+    const onConsent = () => void syncFirebaseAnalyticsConsent();
+    window.addEventListener(COOKIE_CONSENT_EVENT, onConsent);
+    return () => window.removeEventListener(COOKIE_CONSENT_EVENT, onConsent);
   }, []);
 
   return null;

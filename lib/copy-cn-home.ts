@@ -3,6 +3,8 @@ import type { LocaleHomeCopy } from "@/lib/locale-home-copy";
 
 /** Mainland China (Simplified Chinese) landing — align numbers with `SITE_FACTS`. */
 export const CN_HOME = {
+  documentLang: "zh-Hans",
+  partnerLogoAltTemplate: "{name} GoGoCash 现金回馈合作伙伴",
   langNavEnglish: "English site",
   langNavLocal: "简体中文（中国）",
   breadcrumbNavAria: "语言",
@@ -10,7 +12,7 @@ export const CN_HOME = {
   hero: {
     h1: "每次消费都能赚回馈",
     sub: "GoGoCash — 在你熟悉的商家消费",
-    body: `最高 30% 现金回馈，超过 ${SITE_FACTS.partnerCountLabel} 个品牌 — ${SITE_FACTS.keyMerchantsShort} 等，涵盖东南亚。免费加入，真实回馈进钱包；完成 App 任务再加码。`,
+    body: `最高 ${SITE_FACTS.maxCashbackLabel} 现金回馈，超过 ${SITE_FACTS.partnerCountLabel} 个品牌 — ${SITE_FACTS.keyMerchantsShort} 等，涵盖东南亚。免费加入，真实回馈进钱包；完成 App 任务再加码。`,
     ctaLaunch: "开始赚回馈",
     ctaLine: "LINE 问问我们",
     lineAria: "通过 LINE 联系 GoGoCash",

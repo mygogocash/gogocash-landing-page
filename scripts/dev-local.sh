@@ -8,12 +8,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-MIN_NODE_MAJOR=20
+REQUIRED_NODE_MAJOR=22
 CURRENT="$(
   node -p "parseInt(process.versions.node.split('.')[0], 10)" 2>/dev/null || echo 0
 )"
-if [ "${CURRENT}" -lt "${MIN_NODE_MAJOR}" ]; then
-  echo "error: Node.js >= ${MIN_NODE_MAJOR} required (got: $(node -v 2>/dev/null || echo 'not found'))"
+if [ "${CURRENT}" -ne "${REQUIRED_NODE_MAJOR}" ]; then
+  echo "error: Node.js ${REQUIRED_NODE_MAJOR}.x required (got: $(node -v 2>/dev/null || echo 'not found'))"
   exit 1
 fi
 

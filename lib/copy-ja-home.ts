@@ -3,6 +3,8 @@ import type { LocaleHomeCopy } from "@/lib/locale-home-copy";
 
 /** Japanese landing — align numbers with `SITE_FACTS`. */
 export const JA_HOME = {
+  documentLang: "ja",
+  partnerLogoAltTemplate: "{name} GoGoCash キャッシュバックパートナー",
   langNavEnglish: "English site",
   langNavLocal: "日本語",
   breadcrumbNavAria: "言語",
@@ -10,7 +12,7 @@ export const JA_HOME = {
   hero: {
     h1: "毎回のお支払いでキャッシュバック",
     sub: "GoGoCash — いつものお店で",
-    body: `${SITE_FACTS.partnerCountLabel} 以上のストアで最大 30% のキャッシュバック — ${SITE_FACTS.keyMerchantsShort} など、${SITE_FACTS.regionLabel}。無料で本物の還元がウォレットに。クエストでボーナスも。`,
+    body: `${SITE_FACTS.partnerCountLabel} 以上のストアで最大 ${SITE_FACTS.maxCashbackLabel} のキャッシュバック — ${SITE_FACTS.keyMerchantsShort} など、${SITE_FACTS.regionLabel}。無料で本物の還元がウォレットに。クエストでボーナスも。`,
     ctaLaunch: "還元を始める",
     ctaLine: "LINE で相談",
     lineAria: "LINE で GoGoCash に問い合わせる",

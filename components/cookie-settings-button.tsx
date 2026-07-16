@@ -17,7 +17,7 @@ export function CookieSettingsButton({
   return (
     <button
       type="button"
-      onClick={() => openCookiePreferences()}
+      onClick={(event) => openCookiePreferences(event.currentTarget)}
       className={className}
     >
       {children}

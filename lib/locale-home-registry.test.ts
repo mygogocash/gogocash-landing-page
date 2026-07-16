@@ -18,4 +18,17 @@ describe("locale-home-registry", () => {
   it("localeHomeCopy returns the same objects as legacy module exports", () => {
     assert.equal(localeHomeCopy("th"), TH_HOME);
   });
+
+  it("promotes Indonesian into the full localized-home registry", () => {
+    assert.ok(LOCALE_HOME_IDS.includes("id"));
+    assert.equal(LOCALE_HOME_COPY.id.langNavLocal, "Bahasa Indonesia");
+  });
+
+  it("keeps route-level language and partner-alt metadata beside each locale", () => {
+    for (const id of LOCALE_HOME_IDS) {
+      const entry = LOCALE_HOME_COPY[id];
+      assert.ok(entry.documentLang.length > 0, id);
+      assert.ok(entry.partnerLogoAltTemplate.includes("{name}"), id);
+    }
+  });
 });

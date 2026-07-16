@@ -19,10 +19,10 @@ run_docker() {
 }
 
 if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
-  MIN_NODE_MAJOR=20
+  REQUIRED_NODE_MAJOR=22
   CURRENT="$(node -p "parseInt(process.versions.node.split('.')[0], 10)" 2>/dev/null || echo 0)"
-  if [ "${CURRENT}" -lt "${MIN_NODE_MAJOR}" ]; then
-    echo "error: Node.js >= ${MIN_NODE_MAJOR} required (got: $(node -v))"
+  if [ "${CURRENT}" -ne "${REQUIRED_NODE_MAJOR}" ]; then
+    echo "error: Node.js ${REQUIRED_NODE_MAJOR}.x required (got: $(node -v))"
     exit 1
   fi
   if [ ! -d node_modules ]; then
@@ -41,7 +41,7 @@ fi
 cat <<'EOF'
 Could not start the dev server.
 
-Option A — Install Node.js 20+ (https://nodejs.org/), then from this folder:
+Option A — Install Node.js 22 (https://nodejs.org/), then from this folder:
   npm install
   npm run dev
 

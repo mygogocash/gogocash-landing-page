@@ -8,9 +8,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#10b981",
-        "primary-dark": "#059669",
+        primary: "#047857",
+        "primary-dark": "#065f46",
         "primary-deep": "#047857",
+        "brand-green": "#10b981",
         accent: "#f97066",
         "accent-soft": "#fef2f2",
         cream: "#FFFBF7",
@@ -19,7 +20,7 @@ const config: Config = {
         "surface-green-medium": "rgba(16, 185, 129, 0.15)",
       },
       fontFamily: {
-        sans: ["Poppins", "Inter", "sans-serif"],
+        sans: ["Poppins", "sans-serif"],
         display: ["Instrument Sans", "Poppins", "sans-serif"],
       },
       maxWidth: {
@@ -48,6 +49,8 @@ const config: Config = {
         /** Mobile nav panel under header */
         "header-mobile-drawer":
           "header-mobile-drawer 280ms cubic-bezier(0.22, 1, 0.36, 1) both",
+        "tab-panel-enter":
+          "tab-panel-enter 280ms cubic-bezier(0.4, 0, 0.2, 1) both",
       },
       keyframes: {
         marquee: {
@@ -64,6 +67,10 @@ const config: Config = {
         },
         "header-mobile-drawer": {
           "0%": { opacity: "0", transform: "translateY(-8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "tab-panel-enter": {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },

@@ -32,7 +32,7 @@ export const twFocusRingPrimary =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
 export const twFocusRingGray =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400";
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500";
 
 /** Filled primary CTA — add colors, padding, radius in caller */
 export const twCtaPrimaryMotion = `${twTransitionButton} ${twPressSm} ${twHoverLiftLg} ${twFocusRingPrimary}`;

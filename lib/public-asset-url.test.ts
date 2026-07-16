@@ -25,17 +25,17 @@ describe("normalizeOrigin", () => {
 });
 
 describe("publicAssetUrl", () => {
-  it("uses the canonical marketing origin in production builds", () => {
+  it("keeps paths on the current static host in production builds", () => {
     const env = process.env;
     process.env = { ...env, NODE_ENV: "production" };
     try {
       assert.equal(
         publicAssetUrl("/images/gogocash-logo-mark.png"),
-        "https://gogocash.co/images/gogocash-logo-mark.png",
+        "/images/gogocash-logo-mark.png",
       );
       assert.equal(
         publicAssetUrl("/images/partner-logos/Air India - CPS.png"),
-        "https://gogocash.co/images/partner-logos/Air%20India%20-%20CPS.png",
+        "/images/partner-logos/Air%20India%20-%20CPS.png",
       );
     } finally {
       process.env = env;

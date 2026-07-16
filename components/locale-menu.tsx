@@ -44,7 +44,6 @@ function useLocalePreference() {
         if (prev.lang === next.lang && prev.region === next.region) return prev;
         return { lang: next.lang, region: next.region };
       });
-      document.documentElement.lang = next.lang;
     };
 
     apply(readStoredLocale());
@@ -72,15 +71,19 @@ function useLocalePreference() {
 function OptionButton({
   selected,
   onClick,
+  lang,
   children,
 }: {
   selected: boolean;
   onClick: () => void;
+  lang?: string;
   children: ReactNode;
 }) {
   return (
     <button
       type="button"
+      lang={lang}
+      aria-pressed={selected}
       onClick={onClick}
       className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary} ${
         selected
@@ -98,6 +101,9 @@ export function LocaleDropdown() {
   const { lang, region, setRegion } = useLocalePreference();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const panelId = "locale-preferences-dialog";
 
   const chooseLanguage = useCallback(
     (code: LangCode) => {
@@ -115,11 +121,19 @@ export function LocaleDropdown() {
 
   useEffect(() => {
     if (!open) return;
+    window.requestAnimationFrame(() => {
+      panelRef.current
+        ?.querySelector<HTMLButtonElement>('button[aria-pressed="true"]')
+        ?.focus();
+    });
     const onDoc = (e: MouseEvent) => {
       if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
     };
     const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+      setOpen(false);
+      window.requestAnimationFrame(() => triggerRef.current?.focus());
     };
     document.addEventListener("mousedown", onDoc);
     document.addEventListener("keydown", onEsc);
@@ -135,12 +149,15 @@ export function LocaleDropdown() {
       ref={rootRef}
     >
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={`group flex min-h-11 min-w-11 items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-700 shadow-sm backdrop-blur-sm hover:scale-105 hover:border-primary/30 hover:bg-surface-green hover:text-primary hover:shadow-md motion-reduce:hover:scale-100 motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-2 aria-expanded:border-primary/40 aria-expanded:bg-surface-green aria-expanded:text-primary ${twTransitionButton} ${twPressSm}`}
         aria-expanded={open}
         aria-haspopup="dialog"
+        aria-controls={panelId}
         aria-label="Language and region"
+        lang="en"
       >
         <Globe
           size={22}
@@ -154,14 +171,18 @@ export function LocaleDropdown() {
       </button>
       {open && (
         <div
+          id={panelId}
+          ref={panelRef}
+          tabIndex={-1}
           className={`z-[60] w-[min(calc(100vw-2rem),18rem)] rounded-2xl border border-gray-100 bg-white p-4 shadow-lg motion-reduce:animate-none animate-locale-panel-in
             max-md:fixed max-md:left-1/2 max-md:right-auto max-md:top-[calc(env(safe-area-inset-top,0px)+4.25rem)] max-md:max-h-[min(32rem,calc(100dvh-env(safe-area-inset-top,0px)-5rem))] max-md:-translate-x-1/2 max-md:overflow-y-auto max-md:origin-top
             md:absolute md:left-auto md:right-0 md:top-[calc(100%+0.5rem)] md:max-h-none md:translate-x-0 md:overflow-visible md:origin-top-right`}
           role="dialog"
           aria-label="Choose language and region"
+          lang="en"
         >
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               Language
             </p>
             <div className="mt-2 flex flex-col gap-0.5">
@@ -170,6 +191,7 @@ export function LocaleDropdown() {
                   key={l.code}
                   selected={lang === l.code}
                   onClick={() => chooseLanguage(l.code)}
+                  lang={l.code}
                 >
                   <span className="text-lg leading-none" aria-hidden>
                     {l.flag}
@@ -180,7 +202,7 @@ export function LocaleDropdown() {
             </div>
           </div>
           <div className="mt-4 border-t border-gray-100 pt-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               Region
             </p>
             <div className="mt-2 flex max-h-48 flex-col gap-0.5 overflow-y-auto">

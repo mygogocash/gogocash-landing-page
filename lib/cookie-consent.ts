@@ -1,6 +1,6 @@
 /**
  * Cookie consent state (issue #7 — PDPA/GDPR). Category preferences gate
- * optional trackers: analytics (Firebase + PostHog) and marketing (LINE Tag).
+ * optional trackers: analytics (Firebase, PostHog, Mixpanel) and marketing (LINE Tag).
  * Client-only (static export has no server to enforce consent). Mirrors the
  * storage + CustomEvent pattern in `lib/locale-storage.ts`.
  */
@@ -35,6 +35,13 @@ export type CookieConsent = {
   preferences: CookieConsentPreferences;
   decidedAt: string;
 };
+
+/**
+ * Browsers and embedded webviews can deny localStorage entirely. Tie the
+ * fallback to the current Window so a decision still lasts for this tab while
+ * tests (and future browsing contexts) cannot inherit another window's state.
+ */
+let sessionConsent: { owner: object; value: CookieConsent } | null = null;
 
 function parsePreferences(
   value: unknown,
@@ -82,10 +89,14 @@ export function parseConsent(raw: string | null): CookieConsent | null {
 
 export function readConsent(): CookieConsent | null {
   if (typeof window === "undefined") return null;
+  const fallback =
+    sessionConsent?.owner === window ? sessionConsent.value : null;
   try {
-    return parseConsent(window.localStorage.getItem(COOKIE_CONSENT_KEY));
+    return (
+      parseConsent(window.localStorage.getItem(COOKIE_CONSENT_KEY)) ?? fallback
+    );
   } catch {
-    return null;
+    return fallback;
   }
 }
 
@@ -118,6 +129,7 @@ export function persistConsent(
     preferences,
     decidedAt: new Date().toISOString(),
   };
+  sessionConsent = { owner: window, value };
   try {
     window.localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(value));
   } catch {
@@ -128,8 +140,12 @@ export function persistConsent(
   );
 }
 
-/** Re-open the consent banner (e.g. from the footer "Cookie Settings" link). */
-export function openCookiePreferences(): void {
+/** Re-open consent and retain the invoking control for focus restoration. */
+export function openCookiePreferences(trigger?: HTMLElement): void {
   if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent(COOKIE_CONSENT_OPEN_EVENT));
+  window.dispatchEvent(
+    new CustomEvent<HTMLElement | null>(COOKIE_CONSENT_OPEN_EVENT, {
+      detail: trigger ?? null,
+    }),
+  );
 }

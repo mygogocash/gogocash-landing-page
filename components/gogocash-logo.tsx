@@ -50,14 +50,14 @@ export function GoGoCashLogoMark({
   return (
     <span className={`relative inline-block ${className}`}>
       <Image
-        src={publicAssetUrl("/images/gogocash-logo-mark.png")}
+        src={publicAssetUrl("/images/gogocash-mark.svg")}
         alt={alt}
-        fill
+        width={32}
+        height={32}
         sizes={sizes}
         decoding="async"
         priority={priority}
-        unoptimized
-        className="object-contain object-center select-none"
+        className="h-full w-full object-contain object-center select-none"
         {...(decorative ? { "aria-hidden": true as const } : {})}
       />
     </span>

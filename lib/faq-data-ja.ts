@@ -1,3 +1,5 @@
+import { SITE_FACTS } from "@/lib/site-facts";
+
 export type JapanFaqEntry = { question: string; answer: string };
 
 /** Order: how it works → timing → withdraw → free → … */
@@ -24,8 +26,7 @@ export const JAPAN_FAQ_ITEMS: JapanFaqEntry[] = [
   },
   {
     question: "どんな店舗がありますか？",
-    answer:
-      "東南アジアで 70 以上のブランドと提携しています（例：Shopee、Lazada、Agoda）。最新一覧はアプリまたはトップページでご確認ください。",
+    answer: `東南アジアで ${SITE_FACTS.partnerCountMin} 以上のブランドと提携しています（例：Shopee、Lazada、Agoda）。最新一覧はアプリまたはトップページでご確認ください。`,
   },
   {
     question: "キャッシュバックが付かない場合は？",

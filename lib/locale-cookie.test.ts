@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
   LOCALE_COOKIE_NAME,
   formatLocaleCookie,
+  localeCookieAttributes,
   parseLocaleCookie,
   shouldSkipThailandDefaultRedirect,
 } from "./locale-cookie";
@@ -37,10 +38,22 @@ describe("locale-cookie", () => {
     assert.equal(parseLocaleCookie(`${LOCALE_COOKIE_NAME}=%7B%7D`), null);
   });
 
-  it("shouldSkipThailandDefaultRedirect is true only for explicit English", () => {
+  it("parseLocaleCookie skips malformed duplicates and accepts a later valid value", () => {
+    const valid = formatLocaleCookie({ lang: "ja", region: "JP" });
+    const header = `${LOCALE_COOKIE_NAME}=not-json; ${valid}`;
+    assert.deepEqual(parseLocaleCookie(header), { lang: "ja", region: "JP" });
+  });
+
+  it("shouldSkipThailandDefaultRedirect respects every explicit locale", () => {
     assert.equal(shouldSkipThailandDefaultRedirect(null), false);
-    assert.equal(shouldSkipThailandDefaultRedirect({ lang: "th", region: "TH" }), false);
+    assert.equal(shouldSkipThailandDefaultRedirect({ lang: "th", region: "TH" }), true);
+    assert.equal(shouldSkipThailandDefaultRedirect({ lang: "ja", region: "JP" }), true);
     assert.equal(shouldSkipThailandDefaultRedirect({ lang: "en", region: "TH" }), true);
     assert.equal(shouldSkipThailandDefaultRedirect({ lang: "en", region: "SG" }), true);
+  });
+
+  it("marks the locale cookie Secure on HTTPS", () => {
+    assert.match(localeCookieAttributes(true), /(?:^|; )Secure(?:;|$)/);
+    assert.doesNotMatch(localeCookieAttributes(false), /(?:^|; )Secure(?:;|$)/);
   });
 });

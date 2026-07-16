@@ -12,9 +12,14 @@ export const metadata: Metadata = {
 
 function SearchFallback() {
   return (
-    <div className="min-h-[40vh] bg-white px-6 pt-28 text-center text-gray-600">
+    <main
+      id="main-content"
+      role="main"
+      tabIndex={-1}
+      className="min-h-[40vh] bg-white px-6 pt-28 text-center text-gray-600"
+    >
       Loading search…
-    </div>
+    </main>
   );
 }
 

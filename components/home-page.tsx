@@ -77,7 +77,7 @@ export default function HomePage({ initialPartners }: HomePageProps) {
     <>
       <Header />
       <SectionViewTracker />
-      <main role="main">
+      <main id="main-content" role="main" tabIndex={-1}>
         <EnglishHomeHeroSection />
 
         <MerchantOffersStrip

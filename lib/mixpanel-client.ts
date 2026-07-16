@@ -73,6 +73,9 @@ async function initMixpanel(): Promise<void> {
   initializing = true;
   try {
     const { default: mixpanel } = await import("mixpanel-browser");
+    // Consent can be withdrawn while the SDK chunk is in flight. Do not even
+    // initialize its persistence layer unless the latest decision still allows it.
+    if (!mixpanelAllowed()) return;
     const config: NonNullable<Parameters<typeof mixpanel.init>[1]> = {
       // Consent-first: ship no events until the visitor opts in (#7 / PDPA).
       opt_out_tracking_by_default: true,

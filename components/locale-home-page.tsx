@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import DocumentLangSync from "@/components/document-lang-sync";
 import { WEB_APP_HREF } from "@/components/social-data";
 import { HOW_IT_WORKS_ILLUSTRATION_PATHS } from "@/lib/how-it-works-illustrations";
 import { type HowItWorksStep } from "@/components/landing/how-it-works-interactive";
@@ -29,18 +28,12 @@ export type LocaleHomePageProps = {
   initialPartners: PartnerBrand[];
   copy: LocaleHomeCopy;
   faqItems: LocaleFaqItem[];
-  documentLang: string;
-  partnerLogoAltTemplate: string;
-  learnArticleLang?: string;
 };
 
 export default function LocaleHomePage({
   initialPartners,
   copy,
   faqItems,
-  documentLang,
-  partnerLogoAltTemplate,
-  learnArticleLang = "en",
 }: LocaleHomePageProps) {
   const howItWorksSteps: HowItWorksStep[] = copy.howItWorks.steps.map(
     (step, index) => ({
@@ -58,10 +51,14 @@ export default function LocaleHomePage({
 
   return (
     <>
-      <DocumentLangSync lang={documentLang} />
       <Header />
       <SectionViewTracker />
-      <main role="main" lang={documentLang}>
+      <main
+        id="main-content"
+        role="main"
+        lang={copy.documentLang}
+        tabIndex={-1}
+      >
         <LocaleHomeHeroSection copy={copy} />
 
         <MerchantOffersStrip
@@ -76,7 +73,7 @@ export default function LocaleHomePage({
           brandsCountAll={copy.partners.brandsCountAll}
           brandsCountFiltered={copy.partners.brandsCountFiltered}
           loadMoreLabel={copy.partners.loadMore}
-          partnerLogoAltTemplate={partnerLogoAltTemplate}
+          partnerLogoAltTemplate={copy.partnerLogoAltTemplate}
         />
 
         <LocaleWhySection copy={copy} />
@@ -88,7 +85,10 @@ export default function LocaleHomePage({
           steps={howItWorksSteps}
         />
         <LocaleDownloadSection copy={copy} />
-        <LocaleLearnSection copy={copy} learnArticleLang={learnArticleLang} />
+        <LocaleLearnSection
+          copy={copy}
+          learnArticleLang={copy.learnArticleLang ?? "en"}
+        />
         <LocaleCommunitySection copy={copy} />
         <FaqSection
           badge={copy.faq.badge}

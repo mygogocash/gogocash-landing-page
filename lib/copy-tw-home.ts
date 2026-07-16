@@ -3,6 +3,8 @@ import type { LocaleHomeCopy } from "@/lib/locale-home-copy";
 
 /** Taiwan (Traditional Chinese) landing — align numbers with `SITE_FACTS`. */
 export const TW_HOME = {
+  documentLang: "zh-Hant",
+  partnerLogoAltTemplate: "{name} GoGoCash 現金回饋合作夥伴",
   langNavEnglish: "English site",
   langNavLocal: "繁體中文（台灣）",
   breadcrumbNavAria: "語言",
@@ -10,7 +12,7 @@ export const TW_HOME = {
   hero: {
     h1: "每次消費都能賺回饋",
     sub: "GoGoCash — 在你熟悉的商家消費",
-    body: `最高 30% 現金回饋，超過 ${SITE_FACTS.partnerCountLabel} 個品牌 — ${SITE_FACTS.keyMerchantsShort} 等，涵蓋東南亞。免費加入，真實回饋進錢包；完成 App 任務再加碼。`,
+    body: `最高 ${SITE_FACTS.maxCashbackLabel} 現金回饋，超過 ${SITE_FACTS.partnerCountLabel} 個品牌 — ${SITE_FACTS.keyMerchantsShort} 等，涵蓋東南亞。免費加入，真實回饋進錢包；完成 App 任務再加碼。`,
     ctaLaunch: "開始賺回饋",
     ctaLine: "LINE 問問我們",
     lineAria: "透過 LINE 聯絡 GoGoCash",

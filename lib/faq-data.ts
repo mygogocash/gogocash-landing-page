@@ -1,3 +1,5 @@
+import { SITE_FACTS } from "@/lib/site-facts";
+
 /**
  * Single source of truth for homepage FAQ + FAQPage JSON-LD.
  * Answers: first sentence = direct answer (AEO); then supporting detail; aim under ~300 chars where possible.
@@ -32,8 +34,7 @@ export const FAQ_ITEMS: FaqEntry[] = [
   },
   {
     question: "Which brands are available?",
-    answer:
-      "GoGoCash works with 70+ cashback partners across Southeast Asia, including Lazada, Shopee, Agoda, Samsung, and Trip.com — and the in-app brand directory keeps growing. New merchants join over time; check the app or homepage partner list for the latest lineup.",
+    answer: `GoGoCash works with ${SITE_FACTS.partnerCountLabel} cashback partners across Southeast Asia, including Lazada, Shopee, Agoda, Samsung, and Trip.com — and the in-app brand directory keeps growing. New merchants join over time; check the app or homepage partner list for the latest lineup.`,
   },
   {
     question: "Which brands offer the highest cashback on GoGoCash?",

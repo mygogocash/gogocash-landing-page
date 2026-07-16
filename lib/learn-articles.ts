@@ -6,6 +6,8 @@ export type LearnArticleMeta = {
   metaTitle: string;
   metaDescription: string;
   hubDesc: string;
+  /** Original publication date; do not rewrite when editorial content changes. */
+  published: string;
   updated: string;
 };
 
@@ -17,6 +19,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "How GoGoCash tracks purchases from click to merchant confirmation — and how to avoid common tracking issues.",
     hubDesc: "From click to merchant confirmation — what affects your rewards.",
+    published: "March 22, 2026",
     updated: "March 22, 2026",
   },
   {
@@ -26,6 +29,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "Plain-language overview of Saving Plus, risks, fees, and how it differs from confusing points programs.",
     hubDesc: "Optional ways to think about idle balances — without the jargon.",
+    published: "March 22, 2026",
     updated: "March 22, 2026",
   },
   {
@@ -35,6 +39,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "How Thai shoppers can compare marketplace, travel, and electronics cashback — and stay safe while shopping.",
     hubDesc: "How to compare categories, travel, and electronics deals.",
+    published: "March 22, 2026",
     updated: "March 22, 2026",
   },
   {
@@ -44,6 +49,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "Steps to withdraw GoGoCash cashback to your bank or e-wallet: thresholds, timing, and what to expect.",
     hubDesc: "Thresholds, methods, and typical payout timing.",
+    published: "March 22, 2026",
     updated: "March 22, 2026",
   },
   {
@@ -53,6 +59,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "If GoGoCash did not track your order: checklist for ad blockers, cookies, session rules, and when to contact support.",
     hubDesc: "Checklist before you contact support — cookies, tabs, and timing.",
+    published: "March 22, 2026",
     updated: "March 22, 2026",
   },
   {
@@ -62,6 +69,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "Why minimum withdrawal exists, where to see your threshold, and how payouts differ by country and rail.",
     hubDesc: "Thresholds, rails, and country-specific nuances.",
+    published: "March 22, 2026",
     updated: "March 22, 2026",
   },
   {
@@ -71,6 +79,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "What Quests are, the common types (spending streaks, category challenges, seasonal boosts), and how they stack on top of your base cashback.",
     hubDesc: "Optional challenges that stack extra cashback on your base rate.",
+    published: "June 3, 2026",
     updated: "June 3, 2026",
   },
   {
@@ -80,6 +89,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "Step-by-step: open Lazada or Shopee from GoGoCash, check out as usual, and let cashback confirm — plus tips to keep tracking reliable.",
     hubDesc: "Open the store from GoGoCash so your marketplace order tracks.",
+    published: "June 3, 2026",
     updated: "June 3, 2026",
   },
   {
@@ -89,6 +99,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "What to compare across cashback apps — withdrawable cash vs points, supported brands, payout rails, and tracking transparency.",
     hubDesc: "What actually matters: payouts, brands, transparency.",
+    published: "June 3, 2026",
     updated: "June 3, 2026",
   },
   {
@@ -98,6 +109,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     metaDescription:
       "How travel cashback works on partners like Agoda and Trip.com, why bookings confirm later, and how to keep your trip rewards on track.",
     hubDesc: "How travel bookings earn — and why they confirm closer to your trip.",
+    published: "June 3, 2026",
     updated: "June 3, 2026",
   },
 ];

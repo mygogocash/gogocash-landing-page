@@ -1,10 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins, Inter } from "next/font/google";
-import { CustomerIoFormsScript } from "@/components/customer-io-forms-script";
+import { Poppins } from "next/font/google";
 import { LineTagScripts } from "@/components/line-tag-scripts";
 import { AppClientProviders } from "@/components/app-client-providers";
 import SchemaMarkup from "@/components/schema-markup";
-import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 import {
   OG_IMAGE_ALT,
   OG_IMAGE_HEIGHT,
@@ -38,14 +36,8 @@ function metadataBaseUrl(): URL {
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
   display: "swap",
 });
 
@@ -73,10 +65,6 @@ export const metadata: Metadata = {
   authors: [{ name: "GoGoCash" }],
   creator: "GoGoCash",
   metadataBase: metadataBaseUrl(),
-  alternates: {
-    canonical: "/",
-    languages: HREFLANG_LANDING_ALTERNATES,
-  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -113,7 +101,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable}`}
+      className={poppins.variable}
       data-scroll-behavior="smooth"
     >
       <head>
@@ -144,7 +132,13 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
-        <CustomerIoFormsScript />
+        <a
+          href="#main-content"
+          lang="en"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:font-semibold focus:text-primary focus:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+        >
+          Skip to main content
+        </a>
         <LineTagScripts />
         <AppClientProviders>{children}</AppClientProviders>
       </body>

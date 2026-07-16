@@ -1,43 +1,178 @@
-import { getAnalytics, isSupported, logEvent } from "firebase/analytics";
-import { isMarketingAnalyticsEnabled } from "@/lib/app-config";
+import type { Analytics } from "firebase/analytics";
+import {
+  isMarketingAnalyticsEnabled,
+  publicFirebaseConfig,
+} from "@/lib/app-config";
 import { isAnalyticsAllowed } from "@/lib/cookie-consent";
+import { googleConsentSettingsForPreferences } from "@/lib/google-consent-mode";
 import { posthogCapture } from "@/lib/posthog-client";
 import { mixpanelCapture, mixpanelRegister } from "@/lib/mixpanel-client";
-import { getFirebaseApp } from "@/lib/firebase";
 
-/**
- * One-time Analytics bootstrap (browser, after `getFirebaseApp()`).
- * Call from `FirebaseClientInit` only. No-op until cookie consent is granted (#7).
- */
-export function initFirebaseAnalytics(): void {
-  if (!isMarketingAnalyticsEnabled() || !isAnalyticsAllowed()) return;
-  const app = getFirebaseApp();
-  if (!app) return;
+type FirebaseAnalyticsSdk = typeof import("firebase/analytics");
 
-  void isSupported().then((supported) => {
-    if (!supported) return;
-    getAnalytics(app);
-  });
+const GOGOCASH_COOKIE_DOMAIN = "gogocash.co";
+const GA_COOKIE_NAMES = new Set(["_ga", "_gid", "_gat", "_gcl_au"]);
+
+let analyticsClient: Analytics | null = null;
+let analyticsSdk: FirebaseAnalyticsSdk | null = null;
+let analyticsInitialization: Promise<Analytics | null> | null = null;
+
+function firebaseAnalyticsAllowed(): boolean {
+  return isMarketingAnalyticsEnabled() && isAnalyticsAllowed();
 }
 
-function getAnalyticsSafe(): ReturnType<typeof getAnalytics> | undefined {
-  if (typeof window === "undefined") return undefined;
-  if (!isMarketingAnalyticsEnabled() || !isAnalyticsAllowed()) return undefined;
-  const app = getFirebaseApp();
-  if (!app) return undefined;
-  try {
-    return getAnalytics(app);
-  } catch {
-    return undefined;
+function logFirebaseDebug(context: string, err: unknown): void {
+  if (process.env.NODE_ENV === "development") {
+    console.debug(`[firebase-analytics] ${context}:`, err);
   }
+}
+
+function isGoogleAnalyticsCookie(name: string): boolean {
+  return (
+    GA_COOKIE_NAMES.has(name) ||
+    name.startsWith("_ga_") ||
+    name.startsWith("_gat_") ||
+    name.startsWith("_gac_")
+  );
+}
+
+function accessibleCookieDomains(): string[] {
+  const hostname = window.location.hostname.replace(/\.$/, "").toLowerCase();
+  const domains = new Set<string>();
+  if (hostname) domains.add(hostname);
+  if (
+    hostname === GOGOCASH_COOKIE_DOMAIN ||
+    hostname.endsWith(`.${GOGOCASH_COOKIE_DOMAIN}`)
+  ) {
+    domains.add(GOGOCASH_COOKIE_DOMAIN);
+  }
+  return [...domains];
+}
+
+/** Remove every GA identifier that client-side JavaScript is allowed to see. */
+function clearAccessibleGoogleAnalyticsCookies(): void {
+  if (typeof document === "undefined" || typeof window === "undefined") return;
+
+  let names: string[];
+  try {
+    names = document.cookie
+      .split(";")
+      .map((part) => part.slice(0, part.indexOf("=")).trim())
+      .filter((name) => name && isGoogleAnalyticsCookie(name));
+  } catch {
+    return;
+  }
+
+  const expires = "Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0; Path=/";
+  for (const name of new Set(names)) {
+    try {
+      // Host-only cookie.
+      document.cookie = `${name}=; ${expires}`;
+      // GA commonly uses an auto-selected parent domain. Try every domain this
+      // page can legally overwrite; inaccessible third-party cookies remain the
+      // provider's responsibility.
+      for (const domain of accessibleCookieDomains()) {
+        document.cookie = `${name}=; ${expires}; Domain=${domain}`;
+      }
+    } catch {
+      /* cookies blocked — there is nothing accessible to clear */
+    }
+  }
+}
+
+function setFirebaseCollectionEnabled(enabled: boolean): void {
+  if (!analyticsClient || !analyticsSdk) return;
+  try {
+    analyticsSdk.setAnalyticsCollectionEnabled(analyticsClient, enabled);
+  } catch (err) {
+    logFirebaseDebug("collection state update failed", err);
+  }
+}
+
+function currentGoogleConsentSettings() {
+  return googleConsentSettingsForPreferences(
+    isAnalyticsAllowed(),
+  );
+}
+
+function syncGoogleConsentMode(): void {
+  if (!analyticsSdk) return;
+  try {
+    analyticsSdk.setConsent(currentGoogleConsentSettings());
+  } catch (err) {
+    logFirebaseDebug("Google consent update failed", err);
+  }
+}
+
+async function initializeFirebaseAnalytics(): Promise<Analytics | null> {
+  if (typeof window === "undefined" || !firebaseAnalyticsAllowed()) return null;
+  const config = publicFirebaseConfig();
+  if (!config?.projectId) return null;
+
+  try {
+    const [firebaseApp, firebaseAnalytics] = await Promise.all([
+      import("firebase/app"),
+      import("firebase/analytics"),
+    ]);
+    if (!firebaseAnalyticsAllowed()) return null;
+    if (!(await firebaseAnalytics.isSupported())) return null;
+    if (!firebaseAnalyticsAllowed()) return null;
+
+    analyticsSdk = firebaseAnalytics;
+    // Establish denied-by-default ad consent before Firebase creates gtag or
+    // sends its first request. The SDK preserves this until initialization.
+    syncGoogleConsentMode();
+    const app = firebaseApp.getApps()[0] ?? firebaseApp.initializeApp(config);
+    analyticsClient = firebaseAnalytics.getAnalytics(app);
+    return analyticsClient;
+  } catch (err) {
+    logFirebaseDebug("init failed", err);
+    return null;
+  }
+}
+
+function ensureFirebaseAnalytics(): Promise<Analytics | null> {
+  if (analyticsClient) return Promise.resolve(analyticsClient);
+  if (analyticsInitialization) return analyticsInitialization;
+
+  const pending = initializeFirebaseAnalytics();
+  analyticsInitialization = pending;
+  void pending.finally(() => {
+    if (analyticsInitialization === pending) analyticsInitialization = null;
+  });
+  return pending;
+}
+
+/**
+ * Reconcile Firebase/GA4 with the latest consent decision. This intentionally
+ * awaits an in-flight initializer and checks consent again afterwards so a slow
+ * SDK import cannot turn collection back on after withdrawal.
+ */
+export async function syncFirebaseAnalyticsConsent(): Promise<void> {
+  syncGoogleConsentMode();
+  if (!firebaseAnalyticsAllowed()) {
+    setFirebaseCollectionEnabled(false);
+    clearAccessibleGoogleAnalyticsCookies();
+    return;
+  }
+
+  const analytics = await ensureFirebaseAnalytics();
+  if (!analytics) {
+    if (!firebaseAnalyticsAllowed()) clearAccessibleGoogleAnalyticsCookies();
+    return;
+  }
+
+  const enabled = firebaseAnalyticsAllowed();
+  syncGoogleConsentMode();
+  setFirebaseCollectionEnabled(enabled);
+  if (!enabled) clearAccessibleGoogleAnalyticsCookies();
 }
 
 /** Fire a GA4 event when Firebase analytics is available (consent-gated). */
 function logFirebase(name: string, params?: Record<string, unknown>): void {
-  const analytics = getAnalyticsSafe();
-  if (!analytics) return;
+  if (!analyticsClient || !analyticsSdk || !firebaseAnalyticsAllowed()) return;
   try {
-    logEvent(analytics, name, params);
+    analyticsSdk.logEvent(analyticsClient, name, params);
   } catch {
     /* SDK not ready */
   }

@@ -29,7 +29,7 @@ Use these guidelines when helping users navigate public GoGoCash content.
 
 ## Legal And Policy Pages
 
-- Use [Privacy Policy](https://gogocash.co/privacy-policy), [Terms of Use](https://gogocash.co/term-of-use), [Terms of Service](https://gogocash.co/terms-of-service), and [How GoGoCash Makes Money](https://gogocash.co/how-gogocash-makes-money) for policy references.
+- Use [Privacy Policy](https://gogocash.co/privacy-policy), [Terms of Use](https://gogocash.co/term-of-use), and [How GoGoCash Makes Money](https://gogocash.co/how-gogocash-makes-money) for policy references.
 - Summarize policy pages carefully and link users to the source for complete terms.
 - Do not rewrite legal terms as binding advice.
 
