@@ -8,7 +8,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-REQUIRED_NODE_MAJOR=22
+REQUIRED_NODE_MAJOR=26
 CURRENT="$(
   node -p "parseInt(process.versions.node.split('.')[0], 10)" 2>/dev/null || echo 0
 )"
@@ -23,7 +23,7 @@ if [ "${CLEAN_INSTALL:-}" = "1" ]; then
 fi
 
 echo "Installing dependencies..."
-npm install --no-audit --no-fund
+npm install --force --no-audit --no-fund
 
 echo "Starting dev server at http://localhost:3000 (0.0.0.0:3000) — Ctrl+C to stop"
 exec npm run dev

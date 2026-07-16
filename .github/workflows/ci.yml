@@ -23,5 +23,5 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm ci
+      - run: npm ci --force
       - run: npm run verify

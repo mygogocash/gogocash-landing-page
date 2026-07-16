@@ -19,7 +19,7 @@ run_docker() {
 }
 
 if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
-  REQUIRED_NODE_MAJOR=22
+  REQUIRED_NODE_MAJOR=26
   CURRENT="$(node -p "parseInt(process.versions.node.split('.')[0], 10)" 2>/dev/null || echo 0)"
   if [ "${CURRENT}" -ne "${REQUIRED_NODE_MAJOR}" ]; then
     echo "error: Node.js ${REQUIRED_NODE_MAJOR}.x required (got: $(node -v))"
@@ -27,7 +27,7 @@ if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
   fi
   if [ ! -d node_modules ]; then
     echo "Installing dependencies..."
-    npm install --no-audit --no-fund
+    npm install --force --no-audit --no-fund
   fi
   run_node
 fi
@@ -41,8 +41,8 @@ fi
 cat <<'EOF'
 Could not start the dev server.
 
-Option A — Install Node.js 22 (https://nodejs.org/), then from this folder:
-  npm install
+Option A — Install Node.js 26 (https://nodejs.org/), then from this folder:
+  npm install --force
   npm run dev
 
 Option B — Install Docker Desktop, then from this folder:
