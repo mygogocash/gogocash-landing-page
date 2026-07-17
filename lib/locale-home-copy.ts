@@ -5,6 +5,19 @@
  */
 export type LocaleHomeWhyCard = { title: string; body: string };
 export type LocaleHomeFeatureCard = { title: string; body: string };
+export type LocaleHomeQuestCard = { title: string; body: string };
+export type LocaleHomeQuestsCopy = {
+  badge: string;
+  title: string;
+  intro: string;
+  cards: readonly [
+    LocaleHomeQuestCard,
+    LocaleHomeQuestCard,
+    LocaleHomeQuestCard,
+  ];
+  stacking: string;
+  cta: string;
+};
 export type LocaleHomeHowStep = {
   summary: string;
   title: string;
@@ -69,6 +82,7 @@ export type LocaleHomeCopy = {
     ];
     ctaCard: { title: string; bodyLine: string; cta: string };
   };
+  quests: LocaleHomeQuestsCopy;
   howItWorks: {
     title: string;
     intro: string;

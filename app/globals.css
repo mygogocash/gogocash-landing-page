@@ -96,6 +96,12 @@ body {
   transform: translateY(0);
 }
 
+/* Never animate a keyboard focus target while its ancestor is transparent. */
+.animate-on-scroll:focus-within {
+  opacity: 1;
+  transition: transform var(--motion-duration-section) var(--motion-ease-standard);
+}
+
 .animate-on-scroll.fade-in-left {
   transform: translateX(-30px);
 }

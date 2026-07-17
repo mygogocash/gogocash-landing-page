@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "path": "design-sources/marketing-art/hero-dashboard-phones.svg",
+    "sha256": "92052317b920c785be74bc8b0d57815c354ec559ea8995b1363c42a51692d7f7"
+  },
+  "generator": {
+    "path": "scripts/generate-hero-assets.mjs",
+    "sha256": "4cf9b9e57dffa7248f2bd1e4b11414f77c67ff7549e60b356bd720dd8aad1080"
+  },
+  "config": {
+    "sha256": "db398e4097fd682218d9bf23b078dfab8bc579b1bba9a21af0cc017bb088ba8f",
+    "value": {
+      "density": 144,
+      "aspectRatio": {
+        "width": 4,
+        "height": 3
+      },
+      "widths": [
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "formats": {
+        "avif": {
+          "quality": 72,
+          "effort": 6,
+          "chromaSubsampling": "4:4:4"
+        },
+        "webp": {
+          "quality": 84,
+          "alphaQuality": 100,
+          "effort": 6
+        }
+      },
+      "maxBytes": 307200
+    }
+  },
+  "generatedWith": {
+    "node": "v26.5.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "sharp": "0.35.3",
+    "libvips": "8.18.3"
+  },
+  "assets": [
+    {
+      "path": "public/images/hero-neutral-phones-480.avif",
+      "sha256": "6520718418cc7ac2b531a78627ce7b11e37b56c15172ad71ecd2304f74e08634",
+      "bytes": 18041,
+      "width": 480,
+      "height": 360,
+      "format": "avif",
+      "mediaType": "image/avif",
+      "hasAlpha": true
+    },
+    {
+      "path": "public/images/hero-neutral-phones-480.webp",
+      "sha256": "4c362f0e4a92e0e040526c4913fcfe8274ddc5e6416db5aa76106bd1dda33eac",
+      "bytes": 24714,
+      "width": 480,
+      "height": 360,
+      "format": "webp",
+      "mediaType": "image/webp",
+      "hasAlpha": true
+    },
+    {
+      "path": "public/images/hero-neutral-phones-800.avif",
+      "sha256": "a8c3822f65f491c51b270ad40cf0918e6d0720044849ab7dffaf6d4acd0a36c3",
+      "bytes": 32323,
+      "width": 800,
+      "height": 600,
+      "format": "avif",
+      "mediaType": "image/avif",
+      "hasAlpha": true
+    },
+    {
+      "path": "public/images/hero-neutral-phones-800.webp",
+      "sha256": "64f5c4e1bf836726cef7616260611a7c54d9e56ac5de430356c3357f41a90c00",
+      "bytes": 47904,
+      "width": 800,
+      "height": 600,
+      "format": "webp",
+      "mediaType": "image/webp",
+      "hasAlpha": true
+    },
+    {
+      "path": "public/images/hero-neutral-phones-1200.avif",
+      "sha256": "34a4307260438e14cb39a2c2cff6c50943cd3a4371f2b2a78d0180632ccb2831",
+      "bytes": 51974,
+      "width": 1200,
+      "height": 900,
+      "format": "avif",
+      "mediaType": "image/avif",
+      "hasAlpha": true
+    },
+    {
+      "path": "public/images/hero-neutral-phones-1200.webp",
+      "sha256": "ef09adf283f6ff136f79434bcd274bd709911bd464c250a451c8e682bb8ba43e",
+      "bytes": 79848,
+      "width": 1200,
+      "height": 900,
+      "format": "webp",
+      "mediaType": "image/webp",
+      "hasAlpha": true
+    },
+    {
+      "path": "public/images/hero-neutral-phones-1600.avif",
+      "sha256": "9cbecdcb1c3248690ce85c6170ece5fd75b77b48d6cda9adf1f5a6626519acac",
+      "bytes": 71305,
+      "width": 1600,
+      "height": 1200,
+      "format": "avif",
+      "mediaType": "image/avif",
+      "hasAlpha": true
+    },
+    {
+      "path": "public/images/hero-neutral-phones-1600.webp",
+      "sha256": "b30e65e18eb2e32e1a3725c0dc8a4b32440b1e5f22796cfba5bf90ff0a6e813f",
+      "bytes": 113696,
+      "width": 1600,
+      "height": 1200,
+      "format": "webp",
+      "mediaType": "image/webp",
+      "hasAlpha": true
+    }
+  ]
+}

@@ -1,8 +1,14 @@
 "use client";
 
 import { useCallback } from "react";
-import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/components/social-data";
 import { logLaunchAppClick } from "@/lib/analytics-client";
+import {
+  DEFAULT_DESKTOP_LAUNCH_TARGET,
+  DEFAULT_MOBILE_LAUNCH_TARGET,
+  launchTargetBehavior,
+  type DesktopLaunchTarget,
+  type MobileLaunchTarget,
+} from "@/lib/launch-app-target";
 import { mixpanelDistinctId } from "@/lib/mixpanel-client";
 import { sendLineTagConversion } from "@/lib/line-tag";
 
@@ -29,53 +35,60 @@ type LaunchAppLinkProps = {
   children: React.ReactNode;
   /** Where on the page this CTA sits (hero, final, feature, header, quests). */
   surface?: string;
+  desktopTarget?: DesktopLaunchTarget;
+  mobileTarget?: MobileLaunchTarget;
 };
 
 /**
- * Desktop (md+): opens web app. Mobile: opens LINE Mini App.
+ * Defaults to the web app on desktop and LINE Mini App on mobile. Callers may
+ * atomically override either typed target (for example, Quests uses web on both).
  * Pass full button styles in `className`; visibility toggles are applied here.
  */
 export default function LaunchAppLink({
   className,
   children,
   surface = "unknown",
+  desktopTarget = DEFAULT_DESKTOP_LAUNCH_TARGET,
+  mobileTarget = DEFAULT_MOBILE_LAUNCH_TARGET,
 }: LaunchAppLinkProps) {
   const external = {
     target: "_blank" as const,
     rel: "noopener noreferrer" as const,
   };
 
-  const onWeb = useCallback(
+  const onDesktop = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
       // Rewrite href just-in-time so the navigation carries the distinct_id.
-      event.currentTarget.href = withDistinctId(WEB_APP_HREF);
-      logLaunchAppClick("web_desktop", surface);
+      event.currentTarget.href = withDistinctId(desktopTarget.href);
+      const behavior = launchTargetBehavior("desktop", desktopTarget);
+      logLaunchAppClick(behavior.destination, surface);
     },
-    [surface],
+    [desktopTarget, surface],
   );
-  const onLine = useCallback(
+  const onMobile = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
-      event.currentTarget.href = withDistinctId(LINE_MINI_APP_HREF);
-      logLaunchAppClick("line_mobile", surface);
-      sendLineTagConversion();
+      event.currentTarget.href = withDistinctId(mobileTarget.href);
+      const behavior = launchTargetBehavior("mobile", mobileTarget);
+      logLaunchAppClick(behavior.destination, surface);
+      if (behavior.sendLineConversion) sendLineTagConversion();
     },
-    [surface],
+    [mobileTarget, surface],
   );
 
   return (
     <>
       <a
-        href={WEB_APP_HREF}
+        href={desktopTarget.href}
         {...external}
-        onClick={onWeb}
+        onClick={onDesktop}
         className={`${className} hidden md:inline-flex`}
       >
         {children}
       </a>
       <a
-        href={LINE_MINI_APP_HREF}
+        href={mobileTarget.href}
         {...external}
-        onClick={onLine}
+        onClick={onMobile}
         className={`${className} inline-flex md:hidden`}
       >
         {children}
