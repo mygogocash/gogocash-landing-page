@@ -34,6 +34,22 @@ export function withProductionHeaders(
     "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
   );
 
+  if (headers.get("Content-Type")?.toLowerCase().includes("text/html")) {
+    const cacheControl = headers.get("Cache-Control");
+    const hasNoTransform = cacheControl
+      ?.split(",")
+      .some((directive) => directive.trim().toLowerCase() === "no-transform");
+
+    // Cloudflare honors this standard directive by leaving the tested HTML
+    // artifact unchanged instead of auto-injecting analytics outside consent.
+    if (!hasNoTransform) {
+      headers.set(
+        "Cache-Control",
+        cacheControl ? `${cacheControl}, no-transform` : "no-transform",
+      );
+    }
+  }
+
   if (response.ok && pathname.startsWith(IMMUTABLE_ASSET_PREFIX)) {
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
   }
