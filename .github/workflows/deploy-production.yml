@@ -54,11 +54,11 @@ jobs:
           STRAPI_URL: ${{ vars.STRAPI_URL }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
       - name: Install browser runtime
-        run: npx playwright install --with-deps chromium webkit
+        run: npm exec -- playwright install --with-deps chromium webkit
       - name: Test verified static export
         run: npm run test:e2e:ci
       - name: Deploy verified artifact
-        run: npx wrangler deploy --config wrangler.production.jsonc
+        run: npm exec -- wrangler deploy --config wrangler.production.jsonc
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

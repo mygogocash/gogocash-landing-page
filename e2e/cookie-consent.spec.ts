@@ -129,6 +129,25 @@ test.describe("cookie consent (#7)", () => {
     await expect(page.getByRole("button", { name: "Cookie Settings" })).toBeFocused();
   });
 
+  test("revocation in one tab tears down trackers in another tab", async ({
+    context,
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "load", timeout: 90_000 });
+    await page.getByRole("button", { name: "Accept all" }).click();
+    await expect(page.locator(LINE_SCRIPT)).toHaveCount(1, { timeout: 10_000 });
+
+    const settingsPage = await context.newPage();
+    await settingsPage.goto("/", { waitUntil: "load", timeout: 90_000 });
+    await settingsPage.getByRole("button", { name: "Cookie Settings" }).click();
+    await settingsPage.getByLabel("Analytics cookies").uncheck();
+    await settingsPage.getByLabel("Marketing cookies").uncheck();
+    await settingsPage.getByRole("button", { name: "Save preferences" }).click();
+
+    await expect(page.locator(LINE_SCRIPT)).toHaveCount(0, { timeout: 10_000 });
+    await settingsPage.close();
+  });
+
   test("shows Thai copy on the /th route", async ({ page }) => {
     await page.goto("/th", { waitUntil: "load", timeout: 90_000 });
     await expect(

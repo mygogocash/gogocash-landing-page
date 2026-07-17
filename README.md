@@ -87,9 +87,9 @@ flowchart LR
 
 - **Node.js 26.x** (use [`.nvmrc`](./.nvmrc) / `fnm` / `nvm`; `package.json` `engines` is `>=26 <27`).
 - **npm** (lockfile is `package-lock.json`; use `npm ci --force` in CI and for reproducible installs).
-- For **production deploy to Cloudflare**: [Wrangler](https://developers.cloudflare.com/workers/wrangler/) (`npx wrangler`) and access to the GoGoCash Cloudflare account. Run `npx wrangler login` once locally, or set `CLOUDFLARE_API_TOKEN` in CI.
+- For **production deploy to Cloudflare**: install dependencies to use the lockfile-backed [Wrangler](https://developers.cloudflare.com/workers/wrangler/) CLI and obtain access to the GoGoCash Cloudflare account. Run `npm exec -- wrangler login` once locally, or set `CLOUDFLARE_API_TOKEN` in CI.
 - For **legacy Firebase deploy** (staging only): Firebase CLI is a **devDependency** — prefer `npm exec -- firebase` from the repo root.
-- For **Playwright locally**: after `npm ci --force`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npx playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
+- For **Playwright locally**: after `npm ci --force`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npm exec -- playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
 
 > **Temporary peer-install policy:** TypeScript 7 is newer than TypeScript-ESLint's
 > declared `>=4.8.4 <6.1.0` peer range. Use the explicit `--force` flag for repository
@@ -236,10 +236,10 @@ Equivalent manual steps:
 
 ```bash
 npm run build
-npx wrangler deploy --config wrangler.production.jsonc
+npm exec -- wrangler deploy --config wrangler.production.jsonc
 ```
 
-Authenticate once with `npx wrangler login`, or set `CLOUDFLARE_API_TOKEN` (Workers Scripts write + account read). The GoGoCash account id is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc); set `CLOUDFLARE_ACCOUNT_ID` only if you use a different config without `account_id`.
+Authenticate once with `npm exec -- wrangler login`, or set `CLOUDFLARE_API_TOKEN` (Workers Scripts write + account read). The GoGoCash account id is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc); set `CLOUDFLARE_ACCOUNT_ID` only if you use a different config without `account_id`.
 
 Production builds emit **canonical asset URLs** (`https://gogocash.co/...`) via [`lib/public-asset-url.ts`](./lib/public-asset-url.ts) so images and icons still load when the hostname has a trailing dot (`gogocash.co.`).
 
@@ -323,9 +323,10 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 ## Patches & tooling notes
 
 - **Tailwind CSS 4**: Global styles import Tailwind from [`app/globals.css`](./app/globals.css) and load the project config with `@config "../tailwind.config.ts"`. PostCSS uses `@tailwindcss/postcss`; no `patch-package` patch is currently required.
+- **Poppins**: The four production weights are self-hosted from lockfile-managed `@fontsource/poppins` through `next/font/local`, so builds do not call Google Fonts. The deployed OFL notice is in [`public/licenses/poppins-OFL-1.1.txt`](./public/licenses/poppins-OFL-1.1.txt).
 - **Firebase CLI**: Use the **project-local** version (`npm exec -- firebase`) for legacy Firebase Hosting deploys only.
 - **Dependency audit**: `npm audit --omit=dev` is clean. The latest `firebase-tools` development tree currently inherits [GHSA-8988-4f7v-96qf](https://github.com/advisories/GHSA-8988-4f7v-96qf) through `@google-cloud/pubsub` → `@opentelemetry/core`; track the upstream fix, but do **not** run `npm audit fix --force` or downgrade Firebase Tools.
-- **Wrangler**: Use `npx wrangler` from the repo root for production; config is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc) and tested in [`lib/cloudflare-build-contract.test.ts`](./lib/cloudflare-build-contract.test.ts).
+- **Wrangler**: Use the lockfile-backed `npm exec -- wrangler` from the repo root for production; config is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc) and tested in [`lib/cloudflare-build-contract.test.ts`](./lib/cloudflare-build-contract.test.ts).
 
 ---
 
@@ -351,7 +352,7 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 | Build works locally, CI fails | Compare Node version (26.x), ensure `npm ci --force` succeeds and the lockfile is committed, then check GitHub Actions logs for the failing step. |
 | Firebase deploy auth errors in CI | Staging WIF only. Production landing deploy is Cloudflare Wrangler, not Firebase. |
 | Empty partner data in build | Set `INVOLVE_ASIA_*` for build, or accept static fallback documented in `.env.example`. |
-| E2E WebKit: “Host system is missing dependencies” (CI/Linux) | Run `npx playwright install --with-deps chromium webkit` (see workflow); `playwright install` alone is not enough for WebKit on Ubuntu. |
+| E2E WebKit: “Host system is missing dependencies” (CI/Linux) | Run `npm exec -- playwright install --with-deps chromium webkit` (see workflow); `playwright install` alone is not enough for WebKit on Ubuntu. |
 
 ---
 

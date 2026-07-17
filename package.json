@@ -23,7 +23,7 @@
     "analyze": "cross-env ANALYZE=true npm run build:webpack",
     "analyze:turbopack": "npm run typecheck && npm exec -- next experimental-analyze",
     "build:clean": "npm run clean && npm run build",
-    "deploy:cloudflare": "npm run build && npx wrangler deploy --config wrangler.production.jsonc",
+    "deploy:cloudflare": "npm run build && npm exec -- wrangler deploy --config wrangler.production.jsonc",
     "deploy:firebase": "npm run build && node scripts/deploy-firebase-hosting.mjs",
     "deploy:firebase:full": "npm run deploy:firebase",
     "start": "npm exec -- next start",
@@ -35,18 +35,19 @@
     "test:e2e:static": "npm run build && npm run test:e2e:static-only",
     "test:e2e:static-only": "npm exec -- cross-env PLAYWRIGHT_SERVE_STATIC=1 playwright test --project=mobile-chrome",
     "test:e2e:install": "npm exec -- playwright install chromium webkit",
-    "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit",
+    "typecheck": "npm exec -- next typegen && node ./node_modules/typescript/bin/tsc --noEmit",
     "verify": "npm run lint && npm run test && npm run typecheck && npm run build",
     "learn:strapi-push": "npm exec -- tsx scripts/push-learn-to-strapi.ts",
     "generate:assets": "node scripts/generate-seo-assets.mjs",
     "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --preset=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
   },
   "dependencies": {
+    "@fontsource/poppins": "^5.2.7",
     "@swc/helpers": "0.5.23",
     "firebase": "^12.16.0",
     "mixpanel-browser": "^2.81.0",
     "next": "^16.2.10",
-    "posthog-js": "^1.402.3",
+    "posthog-js": "^1.404.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-markdown": "^10.1.0",
@@ -79,7 +80,8 @@
     "sharp": "^0.35.3",
     "tailwindcss": "4.3.3",
     "tsx": "^4.23.1",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "wrangler": "^4.111.0"
   },
   "overrides": {
     "postcss": "^8.5.19",

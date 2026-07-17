@@ -126,11 +126,18 @@ async function initPostHog(): Promise<void> {
  */
 export async function syncPostHogConsent(): Promise<void> {
   if (posthogAllowed()) {
-    if (client) client.opt_in_capturing();
-    else await initPostHog();
+    if (client) {
+      client.opt_in_capturing();
+      if (shouldRecordThisSession()) client.startSessionRecording();
+    } else await initPostHog();
   } else if (client) {
+    // Stop SDK-owned collection before clearing the anonymous identity. PostHog's
+    // reset() also clears its consent marker, so opt out again afterward to leave
+    // the SDK itself denied—not only GoGoCash's capture wrappers.
     client.opt_out_capturing();
+    client.stopSessionRecording();
     client.reset();
+    client.opt_out_capturing();
   }
 }
 

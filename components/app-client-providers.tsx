@@ -7,6 +7,7 @@ import { PostHogInit } from "@/components/posthog-init";
 import { MixpanelInit } from "@/components/mixpanel-init";
 import { AnalyticsRouteListener } from "@/components/analytics-route-listener";
 import CookieConsent from "@/components/cookie-consent";
+import { CookieConsentStorageSync } from "@/components/cookie-consent-storage-sync";
 import DocumentLangSync from "@/components/document-lang-sync";
 
 /**
@@ -18,6 +19,7 @@ export function AppClientProviders({ children }: { children: ReactNode }) {
     <>
       <DocumentLangSync />
       <BrowserLocaleBootstrap />
+      <CookieConsentStorageSync />
       <FirebaseClientInit />
       <PostHogInit />
       <MixpanelInit />

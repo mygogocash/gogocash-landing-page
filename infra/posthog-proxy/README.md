@@ -9,7 +9,7 @@ edge on a route. Full rationale: [`docs/posthog-reverse-proxy.md`](../../docs/po
 
 ```bash
 cd infra/posthog-proxy
-npx wrangler deploy      # needs a Cloudflare API token (Workers Scripts + Routes, gogocash.co zone)
+npm exec -- wrangler deploy  # needs a Cloudflare API token (Workers Scripts + Routes, gogocash.co zone)
 ```
 
 ## Activate (only AFTER the deploy verifies)

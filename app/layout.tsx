@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
+import localFont from "next/font/local";
 import { LineTagScripts } from "@/components/line-tag-scripts";
 import { AppClientProviders } from "@/components/app-client-providers";
 import SchemaMarkup from "@/components/schema-markup";
@@ -34,9 +34,29 @@ function metadataBaseUrl(): URL {
   return new URL("https://gogocash.co");
 }
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const poppins = localFont({
+  src: [
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-poppins",
   display: "swap",
 });

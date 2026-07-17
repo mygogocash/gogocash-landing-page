@@ -27,7 +27,7 @@ host and everything else to the event host):
 
 ```bash
 cd infra/posthog-proxy
-npx wrangler deploy          # binds the route gogocash.co/ingest/*
+npm exec -- wrangler deploy  # binds the route gogocash.co/ingest/*
 ```
 
 Then set `NEXT_PUBLIC_POSTHOG_HOST` + `NEXT_PUBLIC_POSTHOG_UI_HOST` as GitHub Actions
