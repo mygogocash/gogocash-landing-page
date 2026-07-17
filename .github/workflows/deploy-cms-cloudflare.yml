@@ -38,10 +38,10 @@ jobs:
           cache: npm
 
       - name: Install
-        run: npm ci
+        run: npm ci --force
 
       - name: Install CMS
-        run: npm --prefix cms/strapi ci
+        run: npm --prefix cms/strapi ci --force
 
       - name: Validate landing and CMS config
         run: npm run test && npm run typecheck && npm run cms:build

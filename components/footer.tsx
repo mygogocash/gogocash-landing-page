@@ -12,17 +12,19 @@ import {
 import { SOCIAL_ICONS } from "@/components/social-data";
 import SocialIcon from "@/components/social-icon";
 import { CookieSettingsButton } from "@/components/cookie-settings-button";
-import NewsletterSignup from "@/components/newsletter-signup";
 import { FOOTER_LINKS, FOOTER_TRUST_ROW_COLUMN } from "@/lib/footer-links";
-import { newsletterSignupConfig } from "@/lib/app-config";
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const newsletterConfig = newsletterSignupConfig();
 
   return (
-    <footer role="contentinfo" className="bg-white pt-12 pb-8 sm:pt-20">
+    <footer
+      role="contentinfo"
+      lang="en"
+      className="bg-white pt-12 pb-8 sm:pt-20"
+    >
       <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
+        <h2 className="sr-only">GoGoCash footer</h2>
         {/* Top section */}
         <div className="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:justify-between">
           {/* Left: Logo */}
@@ -34,21 +36,21 @@ export default function Footer() {
             >
               <GoGoCashLogo variant="color" />
             </Link>
-            <div className="mt-8">
-              <NewsletterSignup config={newsletterConfig} />
-            </div>
           </div>
 
           {/* Right: Link columns */}
           <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-4 lg:gap-12 xl:gap-16">
             {Object.entries(FOOTER_LINKS).map(([title, links]) => (
               <div key={title}>
-                <h4 className="text-sm font-semibold text-[#1f2937]">
+                <h3 className="text-sm font-semibold text-[#1f2937]">
                   {title}
-                </h4>
+                </h3>
                 <ul className="mt-4 flex flex-col gap-3">
                   {links.map((link) => {
-                    const external = link.href.startsWith("http");
+                    const opensNewTab = /^https?:/.test(link.href);
+                    const usesAppRouter =
+                      link.href.startsWith("/") &&
+                      !/\.(?:md|txt|xml)(?:$|[?#])/.test(link.href);
                     const className = `text-sm text-[#6b7280] hover:text-[#1f2937] ${twNavTextMotion}`;
                     return (
                       <li key={link.label}>
@@ -58,12 +60,14 @@ export default function Footer() {
                           >
                             {link.label}
                           </CookieSettingsButton>
-                        ) : external ? (
+                        ) : !usesAppRouter ? (
                           <a
                             href={link.href}
                             className={className}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target={opensNewTab ? "_blank" : undefined}
+                            rel={
+                              opensNewTab ? "noopener noreferrer" : undefined
+                            }
                           >
                             {link.label}
                           </a>
@@ -127,7 +131,7 @@ export default function Footer() {
         </div>
 
         {/* Risk disclaimer — below copyright / social */}
-        <p className="mt-8 text-xs leading-relaxed text-[#9ca3af]">
+        <p className="mt-8 text-xs leading-relaxed text-[#6b7280]">
           Cashback rates, merchant availability, and product features may
           change. GoGoCash does not provide financial, investment, or tax
           advice. Saving Plus and related offerings involve risk; read terms

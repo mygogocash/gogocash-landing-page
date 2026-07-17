@@ -3,6 +3,8 @@ import type { LocaleHomeCopy } from "@/lib/locale-home-copy";
 
 /** Thai landing page copy — keep numbers aligned with `SITE_FACTS`. */
 export const TH_HOME = {
+  documentLang: "th",
+  partnerLogoAltTemplate: "{name} พันธมิตรแคชแบ็ก GoGoCash",
   langNavEnglish: "English site",
   langNavLocal: "ภาษาไทย",
   breadcrumbNavAria: "เลือกภาษา",
@@ -10,7 +12,7 @@ export const TH_HOME = {
   hero: {
     h1: "รับแคชแบ็กทุกครั้งที่ใช้จ่าย",
     sub: "กับ GoGoCash — ช้อปที่คุณคุ้นเคยอยู่แล้ว",
-    body: `รับแคชแบ็กสูงสุด 30% ที่ร้านกว่า ${SITE_FACTS.partnerCountLabel} แบรนด์ — ${SITE_FACTS.keyMerchantsShort} และอื่น ๆ ทั่วเอเชียตะวันออกเฉียงใต้ ใช้ฟรี เงินคืนจริงเข้ากระเป๋า — เล่นเควสในแอปเพื่อโบนัสเพิ่ม`,
+    body: `รับแคชแบ็กสูงสุด ${SITE_FACTS.maxCashbackLabel} ที่ร้านกว่า ${SITE_FACTS.partnerCountLabel} แบรนด์ — ${SITE_FACTS.keyMerchantsShort} และอื่น ๆ ทั่วเอเชียตะวันออกเฉียงใต้ ใช้ฟรี เงินคืนจริงเข้ากระเป๋า — เล่นเควสในแอปเพื่อโบนัสเพิ่ม`,
     ctaLaunch: "เริ่มรับแคชแบ็ก",
     ctaLine: "สอบถามทาง LINE",
     lineAria: "ติดต่อเราผ่าน LINE",

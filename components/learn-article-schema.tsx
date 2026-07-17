@@ -1,7 +1,9 @@
 import type { LearnArticleMeta } from "@/lib/learn-articles";
 import { learnArticleDateIso } from "@/lib/learn-article-dates";
+import { serializeJsonLd } from "@/lib/json-ld";
 import { siteOrigin } from "@/lib/site";
 import { SITE_FACTS } from "@/lib/site-facts";
+import { OG_IMAGE_PATH } from "@/lib/social-preview";
 
 type Props = { slug: string; meta: LearnArticleMeta };
 
@@ -10,6 +12,7 @@ export default function LearnArticleSchema({ slug, meta }: Props) {
   const origin = siteOrigin();
   const url = `${origin}/learn/${slug}`;
   const logoUrl = `${origin}/images/gogocash-logo-mark.png`;
+  const published = learnArticleDateIso(meta.published);
   const modified = learnArticleDateIso(meta.updated);
 
   const article = {
@@ -17,12 +20,9 @@ export default function LearnArticleSchema({ slug, meta }: Props) {
     "@type": "Article",
     headline: meta.title,
     description: meta.metaDescription,
-    ...(modified
-      ? {
-          dateModified: modified,
-          datePublished: modified,
-        }
-      : {}),
+    image: [`${origin}${OG_IMAGE_PATH}`],
+    ...(published ? { datePublished: published } : {}),
+    ...(modified ? { dateModified: modified } : {}),
     author: {
       "@type": "Organization",
       name: SITE_FACTS.brandName,
@@ -51,7 +51,7 @@ export default function LearnArticleSchema({ slug, meta }: Props) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(article) }}
     />
   );
 }

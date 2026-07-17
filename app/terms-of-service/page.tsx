@@ -3,12 +3,22 @@ import path from "node:path";
 import type { Metadata } from "next";
 import LegalDocumentShell from "@/components/legal/legal-document-shell";
 import { LegalMarkdown } from "@/components/legal/legal-markdown";
+import { buildWebsiteSocialMetadata } from "@/lib/social-preview";
+
+const TITLE = "Terms of Service | GoGoCash";
+const DESCRIPTION =
+  "GoGoCash Terms of Service — rules for using GoGoCash platforms, accounts, and the cashback program.";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | GoGoCash",
-  description:
-    "GoGoCash Terms of Service — rules for using GoGoCash platforms, accounts, and the cashback program.",
-  alternates: { canonical: "/terms-of-service" },
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/term-of-use" },
+  ...buildWebsiteSocialMetadata({
+    title: TITLE,
+    description: DESCRIPTION,
+    locale: "en_US",
+    url: "/term-of-use",
+  }),
 };
 
 /** Same legal text as Terms of Use; alternate URL for SEO and ads compliance. */

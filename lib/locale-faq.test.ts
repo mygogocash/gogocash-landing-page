@@ -9,7 +9,7 @@ describe("locale-faq", () => {
     assert.equal(faqLocaleFromLandingPath("/"), "en");
     assert.equal(faqLocaleFromLandingPath("/en"), "en");
     assert.equal(faqLocaleFromLandingPath("/en/foo"), "en");
-    assert.equal(faqLocaleFromLandingPath("/id"), "en");
+    assert.equal(faqLocaleFromLandingPath("/id"), "id");
     assert.equal(faqLocaleFromLandingPath("/th"), "th");
     assert.equal(faqLocaleFromLandingPath("/th/x"), "th");
     assert.equal(faqLocaleFromLandingPath("/tw"), "tw");
@@ -23,7 +23,7 @@ describe("locale-faq", () => {
   });
 
   it("returns non-empty FAQ for each locale", () => {
-    for (const id of ["en", "th", "tw", "ja", "cn"] as const) {
+    for (const id of ["en", "th", "tw", "ja", "cn", "id"] as const) {
       assert.ok(faqItemsForLocale(id).length > 0, id);
     }
   });

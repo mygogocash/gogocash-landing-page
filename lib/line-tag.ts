@@ -1,4 +1,5 @@
 import { publicLineTagId, shouldLoadLineTag } from "@/lib/app-config";
+import { isMarketingAllowed } from "@/lib/cookie-consent";
 
 type LineTagGlobal = Window & { _lt?: (...args: unknown[]) => void };
 
@@ -7,6 +8,9 @@ type LineTagGlobal = Window & { _lt?: (...args: unknown[]) => void };
  */
 export function sendLineTagConversion(): void {
   if (typeof window === "undefined") return;
+  // Recheck at the final send boundary: a loaded or in-flight provider script
+  // can outlive the DOM cleanup that follows a consent withdrawal.
+  if (!isMarketingAllowed()) return;
   if (!shouldLoadLineTag()) return;
   const id = publicLineTagId();
   if (!id) return;

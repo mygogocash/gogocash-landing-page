@@ -4,7 +4,7 @@
  * Route: gogocash.co/ingest/*  ->  PostHog US cloud, so ingestion is first-party
  * and survives ad/tracker blockers (~10-30% of *.posthog.com requests are blocked).
  *
- * Deploy:  cd infra/posthog-proxy && npx wrangler deploy
+ * Deploy:  cd infra/posthog-proxy && npm exec -- wrangler deploy
  *   (needs a Cloudflare API token with Workers Scripts + Routes on the gogocash.co zone)
  *
  * Then set, in the site build env (GitHub Actions repo variables):

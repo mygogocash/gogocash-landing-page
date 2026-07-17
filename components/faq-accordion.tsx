@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ChevronDown } from "@/components/icons";
 import { logFaqOpen } from "@/lib/analytics-client";
 import {
@@ -22,11 +22,14 @@ interface FAQAccordionProps {
 
 export default function FAQAccordion({ items }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const accordionId = useId().replaceAll(":", "");
 
   return (
     <div className="flex flex-col gap-3">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
+        const buttonId = `faq-button-${accordionId}-${index}`;
+        const panelId = `faq-panel-${accordionId}-${index}`;
         return (
           <div
             key={index}
@@ -40,6 +43,8 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
               }}
               className={`flex min-h-11 w-full items-center justify-between gap-4 px-6 py-5 text-left ${twTransitionButton} ${twPressSm} rounded-2xl ${twFocusRingPrimary}`}
               aria-expanded={isOpen}
+              aria-controls={panelId}
+              id={buttonId}
             >
               <span className="min-w-0 flex-1 text-[15px] font-medium text-[#171717]">
                 {item.question}
@@ -51,6 +56,11 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
               />
             </button>
             <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              aria-hidden={!isOpen}
+              inert={!isOpen}
               className={`overflow-hidden transition-[max-height,opacity] duration-section ease-standard motion-reduce:duration-micro ${
                 isOpen ? "max-h-[min(100vh,56rem)] opacity-100" : "max-h-0 opacity-0"
               }`}

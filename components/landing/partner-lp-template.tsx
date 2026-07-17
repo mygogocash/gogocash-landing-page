@@ -23,7 +23,9 @@ export default function PartnerLpTemplate({
     <>
       <Header />
       <main
+        id="main-content"
         role="main"
+        tabIndex={-1}
         className="min-h-[60vh] min-w-0 bg-gradient-to-b from-mint/40 via-white to-cream/30"
       >
         <div className="mx-auto min-w-0 max-w-site px-4 pb-24 pt-28 sm:px-6 lg:px-8">

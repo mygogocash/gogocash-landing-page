@@ -59,10 +59,10 @@ const COPY: Record<"en" | "th", ConsentCopy> = {
     alwaysOn: "Always on",
     analyticsTitle: "Analytics cookies",
     analyticsBody:
-      "Help us measure visits and improve pages with Firebase Analytics and PostHog.",
+      "Help us measure visits and improve pages with Firebase Analytics, PostHog, and Mixpanel.",
     marketingTitle: "Marketing cookies",
     marketingBody:
-      "Let us load marketing pixels such as LINE Tag for campaign measurement.",
+      "Let us load LINE Tag for campaign measurement.",
     savePreferences: "Save preferences",
     rejectAll: "Reject all",
   },
@@ -82,10 +82,10 @@ const COPY: Record<"en" | "th", ConsentCopy> = {
     alwaysOn: "เปิดเสมอ",
     analyticsTitle: "คุกกี้วิเคราะห์",
     analyticsBody:
-      "ช่วยให้เราวัดการเข้าชมและปรับปรุงหน้าเว็บด้วย Firebase Analytics และ PostHog",
+      "ช่วยให้เราวัดการเข้าชมและปรับปรุงหน้าเว็บด้วย Firebase Analytics, PostHog และ Mixpanel",
     marketingTitle: "คุกกี้การตลาด",
     marketingBody:
-      "อนุญาตให้โหลดพิกเซลการตลาด เช่น LINE Tag เพื่อวัดผลแคมเปญ",
+      "อนุญาตให้โหลด LINE Tag เพื่อวัดผลแคมเปญ",
     savePreferences: "บันทึกการตั้งค่า",
     rejectAll: "ปฏิเสธทั้งหมด",
   },
@@ -123,9 +123,20 @@ export default function CookieConsent() {
   const [draft, setDraft] = useState<CookieConsentPreferences>(defaultDraft);
   const acceptRef = useRef<HTMLButtonElement>(null);
   const saveRef = useRef<HTMLButtonElement>(null);
+  const reopenTriggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const reopen = () => {
+    const reopen = (event: Event) => {
+      const requestedTrigger = (
+        event as CustomEvent<HTMLElement | null>
+      ).detail;
+      reopenTriggerRef.current =
+        requestedTrigger instanceof HTMLElement
+          ? requestedTrigger
+          : document.activeElement instanceof HTMLElement &&
+              document.activeElement !== document.body
+          ? document.activeElement
+          : null;
       setDraft(readConsent()?.preferences ?? defaultDraft());
       setShowPreferences(true);
       setForcedOpen(true);
@@ -139,16 +150,20 @@ export default function CookieConsent() {
   useEffect(() => {
     if (!visible) return;
     if (showPreferences) saveRef.current?.focus();
-    else acceptRef.current?.focus();
-  }, [showPreferences, visible]);
+    else if (forcedOpen) acceptRef.current?.focus();
+  }, [forcedOpen, showPreferences, visible]);
 
   if (!visible) return null;
 
   const decide = (preferences: CookieConsentPreferences) => {
+    const focusTarget =
+      reopenTriggerRef.current ?? document.getElementById("main-content");
     persistConsent(preferences);
     setForcedOpen(false);
     setShowPreferences(false);
     setDraft(preferences);
+    reopenTriggerRef.current = null;
+    window.requestAnimationFrame(() => focusTarget?.focus());
   };
 
   const openPreferences = () => {
@@ -166,6 +181,7 @@ export default function CookieConsent() {
   return (
     <div
       role="dialog"
+      lang={pathname?.startsWith("/th") ? "th" : "en"}
       aria-modal="false"
       aria-labelledby="cookie-consent-title"
       aria-describedby="cookie-consent-body"

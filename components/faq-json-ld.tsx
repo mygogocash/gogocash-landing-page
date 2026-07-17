@@ -1,4 +1,5 @@
 import { buildFaqPageSchema, type FaqSchemaItem } from "@/lib/faq-schema";
+import { serializeJsonLd } from "@/lib/json-ld";
 
 /**
  * Per-page FAQPage JSON-LD (#18). Server-rendered into the static HTML so each
@@ -9,12 +10,14 @@ export default function FaqJsonLd({
   items,
 }: {
   items: readonly FaqSchemaItem[];
-}) {
+  }) {
   if (items.length === 0) return null;
-  // Escape `<` so a literal "</script>" in trusted FAQ copy can't break out.
-  const json = JSON.stringify(buildFaqPageSchema(items)).replace(
-    /</g,
-    "\\u003c",
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: serializeJsonLd(buildFaqPageSchema(items)),
+      }}
+    />
   );
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }

@@ -2,13 +2,13 @@
 @config "../tailwind.config.ts";
 
 :root {
-  --primary: #10b981;
-  --primary-dark: #059669;
+  --primary: #047857;
+  --primary-dark: #065f46;
   --accent: #f97066;
   --accent-dark: #dc2626;
   --text-primary: #1f2937;
   --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
+  --text-muted: #6b7280;
   /* Motion tokens (keep in sync with tailwind.config.ts) */
   --motion-duration-micro: 150ms;
   --motion-duration-button: 220ms;
@@ -23,7 +23,7 @@ html {
 }
 
 body {
-  font-family: var(--font-poppins), var(--font-inter), "Poppins", "Inter", sans-serif;
+  font-family: var(--font-poppins), "Poppins", sans-serif;
   min-width: 0;
   overflow-x: clip;
 }

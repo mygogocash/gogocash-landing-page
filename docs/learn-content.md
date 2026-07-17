@@ -24,7 +24,7 @@ Schema and field list: see the file header in [`lib/strapi-learn.ts`](../lib/str
 
 ## CI / GitHub Actions
 
-The default workflow ([`.github/workflows/build-landing.yml`](../.github/workflows/build-landing.yml)) does **not** set `STRAPI_URL`. To build from Strapi in CI:
+The production workflow ([`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml)) does **not** set `STRAPI_URL`. To build from Strapi in CI:
 
 1. Add repository secrets, e.g. `STRAPI_URL`, and optionally `STRAPI_API_TOKEN`.
 2. Pass them into the **Build static site** step as `env:` entries (same pattern as `INVOLVE_ASIA_*`).

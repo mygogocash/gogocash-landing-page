@@ -13,8 +13,8 @@ Human route families:
 - Home: https://gogocash.co/
 - Learn hub: https://gogocash.co/learn
 - Learn articles: https://gogocash.co/learn/<slug>
-- Localized landing pages: https://gogocash.co/en, /id, /th, /tw, /cn, /ja
-- Legal and policy pages: /privacy-policy, /term-of-use, /terms-of-service, /how-gogocash-makes-money
+- Localized landing pages: English at https://gogocash.co/, plus /id, /th, /tw, /cn, /ja
+- Legal and policy pages: /privacy-policy, /term-of-use, /how-gogocash-makes-money
 - Search: https://gogocash.co/search
 
 Agent notes:

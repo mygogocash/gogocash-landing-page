@@ -1,4 +1,5 @@
 import { resolveEdgeLocaleRedirect } from "../lib/locale-edge-redirect";
+import { withProductionHeaders } from "../lib/production-response-headers";
 
 type Env = {
   ASSETS: {
@@ -11,6 +12,14 @@ const worker = {
     const url = new URL(request.url);
     const cf = (request as Request & { cf?: { country?: string } }).cf;
 
+    if (url.hostname.endsWith(".")) {
+      url.hostname = url.hostname.slice(0, -1);
+      return withProductionHeaders(
+        Response.redirect(url.toString(), 308),
+        url.pathname,
+      );
+    }
+
     const redirectPath = resolveEdgeLocaleRedirect({
       country: cf?.country ?? null,
       cookieHeader: request.headers.get("Cookie"),
@@ -20,10 +29,14 @@ const worker = {
 
     if (redirectPath) {
       url.pathname = redirectPath;
-      return Response.redirect(url.toString(), 302);
+      return withProductionHeaders(
+        Response.redirect(url.toString(), 302),
+        url.pathname,
+      );
     }
 
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    return withProductionHeaders(response, url.pathname);
   },
 };
 

@@ -20,7 +20,6 @@ GoGoCash exposes public marketing, Learn, legal, and discovery resources for hum
 - [Learn](https://gogocash.co/learn)
 - [Privacy Policy](https://gogocash.co/privacy-policy)
 - [Terms of Use](https://gogocash.co/term-of-use)
-- [Terms of Service](https://gogocash.co/terms-of-service)
 - [How GoGoCash Makes Money](https://gogocash.co/how-gogocash-makes-money)
 
 ## Learn articles
@@ -38,7 +37,7 @@ GoGoCash exposes public marketing, Learn, legal, and discovery resources for hum
 
 ## Localized landing pages
 
-- [English](https://gogocash.co/en)
+- [English](https://gogocash.co/)
 - [Indonesia](https://gogocash.co/id)
 - [Thailand](https://gogocash.co/th)
 - [Taiwan](https://gogocash.co/tw)

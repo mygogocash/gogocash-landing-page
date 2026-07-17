@@ -7,8 +7,8 @@ import { PostHogInit } from "@/components/posthog-init";
 import { MixpanelInit } from "@/components/mixpanel-init";
 import { AnalyticsRouteListener } from "@/components/analytics-route-listener";
 import CookieConsent from "@/components/cookie-consent";
-import PageTransition from "@/components/page-transition";
-import LoadingScreen from "@/components/loading-screen";
+import { CookieConsentStorageSync } from "@/components/cookie-consent-storage-sync";
+import DocumentLangSync from "@/components/document-lang-sync";
 
 /**
  * Client-only providers and shell (analytics, locale, loading).
@@ -17,14 +17,14 @@ import LoadingScreen from "@/components/loading-screen";
 export function AppClientProviders({ children }: { children: ReactNode }) {
   return (
     <>
+      <DocumentLangSync />
       <BrowserLocaleBootstrap />
+      <CookieConsentStorageSync />
       <FirebaseClientInit />
       <PostHogInit />
       <MixpanelInit />
       <AnalyticsRouteListener />
-      <LoadingScreen>
-        <PageTransition>{children}</PageTransition>
-      </LoadingScreen>
+      {children}
       <CookieConsent />
     </>
   );

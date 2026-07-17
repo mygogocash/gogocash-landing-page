@@ -32,6 +32,26 @@ describe("locale-edge-redirect", () => {
     );
   });
 
+  it("does not override any explicit non-English locale", () => {
+    for (const locale of [
+      { lang: "th", region: "TH" },
+      { lang: "ja", region: "JP" },
+      { lang: "zh-TW", region: "TW" },
+      { lang: "zh-CN", region: "CN" },
+    ] as const) {
+      assert.equal(
+        resolveEdgeLocaleRedirect({
+          country: "TH",
+          cookieHeader: formatLocaleCookie(locale),
+          userAgent: BROWSER_UA,
+          pathname: "/",
+        }),
+        null,
+        locale.lang,
+      );
+    }
+  });
+
   it("does not redirect bots even from Thailand", () => {
     assert.equal(
       resolveEdgeLocaleRedirect({

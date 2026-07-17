@@ -1,6 +1,4 @@
 const DEFAULT_SITE_URL = "https://gogocash.co";
-const DEFAULT_CUSTOMERIO_FORMS_SITE_ID = "be2d31cfc0387c58114c";
-const DEFAULT_CUSTOMERIO_FORMS_BASE_URL = "https://customerioforms.com";
 
 /** LINE Tag (LAP) — public id; override with NEXT_PUBLIC_LINE_TAG_ID or disable with empty string. */
 const DEFAULT_LINE_TAG_ID = "d27ab1a2-5e67-48d0-af8d-ca6b30b67452";
@@ -33,17 +31,15 @@ function readTrimmedEnv(name: string): string | null {
   return value ? value : null;
 }
 
-function readValidFormFieldEnv(name: string, fallback: string): string {
-  const value = readTrimmedEnv(name);
-  if (!value) return fallback;
-  return /^[A-Za-z0-9_.[\]-]{1,80}$/.test(value) ? value : fallback;
+function readTrimmedValue(value: string | undefined): string | null {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
 }
 
-function readPublicIntegrationIdEnv(
-  name: string,
+function readPublicIntegrationIdValue(
+  raw: string | undefined,
   fallback: string,
 ): string | null {
-  const raw = process.env[name];
   if (raw !== undefined && raw.trim() === "") return null;
   const value = raw?.trim() ?? fallback;
   return /^[A-Za-z0-9_-]{1,80}$/.test(value) ? value : null;
@@ -76,7 +72,7 @@ function firstValidOptionalUrl(candidates: Array<string | null>): string | null 
 export function marketingSiteUrl(): string {
   const vercelUrl = readTrimmedEnv("VERCEL_URL");
   return firstValidUrl([
-    readTrimmedEnv("NEXT_PUBLIC_SITE_URL"),
+    readTrimmedValue(process.env.NEXT_PUBLIC_SITE_URL),
     vercelUrl ? `https://${vercelUrl}` : null,
   ]);
 }
@@ -90,7 +86,9 @@ export function marketingSiteOrigin(): string {
 }
 
 export function isMarketingAnalyticsEnabled(): boolean {
-  const override = readTrimmedEnv("NEXT_PUBLIC_ANALYTICS_ENABLED");
+  const override = readTrimmedValue(
+    process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
+  );
   if (override === "false") return false;
   if (override === "true") return true;
   return process.env.NODE_ENV === "production";
@@ -103,7 +101,7 @@ export function isMarketingAnalyticsEnabled(): boolean {
 export function publicLineTagId(): string | null {
   const raw = process.env.NEXT_PUBLIC_LINE_TAG_ID;
   if (raw !== undefined && raw.trim() === "") return null;
-  const fromEnv = readTrimmedEnv("NEXT_PUBLIC_LINE_TAG_ID");
+  const fromEnv = readTrimmedValue(process.env.NEXT_PUBLIC_LINE_TAG_ID);
   const candidate = (fromEnv ?? DEFAULT_LINE_TAG_ID).trim();
   return LINE_TAG_UUID.test(candidate) ? candidate : null;
 }
@@ -114,7 +112,9 @@ export function publicLineTagId(): string | null {
  */
 export function shouldLoadLineTag(): boolean {
   if (!publicLineTagId()) return false;
-  const lineOverride = readTrimmedEnv("NEXT_PUBLIC_LINE_TAG_ENABLED");
+  const lineOverride = readTrimmedValue(
+    process.env.NEXT_PUBLIC_LINE_TAG_ENABLED,
+  );
   if (lineOverride === "false") return false;
   if (lineOverride === "true") return true;
   return isMarketingAnalyticsEnabled();
@@ -125,8 +125,8 @@ const DEFAULT_POSTHOG_HOST = "https://us.i.posthog.com";
 /**
  * PostHog project key (publishable). No default — PostHog stays off until set.
  * Read via STATIC `process.env.NEXT_PUBLIC_*` so Next inlines it into the client
- * bundle (computed `process.env[name]` is not inlined and would be undefined in
- * the browser; that is why Firebase/LINE rely on hardcoded defaults instead).
+ * bundle. Every public value consumed in browser code follows the same rule;
+ * computed `process.env[name]` access is reserved for server-only secrets.
  */
 export function publicPostHogKey(): string | null {
   const value = process.env.NEXT_PUBLIC_POSTHOG_KEY?.trim();
@@ -171,8 +171,8 @@ export function shouldLoadPostHog(): boolean {
 const DEFAULT_MIXPANEL_TOKEN = "d97bbf4f9cd7512b562b6f0ddc723c4b";
 
 export function publicMixpanelToken(): string | null {
-  return readPublicIntegrationIdEnv(
-    "NEXT_PUBLIC_MIXPANEL_TOKEN",
+  return readPublicIntegrationIdValue(
+    process.env.NEXT_PUBLIC_MIXPANEL_TOKEN,
     DEFAULT_MIXPANEL_TOKEN,
   );
 }
@@ -183,7 +183,7 @@ export function publicMixpanelToken(): string | null {
  */
 export function publicMixpanelApiHost(): string | null {
   const url = firstValidOptionalUrl([
-    readTrimmedEnv("NEXT_PUBLIC_MIXPANEL_API_HOST"),
+    readTrimmedValue(process.env.NEXT_PUBLIC_MIXPANEL_API_HOST),
   ]);
   return url ? url.replace(/\/$/, "") : null;
 }
@@ -195,103 +195,41 @@ export function publicMixpanelApiHost(): string | null {
  */
 export function shouldLoadMixpanel(): boolean {
   if (!publicMixpanelToken()) return false;
-  const override = readTrimmedEnv("NEXT_PUBLIC_MIXPANEL_ENABLED");
+  const override = readTrimmedValue(process.env.NEXT_PUBLIC_MIXPANEL_ENABLED);
   if (override === "false") return false;
   if (override === "true") return true;
   return isMarketingAnalyticsEnabled();
 }
 
-export type NewsletterSignupConfig = {
-  actionUrl: string | null;
-  emailField: string;
-  consentField: string;
-  sourceField: string;
-  sourceValue: string;
-  customerIoFormsEnabled: boolean;
-};
-
-export type CustomerIoFormsConfig = {
-  siteId: string | null;
-  baseUrl: string;
-  scriptUrl: string;
-};
-
-export function customerIoFormsConfig(): CustomerIoFormsConfig {
-  const baseUrl = firstValidUrl([
-    readTrimmedEnv("NEXT_PUBLIC_CUSTOMERIO_FORMS_BASE_URL"),
-    DEFAULT_CUSTOMERIO_FORMS_BASE_URL,
-  ]).replace(/\/$/, "");
-  const siteId = readPublicIntegrationIdEnv(
-    "NEXT_PUBLIC_CUSTOMERIO_FORMS_SITE_ID",
-    DEFAULT_CUSTOMERIO_FORMS_SITE_ID,
-  );
-
-  return {
-    siteId,
-    baseUrl,
-    scriptUrl: new URL("/assets/forms.js", baseUrl).toString(),
-  };
-};
-
-/**
- * Public footer newsletter form config. The action URL should be a hosted
- * provider form endpoint (Mailchimp, Brevo, Customer.io, etc.) that accepts
- * browser POSTs; no secret API keys belong in `NEXT_PUBLIC_*` variables.
- */
-export function newsletterSignupConfig(): NewsletterSignupConfig {
-  const customerIoForms = customerIoFormsConfig();
-
-  return {
-    actionUrl: firstValidOptionalUrl([
-      readTrimmedEnv("NEXT_PUBLIC_NEWSLETTER_FORM_ACTION"),
-    ]),
-    emailField: readValidFormFieldEnv(
-      "NEXT_PUBLIC_NEWSLETTER_EMAIL_FIELD",
-      "email",
-    ),
-    consentField: readValidFormFieldEnv(
-      "NEXT_PUBLIC_NEWSLETTER_CONSENT_FIELD",
-      "pdpa_consent",
-    ),
-    sourceField: readValidFormFieldEnv(
-      "NEXT_PUBLIC_NEWSLETTER_SOURCE_FIELD",
-      "source",
-    ),
-    sourceValue:
-      readTrimmedEnv("NEXT_PUBLIC_NEWSLETTER_SOURCE_VALUE") ?? "footer",
-    customerIoFormsEnabled: Boolean(customerIoForms.siteId),
-  };
-}
-
 export function publicFirebaseMeasurementId(): string {
   return (
-    readTrimmedEnv("NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID") ??
+    readTrimmedValue(process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID) ??
     DEFAULT_PUBLIC_FIREBASE_CONFIG.measurementId
   );
 }
 
 export function publicFirebaseConfig(): PublicFirebaseConfig | null {
   const apiKey =
-    readTrimmedEnv("NEXT_PUBLIC_FIREBASE_API_KEY") ??
+    readTrimmedValue(process.env.NEXT_PUBLIC_FIREBASE_API_KEY) ??
     DEFAULT_PUBLIC_FIREBASE_CONFIG.apiKey;
   if (!apiKey) return null;
 
   return {
     apiKey,
     authDomain:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN") ??
+      readTrimmedValue(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN) ??
       DEFAULT_PUBLIC_FIREBASE_CONFIG.authDomain,
     projectId:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID") ??
+      readTrimmedValue(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) ??
       DEFAULT_PUBLIC_FIREBASE_CONFIG.projectId,
     storageBucket:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET") ??
+      readTrimmedValue(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) ??
       DEFAULT_PUBLIC_FIREBASE_CONFIG.storageBucket,
     messagingSenderId:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID") ??
+      readTrimmedValue(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID) ??
       DEFAULT_PUBLIC_FIREBASE_CONFIG.messagingSenderId,
     appId:
-      readTrimmedEnv("NEXT_PUBLIC_FIREBASE_APP_ID") ??
+      readTrimmedValue(process.env.NEXT_PUBLIC_FIREBASE_APP_ID) ??
       DEFAULT_PUBLIC_FIREBASE_CONFIG.appId,
     measurementId: publicFirebaseMeasurementId(),
   };

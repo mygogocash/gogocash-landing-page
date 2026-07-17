@@ -11,6 +11,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { LEARN_ARTICLES } from "../lib/learn-articles";
+import { learnArticleDateIso } from "../lib/learn-article-dates";
 import { learnArticleMarkdownBySlug } from "../lib/learn-article-content";
 
 function baseUrl(): string {
@@ -100,6 +101,11 @@ async function main() {
       continue;
     }
 
+    const published = learnArticleDateIso(meta.published);
+    if (!published) {
+      throw new Error(`Invalid publication date for ${meta.slug}: ${meta.published}`);
+    }
+
     const data = {
       slug: meta.slug,
       title: meta.title,
@@ -107,7 +113,7 @@ async function main() {
       metaDescription: meta.metaDescription,
       hubDesc: meta.hubDesc,
       content: markdown,
-      publishedAt: new Date().toISOString(),
+      publishedAt: `${published}T00:00:00.000Z`,
     };
 
     const existing = await findBySlug(base, headers, meta.slug);

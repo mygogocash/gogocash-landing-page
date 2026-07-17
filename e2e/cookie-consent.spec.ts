@@ -22,6 +22,7 @@ test.describe("cookie consent (#7)", () => {
 
     const banner = page.getByRole("dialog", { name: EN_BANNER });
     await expect(banner).toBeVisible();
+    await expect(page.getByRole("button", { name: "Accept all" })).not.toBeFocused();
 
     // Opt-in: no LINE tag before a decision.
     await expect(page.locator(LINE_SCRIPT)).toHaveCount(0);
@@ -43,6 +44,7 @@ test.describe("cookie consent (#7)", () => {
   test("reject persists and keeps trackers off", async ({ page }) => {
     await page.goto("/", { waitUntil: "load", timeout: 90_000 });
     await page.getByRole("button", { name: "Reject non-essential" }).click();
+    await expect(page.getByRole("main")).toBeFocused();
 
     const stored = await page.evaluate((k) => localStorage.getItem(k), CONSENT_KEY);
     expect(stored).toContain('"analytics":false');
@@ -69,6 +71,51 @@ test.describe("cookie consent (#7)", () => {
     await expect(page.locator(LINE_SCRIPT)).toHaveCount(0);
   });
 
+  test("analytics consent keeps every Google advertising signal denied", async ({
+    page,
+  }) => {
+    const advertisingRequests: string[] = [];
+    page.on("request", (request) => {
+      if (/doubleclick|adservice/i.test(request.url())) {
+        advertisingRequests.push(request.url());
+      }
+    });
+    await page.route("https://www.googletagmanager.com/**", (route) =>
+      route.fulfill({ contentType: "application/javascript", body: "" }),
+    );
+
+    await page.goto("/", { waitUntil: "load", timeout: 90_000 });
+    await page.getByRole("button", { name: "Customize" }).click();
+    await page.getByLabel("Analytics cookies").check();
+    await page.getByRole("button", { name: "Save preferences" }).click();
+
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() => {
+            const dataLayer = (
+              window as Window & { dataLayer?: Array<ArrayLike<unknown>> }
+            ).dataLayer ?? [];
+            const command = dataLayer
+              .map((entry) => Array.from(entry))
+              .find(
+                (entry) =>
+                  entry[0] === "consent" &&
+                  (entry[1] === "default" || entry[1] === "update"),
+              );
+            return command?.[2] ?? null;
+          }),
+        { timeout: 10_000 },
+      )
+      .toEqual({
+        analytics_storage: "granted",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+      });
+    expect(advertisingRequests).toEqual([]);
+  });
+
   test("footer Cookie Settings opens the preference centre after a decision", async ({
     page,
   }) => {
@@ -78,6 +125,27 @@ test.describe("cookie consent (#7)", () => {
 
     await page.getByRole("button", { name: "Cookie Settings" }).click();
     await expect(page.getByRole("dialog", { name: EN_PREFERENCES })).toBeVisible();
+    await page.getByRole("button", { name: "Save preferences" }).click();
+    await expect(page.getByRole("button", { name: "Cookie Settings" })).toBeFocused();
+  });
+
+  test("revocation in one tab tears down trackers in another tab", async ({
+    context,
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "load", timeout: 90_000 });
+    await page.getByRole("button", { name: "Accept all" }).click();
+    await expect(page.locator(LINE_SCRIPT)).toHaveCount(1, { timeout: 10_000 });
+
+    const settingsPage = await context.newPage();
+    await settingsPage.goto("/", { waitUntil: "load", timeout: 90_000 });
+    await settingsPage.getByRole("button", { name: "Cookie Settings" }).click();
+    await settingsPage.getByLabel("Analytics cookies").uncheck();
+    await settingsPage.getByLabel("Marketing cookies").uncheck();
+    await settingsPage.getByRole("button", { name: "Save preferences" }).click();
+
+    await expect(page.locator(LINE_SCRIPT)).toHaveCount(0, { timeout: 10_000 });
+    await settingsPage.close();
   });
 
   test("shows Thai copy on the /th route", async ({ page }) => {

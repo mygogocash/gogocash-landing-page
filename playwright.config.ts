@@ -21,6 +21,9 @@ export default defineConfig({
   reporter: "list",
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL ?? defaultBase,
+    // Keep general browser tests locale-neutral on developer machines. Tests
+    // for Thailand fallback install an explicit Asia/Bangkok timezone mock.
+    timezoneId: "UTC",
     trace: "on-first-retry",
   },
   projects: [

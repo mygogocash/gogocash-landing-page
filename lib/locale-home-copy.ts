@@ -18,6 +18,12 @@ export type LocaleHomeLearnTeaser = {
 };
 
 export type LocaleHomeCopy = {
+  /** Language applied to the static document and the localized page body. */
+  documentLang: string;
+  /** Accessible partner-logo label; `{name}` is replaced at render time. */
+  partnerLogoAltTemplate: string;
+  /** Learn article language filter; falls back to English when untranslated. */
+  learnArticleLang?: string;
   langNavEnglish: string;
   langNavLocal: string;
   breadcrumbNavAria: string;

@@ -16,6 +16,9 @@ describe("how-it-works-illustrations", () => {
         "cashback-after-the-merchant-confirms",
       ),
     );
+    for (const assetPath of HOW_IT_WORKS_ILLUSTRATION_PATHS) {
+      assert.match(assetPath, /\.(?:avif|webp)$/);
+    }
   });
 
   it("returns undefined for out-of-range step index", () => {

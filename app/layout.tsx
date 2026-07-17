@@ -1,10 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins, Inter } from "next/font/google";
-import { CustomerIoFormsScript } from "@/components/customer-io-forms-script";
+import localFont from "next/font/local";
 import { LineTagScripts } from "@/components/line-tag-scripts";
 import { AppClientProviders } from "@/components/app-client-providers";
 import SchemaMarkup from "@/components/schema-markup";
-import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 import {
   OG_IMAGE_ALT,
   OG_IMAGE_HEIGHT,
@@ -36,16 +34,30 @@ function metadataBaseUrl(): URL {
   return new URL("https://gogocash.co");
 }
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+const poppins = localFont({
+  src: [
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-poppins",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
   display: "swap",
 });
 
@@ -73,10 +85,6 @@ export const metadata: Metadata = {
   authors: [{ name: "GoGoCash" }],
   creator: "GoGoCash",
   metadataBase: metadataBaseUrl(),
-  alternates: {
-    canonical: "/",
-    languages: HREFLANG_LANDING_ALTERNATES,
-  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -113,7 +121,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable}`}
+      className={poppins.variable}
       data-scroll-behavior="smooth"
     >
       <head>
@@ -144,7 +152,13 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
-        <CustomerIoFormsScript />
+        <a
+          href="#main-content"
+          lang="en"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:font-semibold focus:text-primary focus:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+        >
+          Skip to main content
+        </a>
         <LineTagScripts />
         <AppClientProviders>{children}</AppClientProviders>
       </body>

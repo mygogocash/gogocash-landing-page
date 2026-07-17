@@ -48,4 +48,38 @@ test.describe("posthog consent gating", () => {
     );
     expect(req?.url()).toContain("posthog");
   });
+
+  test("keeps the PostHog SDK opted out after analytics consent is withdrawn", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "load", timeout: 90_000 });
+
+    const posthogRequest = page
+      .waitForRequest((req) => req.url().includes("posthog"), {
+        timeout: 6000,
+      })
+      .catch(() => null);
+    await page.getByRole("button", { name: "Accept all" }).click();
+    const req = await posthogRequest;
+
+    test.skip(
+      !req,
+      "No NEXT_PUBLIC_POSTHOG_KEY in this build — withdrawal path not exercised",
+    );
+
+    await page.getByRole("button", { name: "Cookie Settings" }).click();
+    await page.getByLabel("Analytics cookies").uncheck();
+    await page.getByRole("button", { name: "Save preferences" }).click();
+
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          Object.entries(localStorage).some(
+            ([key, value]) =>
+              key.startsWith("__ph_opt_in_out_") && value === "0",
+          ),
+        ),
+      )
+      .toBe(true);
+  });
 });

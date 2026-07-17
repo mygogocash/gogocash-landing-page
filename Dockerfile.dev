@@ -1,11 +1,11 @@
 # Local development: hot reload on http://localhost:3000
 # Run: docker compose up --build  (or npm run dev:docker)
-FROM node:20-bookworm-slim
+FROM node:26-bookworm-slim
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --no-audit --no-fund
+RUN npm ci --force --no-audit --no-fund
 
 COPY . .
 

@@ -1,3 +1,5 @@
+import { SITE_FACTS } from "@/lib/site-facts";
+
 export type TaiwanFaqEntry = { question: string; answer: string };
 
 /** Order: how it works → timing → withdraw → free → … */
@@ -24,8 +26,7 @@ export const TAIWAN_FAQ_ITEMS: TaiwanFaqEntry[] = [
   },
   {
     question: "有哪些商家？",
-    answer:
-      "東南亞有超過 70 個品牌夥伴，例如 Shopee、Lazada、Agoda 等；最新名單請在 App 或首頁查看。",
+    answer: `東南亞有超過 ${SITE_FACTS.partnerCountMin} 個品牌夥伴，例如 Shopee、Lazada、Agoda 等；最新名單請在 App 或首頁查看。`,
   },
   {
     question: "若回饋沒有入帳怎麼辦？",

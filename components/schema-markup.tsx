@@ -1,5 +1,6 @@
 import { siteOrigin } from "@/lib/site";
 import { SITE_FACTS, siteSeoOneLiner } from "@/lib/site-facts";
+import { serializeJsonLd } from "@/lib/json-ld";
 
 /** Server-only JSON-LD for SEO (no `use client`). */
 export default function SchemaMarkup() {
@@ -54,6 +55,7 @@ export default function SchemaMarkup() {
   const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    name: SITE_FACTS.brandName,
     url: origin,
     potentialAction: {
       "@type": "SearchAction",
@@ -89,11 +91,6 @@ export default function SchemaMarkup() {
       price: "0",
       priceCurrency: "USD",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "6000000",
-    },
   };
 
   const blocks: { id: string; data: object }[] = [
@@ -110,7 +107,7 @@ export default function SchemaMarkup() {
         <script
           key={id}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }}
         />
       ))}
     </>

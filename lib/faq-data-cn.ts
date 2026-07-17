@@ -1,4 +1,5 @@
 import type { FaqEntry } from "@/lib/faq-data";
+import { SITE_FACTS } from "@/lib/site-facts";
 
 /** Order: how it works → timing → withdraw → free → … (Simplified Chinese) */
 export const CHINA_FAQ_ITEMS: FaqEntry[] = [
@@ -24,8 +25,7 @@ export const CHINA_FAQ_ITEMS: FaqEntry[] = [
   },
   {
     question: "有哪些商家？",
-    answer:
-      "东南亚有超过 70 个品牌伙伴，例如 Shopee、Lazada、Agoda 等；最新名单请在 App 或首页查看。",
+    answer: `东南亚有超过 ${SITE_FACTS.partnerCountMin} 个品牌伙伴，例如 Shopee、Lazada、Agoda 等；最新名单请在 App 或首页查看。`,
   },
   {
     question: "若回馈没有入账怎么办？",

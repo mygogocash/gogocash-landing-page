@@ -3,9 +3,10 @@ import { TH_HOME } from "@/lib/copy-th-home";
 import { JA_HOME } from "@/lib/copy-ja-home";
 import { TW_HOME } from "@/lib/copy-tw-home";
 import { CN_HOME } from "@/lib/copy-cn-home";
+import { ID_HOME } from "@/lib/copy-id-home";
 
-/** Locales that use `LocaleHomePage` + `LocaleHomeCopy` (path roots `/th`, `/tw`, `/ja`, `/cn`). */
-export const LOCALE_HOME_IDS = ["th", "tw", "ja", "cn"] as const;
+/** Locales that use `LocaleHomePage` + `LocaleHomeCopy`. */
+export const LOCALE_HOME_IDS = ["th", "tw", "ja", "cn", "id"] as const;
 
 export type LocaleHomeId = (typeof LOCALE_HOME_IDS)[number];
 
@@ -17,6 +18,7 @@ export const LOCALE_HOME_COPY: Record<LocaleHomeId, LocaleHomeCopy> = {
   tw: TW_HOME,
   ja: JA_HOME,
   cn: CN_HOME,
+  id: ID_HOME,
 };
 
 export function localeHomeCopy(id: LocaleHomeId): LocaleHomeCopy {

@@ -62,4 +62,20 @@ test.describe("how it works tabs", () => {
       page.getByRole("tab", { name: "Wallet grows" }),
     ).toHaveAttribute("aria-selected", "true");
   });
+
+  test("arrow, Home, and End keys move focus and activate tabs", async ({ page }) => {
+    await page.goto("/", { waitUntil: "load", timeout: 90_000 });
+
+    const first = page.getByRole("tab", { name: "Pick your earn rate" });
+    const second = page.getByRole("tab", { name: "Checkout as usual" });
+    const last = page.getByRole("tab", { name: "Wallet grows" });
+    await first.focus();
+    await first.press("ArrowRight");
+    await expect(second).toBeFocused();
+    await expect(second).toHaveAttribute("aria-selected", "true");
+    await second.press("End");
+    await expect(last).toBeFocused();
+    await last.press("Home");
+    await expect(first).toBeFocused();
+  });
 });

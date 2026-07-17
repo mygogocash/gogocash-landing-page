@@ -1,6 +1,5 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
-import { publicAssetUrl } from "@/lib/public-asset-url";
+import { ResponsiveMarketingPicture } from "@/components/responsive-marketing-picture";
 
 const HERO_IMAGE_SIZES = "(max-width: 1200px) calc(100vw - 3rem), 1120px";
 const HERO_IMAGE_CLASS =
@@ -38,11 +37,23 @@ export function LandingHeroPhonesImage({
 } = {}) {
   return (
     <div className="w-full min-w-0 shrink-0 leading-none">
-      <Image
-        src={publicAssetUrl("/images/hero-dashboard-phones.svg")}
+      <ResponsiveMarketingPicture
+        fallback="/images/hero-dashboard-phones-1200.webp"
+        avif={[
+          ["/images/hero-dashboard-phones-480.avif", 480],
+          ["/images/hero-dashboard-phones-800.avif", 800],
+          ["/images/hero-dashboard-phones-1200.avif", 1200],
+          ["/images/hero-dashboard-phones-1600.avif", 1600],
+        ]}
+        webp={[
+          ["/images/hero-dashboard-phones-480.webp", 480],
+          ["/images/hero-dashboard-phones-800.webp", 800],
+          ["/images/hero-dashboard-phones-1200.webp", 1200],
+          ["/images/hero-dashboard-phones-1600.webp", 1600],
+        ]}
         alt="GoGoCash app preview on two phones"
-        width={800}
-        height={600}
+        width={1600}
+        height={1200}
         priority={priority}
         className={HERO_IMAGE_CLASS}
         sizes={HERO_IMAGE_SIZES}

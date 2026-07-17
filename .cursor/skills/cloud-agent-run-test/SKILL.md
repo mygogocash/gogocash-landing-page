@@ -5,18 +5,19 @@ description: Run, test, and mock env for the GoGoCash Next.js static landing (de
 
 # Cloud agent — run and test this repo
 
-Minimal runbook for **autonomous agents** working on **gogocash-landing** (Next.js 16, static export → `out/`, Firebase Hosting). Canonical detail lives in [`README.md`](../../../README.md) and [`docs/`](../../../docs/).
+Minimal runbook for **autonomous agents** working on **gogocash-landing** (Next.js 16, static export → `out/`, Cloudflare Workers production; Firebase Hosting staging only). Canonical detail lives in [`README.md`](../../../README.md) and [`docs/`](../../../docs/).
 
 ## Prerequisites (once per machine / CI job)
 
-- **Node 20.x** — match [`.nvmrc`](../../../.nvmrc); `package.json` engines are `>=20 <21`.
+- **Node 26.x** — match [`.nvmrc`](../../../.nvmrc); `package.json` engines are `>=26 <27`.
 - From repo root:
 
 ```bash
-npm ci
+npm ci --force
 ```
 
-(`postinstall` runs `patch-package`.)
+The explicit `--force` is temporary while TypeScript-ESLint's declared peer range
+lags the required TypeScript 7 compiler. Do not weaken lint or type checks.
 
 - **Playwright browsers** (before any E2E):
 
@@ -27,7 +28,7 @@ npm run test:e2e:install
 On **Linux CI or bare agents**, WebKit needs system libs — mirror CI:
 
 ```bash
-npx playwright install --with-deps chromium webkit
+npm exec -- playwright install --with-deps chromium webkit
 ```
 
 ## Start the app
@@ -56,12 +57,7 @@ There is **no** separate feature-flag service. Behavior toggles are **env vars**
 
 Changing **`NEXT_PUBLIC_*`** requires **`npm run build`** again to affect the static export.
 
-### Cloudflare DNS automation (not Next)
-
-- Copy [`.env.cloudflare.example`](../../../.env.cloudflare.example) → `.env.cloudflare` (gitignored).
-- `npm run dns:cloudflare-firebase-apex` — optional `DRY_RUN=1` prefix for a dry run.
-
-### Firebase CLI (human / local deploy)
+### Firebase CLI (staging only)
 
 Use **project-local** CLI: `npm exec -- firebase …`. Login and project: see [`docs/firebase-deploy.md`](../../../docs/firebase-deploy.md) (`firebase login`, `firebase use landing-page-4ae23`). **Do not** run `firebase init` for App Hosting on this repo.
 
@@ -71,7 +67,7 @@ Use **project-local** CLI: `npm exec -- firebase …`. Login and project: see [`
 
 ### Root / toolchain
 
-- **Install:** `npm ci`
+- **Install:** `npm ci --force`
 - **Full gate (lint + unit + types + build):** `npm run verify`
 - **Lint:** `npm run lint`
 - **Typecheck:** `npm run typecheck`
@@ -120,8 +116,8 @@ npm run test:e2e:smoke
 
 ### `scripts/` — deploy and ops
 
-- **Firebase hosting deploy (build + script):** `npm run deploy:firebase` — details [`docs/firebase-deploy.md`](../../../docs/firebase-deploy.md).
-- **Cloudflare apex DNS:** `npm run dns:cloudflare-firebase-apex` (needs `.env.cloudflare`).
+- **Production Cloudflare deploy (build + locked Wrangler):** `npm run deploy:cloudflare`.
+- **Firebase staging deploy (build + script):** `npm run deploy:firebase` — details [`docs/firebase-deploy.md`](../../../docs/firebase-deploy.md).
 
 ### `docs/` — deep dives
 

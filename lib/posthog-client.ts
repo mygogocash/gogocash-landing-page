@@ -11,6 +11,9 @@ import { resolveLocaleForPathname } from "@/lib/locale-routing";
 let client: PostHog | null = null;
 let initializing = false;
 
+const REPLAY_SAMPLE_STORAGE_KEY = "gogocash.posthog_replay_sample.v1";
+const REPLAY_SAMPLE_RATE = 0.15;
+
 function logPostHogDebug(context: string, err: unknown): void {
   if (process.env.NODE_ENV === "development") {
     console.debug(`[posthog] ${context}:`, err);
@@ -34,6 +37,37 @@ function localeSuperProps(): Record<string, string> {
     : {};
 }
 
+/** One stable replay decision per browser tab; evaluated only after consent. */
+function shouldRecordThisSession(): boolean {
+  try {
+    const stored = window.sessionStorage.getItem(REPLAY_SAMPLE_STORAGE_KEY);
+    if (stored === "in") return true;
+    if (stored === "out") return false;
+  } catch {
+    /* storage blocked — keep the in-memory SDK decision for this page */
+  }
+
+  let unit = Math.random();
+  try {
+    const value = new Uint32Array(1);
+    window.crypto.getRandomValues(value);
+    unit = (value[0] ?? 0) / 0x1_0000_0000;
+  } catch {
+    /* Math.random fallback is sufficient for non-security sampling */
+  }
+  const sampled = unit < REPLAY_SAMPLE_RATE;
+
+  try {
+    window.sessionStorage.setItem(
+      REPLAY_SAMPLE_STORAGE_KEY,
+      sampled ? "in" : "out",
+    );
+  } catch {
+    /* storage blocked */
+  }
+  return sampled;
+}
+
 /**
  * Load + init posthog-js once, after consent. The SDK is dynamically imported so
  * it never enters the initial bundle and never runs before the visitor accepts.
@@ -45,6 +79,9 @@ async function initPostHog(): Promise<void> {
   initializing = true;
   try {
     const { default: posthog } = await import("posthog-js");
+    // Consent can be withdrawn while the SDK chunk is in flight.
+    if (!posthogAllowed()) return;
+    const recordSession = shouldRecordThisSession();
     posthog.init(key, {
       api_host: publicPostHogHost(),
       ui_host: publicPostHogUiHost(), // correct toolbar/links when proxied
@@ -55,10 +92,12 @@ async function initPostHog(): Promise<void> {
         element_allowlist: ["a", "button"],
         css_selector_allowlist: ["[data-ph-capture]"],
       },
-      enable_heatmaps: true, // clickmaps for the landing page
+      enable_heatmaps: false,
       capture_exceptions: true, // error tracking: unhandled errors + promise rejections
       capture_performance: { web_vitals: true }, // $web_vitals (LCP/INP/CLS/FCP)
-      disable_session_recording: false, // replay on, masked (consent-gated)
+      // Replay is useful but expensive. Keep one stable, consent-gated decision
+      // per tab rather than recording every visitor.
+      disable_session_recording: !recordSession,
       session_recording: {
         maskAllInputs: true,
         maskTextSelector: "[data-ph-mask]",
@@ -87,11 +126,18 @@ async function initPostHog(): Promise<void> {
  */
 export async function syncPostHogConsent(): Promise<void> {
   if (posthogAllowed()) {
-    if (client) client.opt_in_capturing();
-    else await initPostHog();
+    if (client) {
+      client.opt_in_capturing();
+      if (shouldRecordThisSession()) client.startSessionRecording();
+    } else await initPostHog();
   } else if (client) {
+    // Stop SDK-owned collection before clearing the anonymous identity. PostHog's
+    // reset() also clears its consent marker, so opt out again afterward to leave
+    // the SDK itself denied—not only GoGoCash's capture wrappers.
     client.opt_out_capturing();
+    client.stopSessionRecording();
     client.reset();
+    client.opt_out_capturing();
   }
 }
 

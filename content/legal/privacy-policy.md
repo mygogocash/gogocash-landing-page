@@ -168,9 +168,9 @@ We require each Affiliate Network to handle data under a written Data Processing
 We share Personal Data with the following categories of service providers, who act as processors under our instructions:
 
 - **Cloud hosting:** Firebase (Google), Cloudflare, Google Cloud, Vercel
-- **Email and messaging:** customer.io, LINE Official Account
+- **Messaging:** LINE Official Account
 - **Payments:** Stripe (where applicable)
-- **Analytics and observability:** PostHog, Sentry
+- **Analytics and observability:** Firebase Analytics (Google), PostHog, Mixpanel, Sentry
 - **Identity verification:** as required for know-your-customer checks
 
 Each processor is bound by a Data Processing Agreement and may use the data only as we instruct.
@@ -195,11 +195,11 @@ Where data is only stored on a cloud server abroad with no third party accessing
 
 ## 9. Analytics and Cookies
 
-We use product analytics (PostHog) and crash reporting (Sentry) to understand how the Service is used and to fix problems. These tools may collect device identifiers, IP address, and event data tied to a hashed user identifier.
+With your analytics consent, we use Firebase Analytics, PostHog, and Mixpanel to understand how the Service is used and improve it. We use crash reporting (Sentry) to fix problems. These tools may collect device identifiers, IP address, page and event data, and an analytics identifier. PostHog session replay is sampled for a limited portion of consenting sessions, masks form inputs, and does not enable heatmaps.
 
 You may opt out of non-essential analytics in **Settings → Privacy** in the app. Opting out does not affect Cashback eligibility.
 
-Our website uses essential cookies (for authentication and security) and, with your consent, analytics cookies. You can manage cookie preferences through the cookie banner displayed on your first visit and at any time in your browser settings.
+Our website uses essential cookies (for privacy choices, routing, and security) and, with your consent, analytics or marketing cookies. LINE Tag loads only after marketing consent. You can manage optional cookies through the first-visit banner or the **Cookie Settings** control in the footer. Revoking consent disables collection and clears accessible provider cookies where the browser permits it.
 
 ## 10. Data Retention
 
@@ -487,9 +487,9 @@ GoGoSense ใช้บริการเบื้องหน้า (foreground 
 เราแบ่งปันข้อมูลส่วนบุคคลกับผู้ให้บริการประเภทต่อไปนี้ ซึ่งทำหน้าที่เป็นผู้ประมวลผลภายใต้คำสั่งของเรา:
 
 - **คลาวด์โฮสติ้ง:** Firebase (Google), Cloudflare, Google Cloud, Vercel
-- **อีเมลและการส่งข้อความ:** customer.io, LINE Official Account
+- **การส่งข้อความ:** LINE Official Account
 - **การชำระเงิน:** Stripe (เมื่อใช้)
-- **การวิเคราะห์และการสังเกตการณ์:** PostHog, Sentry
+- **การวิเคราะห์และการสังเกตการณ์:** Firebase Analytics (Google), PostHog, Mixpanel, Sentry
 - **การตรวจสอบยืนยันตัวตน:** ตามที่จำเป็นสำหรับการตรวจสอบ KYC
 
 ผู้ประมวลผลแต่ละรายผูกพันโดยสัญญาการประมวลผลข้อมูล และอาจใช้ข้อมูลเฉพาะตามที่เราสั่งการเท่านั้น
@@ -514,11 +514,11 @@ GoGoSense ใช้บริการเบื้องหน้า (foreground 
 
 ## 9. การวิเคราะห์และคุกกี้
 
-เราใช้การวิเคราะห์ผลิตภัณฑ์ (PostHog) และการรายงานข้อขัดข้อง (Sentry) เพื่อทำความเข้าใจวิธีการใช้บริการและแก้ไขปัญหา เครื่องมือเหล่านี้อาจเก็บรหัสอุปกรณ์ ที่อยู่ IP และข้อมูลเหตุการณ์ที่ผูกกับรหัสผู้ใช้ที่เข้ารหัสแบบแฮช
+เมื่อคุณยินยอมให้ใช้คุกกี้วิเคราะห์ เราใช้ Firebase Analytics, PostHog และ Mixpanel เพื่อทำความเข้าใจและปรับปรุงบริการ และใช้ Sentry เพื่อแก้ไขปัญหา เครื่องมือเหล่านี้อาจเก็บรหัสอุปกรณ์ ที่อยู่ IP ข้อมูลหน้าเว็บและเหตุการณ์ รวมถึงรหัสสำหรับการวิเคราะห์ การบันทึกเซสชันของ PostHog ใช้เฉพาะบางส่วนของเซสชันที่ยินยอม ปิดบังข้อมูลในฟอร์ม และไม่เปิดใช้ heatmap
 
 คุณสามารถเลือกไม่เข้าร่วมการวิเคราะห์ที่ไม่จำเป็นได้ที่ **การตั้งค่า → ความเป็นส่วนตัว** ในแอป การเลือกไม่เข้าร่วมไม่กระทบต่อสิทธิ์ในการรับเงินคืน
 
-เว็บไซต์ของเราใช้คุกกี้ที่จำเป็น (สำหรับการยืนยันตัวตนและความปลอดภัย) และคุกกี้สำหรับการวิเคราะห์โดยได้รับความยินยอมจากคุณ คุณสามารถจัดการความต้องการคุกกี้ผ่านแบนเนอร์คุกกี้ที่แสดงในการเยี่ยมชมครั้งแรกของคุณ และตลอดเวลาในการตั้งค่าเบราว์เซอร์ของคุณ
+เว็บไซต์ของเราใช้คุกกี้ที่จำเป็นสำหรับตัวเลือกความเป็นส่วนตัว การนำทาง และความปลอดภัย และใช้คุกกี้วิเคราะห์หรือการตลาดเมื่อได้รับความยินยอมจากคุณเท่านั้น LINE Tag จะโหลดหลังจากยินยอมด้านการตลาด คุณสามารถเปลี่ยนตัวเลือกได้ผ่านแบนเนอร์หรือปุ่ม **Cookie Settings** ที่ส่วนท้ายเว็บไซต์ การถอนความยินยอมจะปิดการเก็บข้อมูลและล้างคุกกี้ของผู้ให้บริการที่ JavaScript เข้าถึงได้ตามที่เบราว์เซอร์อนุญาต
 
 ## 10. ระยะเวลาการเก็บรักษาข้อมูล
 

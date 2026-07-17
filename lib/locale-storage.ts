@@ -60,7 +60,6 @@ export function persistLocale(locale: StoredLocale): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(LOCALE_STORAGE_KEY, JSON.stringify(locale));
   document.cookie = `${formatLocaleCookie(locale)}; ${localeCookieAttributes()}`;
-  document.documentElement.lang = locale.lang;
   window.dispatchEvent(
     new CustomEvent<StoredLocale>(LOCALE_EVENT_NAME, {
       detail: locale,

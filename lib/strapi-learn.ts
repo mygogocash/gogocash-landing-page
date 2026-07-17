@@ -40,7 +40,7 @@ function unwrapStrapiRow(row: unknown): Record<string, unknown> | null {
   return r;
 }
 
-function formatUpdated(iso?: string): string {
+function formatEditorialDate(iso?: string): string {
   if (!iso) return "";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
@@ -48,6 +48,7 @@ function formatUpdated(iso?: string): string {
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   });
 }
 
@@ -60,16 +61,18 @@ function rowToMetaOnly(row: unknown): LearnArticleMeta | null {
   const metaTitle = String(src.metaTitle ?? title).trim();
   const metaDescription = String(src.metaDescription ?? "").trim();
   const hubDesc = String(src.hubDesc ?? "").trim();
-  const updated =
-    formatUpdated(String(src.updatedAt ?? src.publishedAt ?? "")) ||
-    "Recently updated";
+  const published = formatEditorialDate(String(src.publishedAt ?? ""));
+  const updated = formatEditorialDate(
+    String(src.updatedAt ?? src.publishedAt ?? ""),
+  );
   return {
     slug,
     title,
     metaTitle,
     metaDescription,
     hubDesc,
-    updated,
+    published: published || "Publication date unavailable",
+    updated: updated || published || "Recently updated",
   };
 }
 

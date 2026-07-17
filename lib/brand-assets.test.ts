@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
 import { describe, it } from "node:test";
 
 import { loadBundledPartnerBrands } from "./partner-logo-resolve";
@@ -43,5 +44,40 @@ describe("brand image assets", () => {
     for (const partner of partners) {
       assertPngSignature(partner.logoUrl);
     }
+  });
+
+  it("does not deploy byte-identical partner logo files", () => {
+    const dir = path.join(process.cwd(), "public/images/partner-logos");
+    const byHash = new Map<string, string>();
+
+    for (const name of fs.readdirSync(dir).filter((entry) => entry.endsWith(".png"))) {
+      const bytes = fs.readFileSync(path.join(dir, name));
+      const hash = createHash("sha256").update(bytes).digest("hex");
+      const previous = byHash.get(hash);
+      assert.equal(
+        previous,
+        undefined,
+        `${name} duplicates ${previous}; keep one canonical public URL`,
+      );
+      byHash.set(hash, name);
+    }
+  });
+
+  it("keeps every deployed image within the 300 KB asset budget", () => {
+    const imageRoot = path.join(process.cwd(), "public/images");
+    const visit = (dir: string) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const file = path.join(dir, entry.name);
+        if (entry.isDirectory()) visit(file);
+        else {
+          assert.ok(
+            fs.statSync(file).size <= 300 * 1024,
+            `${path.relative(process.cwd(), file)} exceeds 300 KB`,
+          );
+        }
+      }
+    };
+
+    visit(imageRoot);
   });
 });

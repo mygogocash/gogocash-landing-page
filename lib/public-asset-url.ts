@@ -1,4 +1,3 @@
-import { marketingSiteOrigin } from "@/lib/app-config";
 import { encodePublicPath } from "@/lib/encode-public-path";
 
 /** Strip DNS root trailing dot so asset hosts match Cloudflare/Firebase canonical host. */
@@ -22,21 +21,17 @@ function assetOriginForPublicPath(): string | null {
     if (window.location.hostname.endsWith(".")) {
       return normalizeOrigin(window.location.origin);
     }
-    if (process.env.NODE_ENV === "development") {
-      return null;
-    }
-    return marketingSiteOrigin();
   }
-  if (process.env.NODE_ENV === "development") {
-    return null;
-  }
-  return marketingSiteOrigin();
+  return null;
 }
 
 /**
  * Root-relative paths break on hostnames with a trailing dot (`gogocash.co.`) because
  * `/images/...` resolves to `https://gogocash.co./images/...`, which Cloudflare blocks.
- * Production/static builds use the canonical marketing origin; local dev keeps relative paths.
+ * Static builds keep assets root-relative so previews, staging, and production all
+ * test and serve their own artifact. The production Worker canonicalizes a
+ * trailing-dot hostname before serving HTML; `app/layout.tsx` and the browser
+ * fallback here cover hosts that bypass that edge route.
  */
 export function publicAssetUrl(path: string): string {
   if (!path.startsWith("/")) return path;

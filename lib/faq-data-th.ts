@@ -1,3 +1,5 @@
+import { SITE_FACTS } from "@/lib/site-facts";
+
 /**
  * Thai FAQ for `/th` landing (and shared accordion data if reused).
  * Keep answers scannable; first clause = direct answer when possible.
@@ -28,8 +30,7 @@ export const THAI_FAQ_ITEMS: ThaiFaqEntry[] = [
   },
   {
     question: "มีร้านไหนบ้าง?",
-    answer:
-      "มีพันธมิตรกว่า 70 แบรนด์ในเอเชียตะวันออกเฉียงใต้ เช่น Shopee, Lazada, Agoda และอื่น ๆ ตรวจรายการล่าสุดในแอปหรือหน้าแรก",
+    answer: `มีพันธมิตรกว่า ${SITE_FACTS.partnerCountMin} แบรนด์ในเอเชียตะวันออกเฉียงใต้ เช่น Shopee, Lazada, Agoda และอื่น ๆ ตรวจรายการล่าสุดในแอปหรือหน้าแรก`,
   },
   {
     question: "ร้านไหนให้แคชแบ็กสูงสุด?",

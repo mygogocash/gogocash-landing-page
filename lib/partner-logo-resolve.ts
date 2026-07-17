@@ -70,56 +70,6 @@ function listPngFilenames(): string[] {
   }
 }
 
-/**
- * Picks a bundled logo under `/images/partner-logos/` from the offer name.
- * Uses longest slug match among primary stems (before first `_`) to reduce false positives.
- */
-export function resolveBundledPartnerLogo(offerName: string): string | null {
-  const name = offerName.trim();
-  if (!name) return null;
-  const offerSlug = slugAlnum(name);
-  if (offerSlug.length < 2) return null;
-
-  let best: { file: string; score: number; weight: number } | null = null;
-  for (const file of listPngFilenames()) {
-    if (skipFileForMatching(file)) continue;
-    const stem = stemFromFilename(file);
-    const primary = primaryStem(stem);
-    const pSlug = slugAlnum(primary);
-    const fullStemSlug = slugAlnum(stem.replace(/_/g, ""));
-    if (pSlug.length < 2 && fullStemSlug.length < 2) continue;
-
-    const candidates = [pSlug, fullStemSlug].filter((s) => s.length >= 2);
-    for (const c of candidates) {
-      if (offerSlug.includes(c) || c.includes(offerSlug)) {
-        const score = Math.min(c.length, offerSlug.length);
-        const w = uuidSuffixWeight(file);
-        if (
-          !best ||
-          score > best.score ||
-          (score === best.score && w < best.weight)
-        ) {
-          best = { file, score, weight: w };
-        }
-      }
-    }
-  }
-
-  return best ? `/images/partner-logos/${best.file}` : null;
-}
-
-/**
- * Prefer bundled asset (stable on static export); fall back to Involve CDN URL.
- */
-export function resolvePartnerDisplayLogo(
-  offerName: string,
-  remoteLogoUrl: string | null,
-): string | null {
-  const local = resolveBundledPartnerLogo(offerName);
-  if (local) return local;
-  return remoteLogoUrl?.trim() || null;
-}
-
 /** Lowercase single-spaced form for prefix checks. */
 function collapseInnerSpaces(s: string): string {
   return s.trim().toLowerCase().replace(/\s+/g, " ");
@@ -201,6 +151,7 @@ const BLOCKED_BUNDLED_PARTNER_NAMES = new Set(
     "Domino",
     "go",
     "GQ Thailand",
+    "image",
     "WPS SOFTWARE",
     "Zen",
   ].map((n) => n.trim().toLowerCase()),
@@ -219,13 +170,13 @@ export type BundledPartnerBrand = {
 
 type FilePick = { file: string; stem: string; primary: string; weight: number };
 
-/**
- * Server-only: one row per unique display name from `public/images/partner-logos`
- * (deduped, Mini/non-UUID preferred). Same data shape as API-driven partner cards.
- */
-export function loadBundledPartnerBrands(): BundledPartnerBrand[] {
+/** Build deterministic cards from exported filenames; kept pure for regression tests. */
+export function buildBundledPartnerBrandsFromFilenames(
+  filenames: readonly string[],
+  pinnedLogos: Readonly<Record<string, string>> = FEATURED_FALLBACK_LOGOS,
+): BundledPartnerBrand[] {
   const entries: FilePick[] = [];
-  for (const file of listPngFilenames()) {
+  for (const file of filenames) {
     if (skipFileForMatching(file)) continue;
     const stem = stemFromFilename(file);
     const primary = primaryStem(stem);
@@ -260,7 +211,7 @@ export function loadBundledPartnerBrands(): BundledPartnerBrand[] {
   for (const e of byKey.values()) {
     if (isBlockedBundledPartnerDisplayName(e.primary)) continue;
     const slug = slugAlnum(e.primary);
-    const pinned = FEATURED_FALLBACK_LOGOS[slug];
+    const pinned = pinnedLogos[slug];
     const logoUrl = pinned ?? `/images/partner-logos/${e.file}`;
     brands.push({
       id: `bundled-${slug}`,
@@ -273,4 +224,12 @@ export function loadBundledPartnerBrands(): BundledPartnerBrand[] {
   const deduped = dedupeExtendedBrandNames(brands);
   deduped.sort((a, b) => a.name.localeCompare(b.name, "en"));
   return deduped;
+}
+
+/**
+ * Server-only: one row per unique display name from `public/images/partner-logos`
+ * (deduped, Mini/non-UUID preferred). Same data shape as API-driven partner cards.
+ */
+export function loadBundledPartnerBrands(): BundledPartnerBrand[] {
+  return buildBundledPartnerBrandsFromFilenames(listPngFilenames());
 }

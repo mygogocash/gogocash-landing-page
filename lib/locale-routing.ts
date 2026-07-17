@@ -4,6 +4,7 @@ export const LANGUAGES = [
   { code: "zh-TW", label: "繁體中文", flag: "🇹🇼" },
   { code: "zh-CN", label: "简体中文", flag: "🇨🇳" },
   { code: "ja", label: "日本語", flag: "🇯🇵" },
+  { code: "id", label: "Bahasa Indonesia", flag: "🇮🇩" },
 ] as const;
 
 export const REGIONS = [
@@ -32,7 +33,7 @@ export const DEFAULT_LOCALE: StoredLocale = {
   region: "TH",
 };
 
-const SECTIONED_LANDING_ROOTS = ["/", "/en", "/th", "/tw", "/cn", "/ja"] as const;
+const SECTIONED_LANDING_ROOTS = ["/", "/en", "/th", "/tw", "/cn", "/ja", "/id"] as const;
 
 const SECTIONED_LANDING_PREFIXES = SECTIONED_LANDING_ROOTS.filter(
   (root) => root !== "/",
@@ -43,7 +44,7 @@ const PATH_LOCALE_MAP = [
   { root: "/tw", locale: { lang: "zh-TW", region: "TW" } as StoredLocale },
   { root: "/cn", locale: { lang: "zh-CN", region: "CN" } as StoredLocale },
   { root: "/ja", locale: { lang: "ja", region: "JP" } as StoredLocale },
-  { root: "/id", locale: { lang: "en", region: "ID" } as StoredLocale },
+  { root: "/id", locale: { lang: "id", region: "ID" } as StoredLocale },
   { root: "/en", locale: DEFAULT_LOCALE },
 ] as const;
 
@@ -102,6 +103,8 @@ export function resolveLanguageSelection(
       return { path: "/cn", locale: { lang: "zh-CN", region: "CN" } };
     case "ja":
       return { path: "/ja", locale: { lang: "ja", region: "JP" } };
+    case "id":
+      return { path: "/id", locale: { lang: "id", region: "ID" } };
     default: {
       const _exhaustive: never = language;
       return _exhaustive;
