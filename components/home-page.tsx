@@ -114,7 +114,7 @@ export default function HomePage({ initialPartners }: HomePageProps) {
 
         <FinalCtaSection
           title="Ready to earn on every purchase?"
-          subtitle={`Join ${SITE_FACTS.shopperCommunityLabel} shoppers turning everyday spends into withdrawable cashback`}
+          subtitle="Turn everyday spending into withdrawable cashback with GoGoCash."
           ctaLabel="Start earning"
         />
       </main>

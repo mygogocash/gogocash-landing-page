@@ -75,7 +75,7 @@ export const TH_HOME = {
     ],
     ctaCard: {
       title: "พร้อมรับแคชแบ็กแล้วหรือยัง?",
-      bodyLine: `ผู้ใช้กว่า ${SITE_FACTS.shopperCommunityLabel} คนกำลังรับเงินคืนแบบง่าย ๆ`,
+      bodyLine: "รับเงินคืนจากการช้อปได้ง่าย ๆ กับ GoGoCash",
       cta: "เริ่มรับแคชแบ็ก",
     },
   },
@@ -174,7 +174,7 @@ export const TH_HOME = {
 
   finalCta: {
     title: "พร้อมรับแคชแบ็กทุกครั้งที่ใช้จ่ายหรือยัง?",
-    sub: `เข้าร่วมกับผู้ใช้กว่า ${SITE_FACTS.shopperCommunityLabel} คนที่กำลังรับเงินคืนแบบง่าย ๆ`,
+    sub: "เปลี่ยนทุกการใช้จ่ายในชีวิตประจำวันให้เป็นแคชแบ็กที่ถอนได้",
     cta: "เริ่มรับแคชแบ็ก",
   },
 } satisfies LocaleHomeCopy;

@@ -75,7 +75,7 @@ export const JA_HOME = {
     ],
     ctaCard: {
       title: "キャッシュバックを始めますか？",
-      bodyLine: `${SITE_FACTS.shopperCommunityLabel} 以上のユーザーが簡単に還元を積み立て中`,
+      bodyLine: "GoGoCashなら、かんたんにキャッシュバックを貯められます。",
       cta: "還元を始める",
     },
   },
@@ -167,7 +167,7 @@ export const JA_HOME = {
 
   finalCta: {
     title: "毎回のお支払いで還元を積みませんか？",
-    sub: `${SITE_FACTS.shopperCommunityLabel} 以上のユーザーと一緒に、かんたんにキャッシュバック`,
+    sub: "毎日のお買い物を、引き出せるキャッシュバックに変えましょう。",
     cta: "還元を始める",
   },
 } satisfies LocaleHomeCopy;
