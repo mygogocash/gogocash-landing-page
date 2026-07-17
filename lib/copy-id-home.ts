@@ -75,7 +75,7 @@ export const ID_HOME = {
     ],
     ctaCard: {
       title: "Siap mendapatkan cashback?",
-      bodyLine: `Bergabung dengan komunitas ${SITE_FACTS.shopperCommunityLabel} pengguna GoGoCash.`,
+      bodyLine: "Dapatkan cashback dengan mudah bersama GoGoCash.",
       cta: "Mulai sekarang",
     },
   },
@@ -171,7 +171,7 @@ export const ID_HOME = {
 
   finalCta: {
     title: "Siap mendapatkan cashback dari setiap belanja?",
-    sub: `Bergabung dengan ${SITE_FACTS.shopperCommunityLabel} pengguna yang mengubah belanja sehari-hari menjadi cashback nyata.`,
+    sub: "Ubah belanja sehari-hari menjadi cashback yang bisa ditarik.",
     cta: "Mulai dapat cashback",
   },
 } satisfies LocaleHomeCopy;

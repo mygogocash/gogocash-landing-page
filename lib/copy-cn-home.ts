@@ -75,7 +75,7 @@ export const CN_HOME = {
     ],
     ctaCard: {
       title: "准备开始赚回馈了吗？",
-      bodyLine: `超过 ${SITE_FACTS.shopperCommunityLabel} 位用户正在轻松累积现金回馈`,
+      bodyLine: "使用 GoGoCash，轻松累积现金回馈。",
       cta: "开始赚回馈",
     },
   },
@@ -167,7 +167,7 @@ export const CN_HOME = {
 
   finalCta: {
     title: "准备好每次消费都赚回馈了吗？",
-    sub: `与超过 ${SITE_FACTS.shopperCommunityLabel} 位用户一起轻松累积现金回馈`,
+    sub: "将日常消费变成可提现的现金回馈。",
     cta: "开始赚回馈",
   },
 } satisfies LocaleHomeCopy;

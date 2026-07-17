@@ -75,7 +75,7 @@ export const TW_HOME = {
     ],
     ctaCard: {
       title: "準備開始賺回饋了嗎？",
-      bodyLine: `超過 ${SITE_FACTS.shopperCommunityLabel} 位用戶正在輕鬆累積現金回饋`,
+      bodyLine: "使用 GoGoCash，輕鬆累積現金回饋。",
       cta: "開始賺回饋",
     },
   },
@@ -167,7 +167,7 @@ export const TW_HOME = {
 
   finalCta: {
     title: "準備好每次消費都賺回饋了嗎？",
-    sub: `與超過 ${SITE_FACTS.shopperCommunityLabel} 位用戶一起輕鬆累積現金回饋`,
+    sub: "將日常消費變成可提領的現金回饋。",
     cta: "開始賺回饋",
   },
 } satisfies LocaleHomeCopy;
