@@ -16,9 +16,10 @@ test.describe("navigation", () => {
     page,
   }) => {
     await page.goto("/", { waitUntil: "load", timeout: 90_000 });
-    const hero = page.getByRole("img", {
-      name: "GoGoCash app preview on two phones",
-    });
+    const hero = page.locator(
+      '#home img[src*="hero-neutral-phones-"][alt=""]',
+    );
+    await expect(hero).toHaveCount(1);
     await expect(hero).toBeVisible();
     const asset = await hero.evaluate((image: HTMLImageElement) => ({
       currentSrc: image.currentSrc,

@@ -1,6 +1,6 @@
 # Learn hub: local Markdown vs Strapi
 
-The `/learn` hub and `/learn/[slug]` pages resolve article metadata and Markdown from **one of two sources**, chosen at **`next build`** (static export).
+The `/learn` hub and `/learn/[slug]` pages resolve article metadata and Markdown from **one of two sources**, chosen at **`next build`** (static export). This repository does not host or deploy a CMS: local Markdown is the production-safe default, while Strapi is an optional, externally managed content source.
 
 ## Local (default)
 
@@ -9,7 +9,7 @@ The `/learn` hub and `/learn/[slug]` pages resolve article metadata and Markdown
 
 No environment variables are required. CI builds use this path unless Strapi is configured.
 
-## Strapi (optional)
+## Externally managed Strapi (optional)
 
 When **`STRAPI_URL`** is set (and the API returns at least one published entry), [`lib/learn-data.ts`](../lib/learn-data.ts) prefers:
 
@@ -24,10 +24,12 @@ Schema and field list: see the file header in [`lib/strapi-learn.ts`](../lib/str
 
 ## CI / GitHub Actions
 
-The production workflow ([`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml)) does **not** set `STRAPI_URL`. To build from Strapi in CI:
+The production workflow ([`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml)) passes the optional `STRAPI_URL` repository variable and `STRAPI_API_TOKEN` secret only to the static build step. To build from an externally managed Strapi instance in CI:
 
-1. Add repository secrets, e.g. `STRAPI_URL`, and optionally `STRAPI_API_TOKEN`.
-2. Pass them into the **Build static site** step as `env:` entries (same pattern as `INVOLVE_ASIA_*`).
+1. Set repository variable `STRAPI_URL` to the external service URL.
+2. If its content API is protected, set `STRAPI_API_TOKEN` as a repository or `landing-production` environment secret.
+
+Leave both values unset to keep the deterministic local Markdown build. The retired Cloudflare-hosted CMS deployment path is intentionally not a fallback and must not be restored through the landing workflow.
 
 ## Pushing local Markdown to Strapi
 

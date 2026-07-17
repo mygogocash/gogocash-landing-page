@@ -75,11 +75,34 @@ export const CN_HOME = {
     ],
     ctaCard: {
       title: "准备开始赚回馈了吗？",
-      bodyLine: `超过 ${SITE_FACTS.shopperCommunityLabel} 位用户正在轻松累积现金回馈`,
+      bodyLine: "使用 GoGoCash，轻松累积现金回馈。",
       cta: "开始赚回馈",
     },
   },
 
+  quests: {
+    badge: "任务",
+    title: "让日常消费变成额外现金回馈",
+    intro:
+      "任务是依照你的消费方式设计的自选挑战。完成后可在原有回馈上再加码，领取真实现金，而不是点数。",
+    cards: [
+      {
+        title: "连续消费",
+        body: "在指定期间内完成多次消费，即可在原有回馈之外解锁额外现金回馈。",
+      },
+      {
+        title: "分类挑战",
+        body: "任务开放期间，在旅行、电子产品或时尚等指定分类消费即可获得加码。",
+      },
+      {
+        title: "档期加码",
+        body: "大型促销与活动期间提供限时回馈倍数，让重要购物时刻回馈更多。",
+      },
+    ],
+    stacking:
+      "任务回馈会叠加在一般现金回馈上，每个完成的任务都是额外加码。",
+    cta: "查看进行中的任务",
+  },
   howItWorks: {
     title: "三步骤，拿到第一笔现金回馈",
     intro:
@@ -167,7 +190,7 @@ export const CN_HOME = {
 
   finalCta: {
     title: "准备好每次消费都赚回馈了吗？",
-    sub: `与超过 ${SITE_FACTS.shopperCommunityLabel} 位用户一起轻松累积现金回馈`,
+    sub: "将日常消费变成可提现的现金回馈。",
     cta: "开始赚回馈",
   },
 } satisfies LocaleHomeCopy;

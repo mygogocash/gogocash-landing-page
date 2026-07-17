@@ -56,7 +56,6 @@ describe("Cloudflare production build contract", () => {
       ".github/workflows/ci.yml",
       ".github/workflows/deploy-production.yml",
       ".github/workflows/deploy-staging.yml",
-      ".github/workflows/deploy-cms-cloudflare.yml",
       "AGENTS.md",
       "README.md",
       ".cursor/skills/cloud-agent-run-test/SKILL.md",
@@ -209,6 +208,15 @@ describe("Cloudflare production build contract", () => {
     );
     assert.match(production, /name: Build static export\s+run: npm run build/);
     assert.match(production, /npm run test:e2e:ci/);
+    assert.match(production, /^\s+environment: landing-production$/m);
+    assert.match(
+      production,
+      /actions\/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10\s+# v6/,
+    );
+    assert.match(
+      production,
+      /actions\/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38\s+# v6/,
+    );
     assert.match(
       production,
       /npm exec -- wrangler deploy --config wrangler\.production\.jsonc/,
@@ -254,9 +262,79 @@ describe("Cloudflare production build contract", () => {
         ),
       );
     }
+    assert.doesNotMatch(
+      production,
+      /secrets\.CLOUDFLARE_API_TOKEN/,
+    );
+
+    const validateToken = production.indexOf(
+      "name: Validate Cloudflare API token format",
+    );
+    const verifyToken = production.indexOf(
+      "name: Verify Cloudflare API token",
+    );
+    const deploy = production.indexOf("name: Deploy verified artifact");
+    assert.ok(validateToken > 0, "production deploy must validate token format");
+    assert.ok(
+      verifyToken > validateToken,
+      "Cloudflare auth preflight must run after local token validation",
+    );
+    assert.ok(
+      deploy > verifyToken,
+      "Cloudflare auth preflight must run before deployment",
+    );
     assert.match(
       production,
-      /name: Deploy verified artifact[\s\S]*?CLOUDFLARE_API_TOKEN: \${{ secrets\./,
+      /https:\/\/api\.cloudflare\.com\/client\/v4\/user\/tokens\/verify/,
     );
+    assert.match(
+      production,
+      /result\?\.status !== "active"/,
+    );
+    assert.match(
+      production,
+      /CLOUDFLARE_API_TOKEN: \${{ secrets\.CLOUDFLARE_LANDING_API_TOKEN }}/,
+    );
+    for (const structuralCheck of [
+      "hasOuterWhitespace",
+      "hasWhitespace",
+      "hasBearerPrefix",
+      "hasQuotes",
+      "looksJson",
+      "looksMasked",
+      "hasImplausibleLength",
+    ]) {
+      assert.match(production, new RegExp(`const ${structuralCheck} =`));
+      assert.match(production, new RegExp(`\\|\\|\\s+${structuralCheck}`));
+    }
+    assert.match(production, /token !== token\.trim\(\)/);
+    assert.match(production, /token\.length < 40 \|\| token\.length > 80/);
+    assert.doesNotMatch(production, /isLegacy|isScannable/);
+    assert.doesNotMatch(production, /const token = [^;]*\.trim\(/);
+    assert.doesNotMatch(production, /replace\(/);
+  });
+
+  it("retires the repo-hosted Learn CMS without removing external Strapi support", () => {
+    assert.equal(
+      fs.existsSync(
+        path.join(process.cwd(), ".github/workflows/deploy-cms-cloudflare.yml"),
+      ),
+      false,
+    );
+
+    const packageJson = readJsonFile("package.json");
+    const scripts = packageJson.scripts as Record<string, string>;
+    const readme = readRepoFile("README.md");
+    const learnDocs = readRepoFile("docs/learn-content.md");
+
+    assert.match(scripts["learn:strapi-push"], /push-learn-to-strapi/);
+    assert.match(readme, /Workers Routes[^.\n]*(?:write|edit)/i);
+    assert.match(readme, /Zone Resources[^.\n]*gogocash\.co/i);
+    for (const documentation of [readme, learnDocs]) {
+      assert.match(documentation, /externally managed Strapi/i);
+      assert.match(documentation, /local Markdown/i);
+      assert.match(documentation, /learn:strapi-push/);
+      assert.doesNotMatch(documentation, /deploy-cms-cloudflare|CMS_/);
+    }
   });
 });

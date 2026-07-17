@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { FAQ_ITEMS } from "./faq-data";
+import { CN_HOME } from "./copy-cn-home";
+import { ID_HOME } from "./copy-id-home";
+import { JA_HOME } from "./copy-ja-home";
+import { TH_HOME } from "./copy-th-home";
+import { TW_HOME } from "./copy-tw-home";
 import {
   faqItemsForLocale,
   type FaqLocaleId,
@@ -101,5 +106,77 @@ describe("site-facts brand claim consistency", () => {
         `${source} must not hardcode the maximum-cashback claim`,
       );
     }
+  });
+});
+
+describe("unsupported community-size claim removal", () => {
+  it("does not expose or interpolate an unverified shopper count", () => {
+    assert.equal("shopperCommunityLabel" in SITE_FACTS, false);
+
+    const marketingSources = [
+      "../components/home-page.tsx",
+      "./copy-th-home.ts",
+      "./copy-id-home.ts",
+      "./copy-ja-home.ts",
+      "./copy-tw-home.ts",
+      "./copy-cn-home.ts",
+    ];
+
+    for (const source of marketingSources) {
+      const sourceText = readFileSync(new URL(source, import.meta.url), "utf8");
+      assert.doesNotMatch(sourceText, /6M\+|shopperCommunityLabel/);
+    }
+  });
+
+  it("uses the approved non-numeric benefit copy in every locale", () => {
+    assert.equal(
+      TH_HOME.features.ctaCard.bodyLine,
+      "รับเงินคืนจากการช้อปได้ง่าย ๆ กับ GoGoCash",
+    );
+    assert.equal(
+      TH_HOME.finalCta.sub,
+      "เปลี่ยนทุกการใช้จ่ายในชีวิตประจำวันให้เป็นแคชแบ็กที่ถอนได้",
+    );
+    assert.equal(
+      ID_HOME.features.ctaCard.bodyLine,
+      "Dapatkan cashback dengan mudah bersama GoGoCash.",
+    );
+    assert.equal(
+      ID_HOME.finalCta.sub,
+      "Ubah belanja sehari-hari menjadi cashback yang bisa ditarik.",
+    );
+    assert.equal(
+      JA_HOME.features.ctaCard.bodyLine,
+      "GoGoCashなら、かんたんにキャッシュバックを貯められます。",
+    );
+    assert.equal(
+      JA_HOME.finalCta.sub,
+      "毎日のお買い物を、引き出せるキャッシュバックに変えましょう。",
+    );
+    assert.equal(
+      TW_HOME.features.ctaCard.bodyLine,
+      "使用 GoGoCash，輕鬆累積現金回饋。",
+    );
+    assert.equal(
+      TW_HOME.finalCta.sub,
+      "將日常消費變成可提領的現金回饋。",
+    );
+    assert.equal(
+      CN_HOME.features.ctaCard.bodyLine,
+      "使用 GoGoCash，轻松累积现金回馈。",
+    );
+    assert.equal(
+      CN_HOME.finalCta.sub,
+      "将日常消费变成可提现的现金回馈。",
+    );
+
+    const englishHomeSource = readFileSync(
+      new URL("../components/home-page.tsx", import.meta.url),
+      "utf8",
+    );
+    assert.match(
+      englishHomeSource,
+      /subtitle="Turn everyday spending into withdrawable cashback with GoGoCash\."/,
+    );
   });
 });

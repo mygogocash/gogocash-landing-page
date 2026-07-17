@@ -4,6 +4,7 @@ import { WEB_APP_HREF } from "@/components/social-data";
 import { HOW_IT_WORKS_ILLUSTRATION_PATHS } from "@/lib/how-it-works-illustrations";
 import { type HowItWorksStep } from "@/components/landing/how-it-works-interactive";
 import MerchantOffersStrip from "@/components/landing/merchant-offers-strip";
+import QuestsSection from "@/components/landing/quests-section";
 import FaqJsonLd from "@/components/faq-json-ld";
 import SectionViewTracker from "@/components/section-view-tracker";
 import type { PartnerBrand } from "@/lib/involve-asia";
@@ -78,6 +79,7 @@ export default function LocaleHomePage({
 
         <LocaleWhySection copy={copy} />
         <LocaleFeatureGridSection copy={copy} />
+        <QuestsSection copy={copy.quests} />
         <HowItWorksSection
           title={copy.howItWorks.title}
           intro={copy.howItWorks.intro}

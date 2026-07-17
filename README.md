@@ -87,7 +87,7 @@ flowchart LR
 
 - **Node.js 26.x** (use [`.nvmrc`](./.nvmrc) / `fnm` / `nvm`; `package.json` `engines` is `>=26 <27`).
 - **npm** (lockfile is `package-lock.json`; use `npm ci --force` in CI and for reproducible installs).
-- For **production deploy to Cloudflare**: install dependencies to use the lockfile-backed [Wrangler](https://developers.cloudflare.com/workers/wrangler/) CLI and obtain access to the GoGoCash Cloudflare account. Run `npm exec -- wrangler login` once locally, or set `CLOUDFLARE_API_TOKEN` in CI.
+- For **production deploy to Cloudflare**: install dependencies to use the lockfile-backed [Wrangler](https://developers.cloudflare.com/workers/wrangler/) CLI and obtain access to the GoGoCash Cloudflare account. Run `npm exec -- wrangler login` once locally. GitHub Actions reads the raw user token from the protected `landing-production` environment secret `CLOUDFLARE_LANDING_API_TOKEN`.
 - For **legacy Firebase deploy** (staging only): Firebase CLI is a **devDependency** — prefer `npm exec -- firebase` from the repo root.
 - For **Playwright locally**: after `npm ci --force`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npm exec -- playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
 
@@ -239,14 +239,15 @@ npm run build
 npm exec -- wrangler deploy --config wrangler.production.jsonc
 ```
 
-Authenticate once with `npm exec -- wrangler login`, or set `CLOUDFLARE_API_TOKEN` (Workers Scripts write + account read). The GoGoCash account id is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc); set `CLOUDFLARE_ACCOUNT_ID` only if you use a different config without `account_id`.
+Authenticate locally with `npm exec -- wrangler login`, or set Wrangler's `CLOUDFLARE_API_TOKEN` environment variable to a least-privilege user token. Start from Cloudflare's **Edit Cloudflare Workers** template, then retain the permissions this config needs: **Workers Scripts: Edit** and account read on the account, plus **Workers Routes: Edit** on the zone. Set **Account Resources** to only GoGoCash (`187ab61ed9dbc6e616cb23e6b95aa8f1`) and **Zone Resources** to only `gogocash.co`; never select all accounts or zones. In GitHub Actions, store that raw token—without a `Bearer` prefix, quotes, or whitespace—as the protected `landing-production` environment secret `CLOUDFLARE_LANDING_API_TOKEN`. The workflow validates that the token is active before exposing it to Wrangler; because Cloudflare's verification endpoint does not report effective permissions or resource scope, audit both selections before saving it. The account id is pinned in [`wrangler.production.jsonc`](./wrangler.production.jsonc); set `CLOUDFLARE_ACCOUNT_ID` only if you use a different config without `account_id`.
 
 Production builds emit **canonical asset URLs** (`https://gogocash.co/...`) via [`lib/public-asset-url.ts`](./lib/public-asset-url.ts) so images and icons still load when the hostname has a trailing dot (`gogocash.co.`).
 
 Related Cloudflare pieces (separate from the landing deploy):
 
 - [`infra/posthog-proxy/`](./infra/posthog-proxy/) — optional PostHog reverse proxy Worker on `gogocash.co/ingest/*` (see [`docs/posthog-reverse-proxy.md`](./docs/posthog-reverse-proxy.md)).
-- [`.github/workflows/deploy-cms-cloudflare.yml`](./.github/workflows/deploy-cms-cloudflare.yml) — Learn CMS (Strapi) container deploy.
+
+This repository does **not** host or deploy a Learn CMS. Learn content uses local Markdown by default and may consume an [externally managed Strapi](./docs/learn-content.md) instance at build time.
 
 ---
 
@@ -280,7 +281,6 @@ The **`gogocash.co`** zone is managed in Cloudflare. Production landing hostname
 | **[`ci.yml`](./.github/workflows/ci.yml)** | `main` + pull requests | Required repo gate: lint, unit tests, typecheck, and static build |
 | **[`deploy-production.yml`](./.github/workflows/deploy-production.yml)** | `production` + manual | Verify, blocking static Playwright, then deploy the tested artifact to Cloudflare Worker |
 | **[`deploy-staging.yml`](./.github/workflows/deploy-staging.yml)** | `staging` | Firebase Hosting site `gogocash-landing-staging` |
-| **[`deploy-cms-cloudflare.yml`](./.github/workflows/deploy-cms-cloudflare.yml)** | manual | Learn CMS on Cloudflare |
 
 **Production release:**
 
@@ -293,7 +293,7 @@ The **`gogocash.co`** zone is managed in Cloudflare. Production landing hostname
 - `INVOLVE_ASIA_API_KEY`
 - `INVOLVE_ASIA_API_SECRET`
 
-**Cloudflare (production deploy):** set repository variable `CLOUDFLARE_ACCOUNT_ID` and secret `CLOUDFLARE_API_TOKEN`. The GoGoCash account id is `187ab61ed9dbc6e616cb23e6b95aa8f1`.
+**Cloudflare (production deploy):** create the protected GitHub environment `landing-production`, then create a token from **Edit Cloudflare Workers** with **Workers Scripts: Edit** plus account read scoped by **Account Resources** to only GoGoCash (`187ab61ed9dbc6e616cb23e6b95aa8f1`) and **Workers Routes: Edit** scoped by **Zone Resources** to only `gogocash.co`. Store the raw token as `CLOUDFLARE_LANDING_API_TOKEN`; set repository variable `CLOUDFLARE_ACCOUNT_ID` only if an explicit override is needed. Record both scopes during token creation because the active-token preflight cannot infer them. The former repo-hosted Cloudflare CMS has been retired; remove its obsolete secrets from GitHub and Cloudflare after confirming they are unused.
 
 **Google Cloud (Firebase staging only):** the staging workflow uses **Workload Identity Federation**. Pool / provider / service account IDs are in workflow YAML and repo variables (`FIREBASE_WIF_PROVIDER`, `FIREBASE_SA_EMAIL`).
 
@@ -337,7 +337,7 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 | [`docs/firebase-deploy.md`](./docs/firebase-deploy.md) | Legacy Firebase Hosting deploy (staging only) |
 | [`docs/posthog-reverse-proxy.md`](./docs/posthog-reverse-proxy.md) | Optional PostHog proxy Worker on Cloudflare |
 | [`docs/framer-to-next-migration.md`](./docs/framer-to-next-migration.md) | Migration notes from Framer |
-| [`docs/learn-content.md`](./docs/learn-content.md) | Learn articles: local files vs Strapi, CI, `learn:strapi-push` |
+| [`docs/learn-content.md`](./docs/learn-content.md) | Learn articles: local Markdown vs externally managed Strapi, CI, `learn:strapi-push` |
 
 ---
 

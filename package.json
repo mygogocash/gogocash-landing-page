@@ -38,7 +38,8 @@
     "typecheck": "npm exec -- next typegen && node ./node_modules/typescript/bin/tsc --noEmit",
     "verify": "npm run lint && npm run test && npm run typecheck && npm run build",
     "learn:strapi-push": "npm exec -- tsx scripts/push-learn-to-strapi.ts",
-    "generate:assets": "node scripts/generate-seo-assets.mjs",
+    "generate:assets": "node scripts/generate-seo-assets.mjs && npm run generate:hero-assets",
+    "generate:hero-assets": "node scripts/generate-hero-assets.mjs",
     "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --preset=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
   },
   "dependencies": {

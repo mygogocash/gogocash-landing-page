@@ -17,8 +17,6 @@ export const SITE_FACTS = {
   countriesIso: ["TH", "ID", "MY", "SG", "PH", "VN"] as const,
   countriesList:
     "Thailand, Indonesia, Malaysia, Singapore, the Philippines, and Vietnam",
-  /** Community size callout (hero / footer); keep in sync with product claims */
-  shopperCommunityLabel: "6M+",
 } as const;
 
 /** One-line hero supporting sentence: keywords without stuffing. */
