@@ -80,6 +80,29 @@ export const ID_HOME = {
     },
   },
 
+  quests: {
+    badge: "Quest",
+    title: "Ubah belanja sehari-hari menjadi cashback ekstra",
+    intro:
+      "Quest adalah tantangan opsional yang menyesuaikan cara Anda berbelanja. Selesaikan untuk menambah cashback di atas tarif biasa — uang nyata, bukan poin.",
+    cards: [
+      {
+        title: "Rangkaian belanja",
+        body: "Belanja beberapa kali dalam periode tertentu untuk membuka tambahan cashback di atas tarif yang sudah Anda dapatkan.",
+      },
+      {
+        title: "Tantangan kategori",
+        body: "Dapatkan tambahan di kategori pilihan seperti perjalanan, elektronik, atau fesyen saat quest sedang aktif.",
+      },
+      {
+        title: "Bonus musiman",
+        body: "Nikmati pengali berbatas waktu selama kampanye dan periode belanja besar agar belanja Anda memberi hasil lebih.",
+      },
+    ],
+    stacking:
+      "Quest ditambahkan di atas cashback reguler — setiap quest yang selesai memberi bonus ekstra.",
+    cta: "Lihat quest aktif",
+  },
   howItWorks: {
     title: "Cashback dalam tiga langkah",
     intro:

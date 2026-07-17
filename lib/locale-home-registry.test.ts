@@ -31,4 +31,21 @@ describe("locale-home-registry", () => {
       assert.ok(entry.partnerLogoAltTemplate.includes("{name}"), id);
     }
   });
+
+  it("requires complete localized Quests copy for every locale", () => {
+    for (const id of LOCALE_HOME_IDS) {
+      const quests = LOCALE_HOME_COPY[id].quests;
+      assert.ok(quests.badge.length > 0, `${id}: badge`);
+      assert.ok(quests.title.length > 0, `${id}: title`);
+      assert.ok(quests.intro.length > 0, `${id}: intro`);
+      assert.equal(quests.cards.length, 3, `${id}: cards`);
+      assert.equal(
+        new Set(quests.cards.map((card) => card.title)).size,
+        3,
+        `${id}: unique card titles`,
+      );
+      assert.ok(quests.stacking.length > 0, `${id}: stacking`);
+      assert.ok(quests.cta.length > 0, `${id}: cta`);
+    }
+  });
 });

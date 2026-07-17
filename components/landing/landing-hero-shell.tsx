@@ -38,20 +38,20 @@ export function LandingHeroPhonesImage({
   return (
     <div className="w-full min-w-0 shrink-0 leading-none">
       <ResponsiveMarketingPicture
-        fallback="/images/hero-dashboard-phones-1200.webp"
+        fallback="/images/hero-neutral-phones-1200.webp"
         avif={[
-          ["/images/hero-dashboard-phones-480.avif", 480],
-          ["/images/hero-dashboard-phones-800.avif", 800],
-          ["/images/hero-dashboard-phones-1200.avif", 1200],
-          ["/images/hero-dashboard-phones-1600.avif", 1600],
+          ["/images/hero-neutral-phones-480.avif", 480],
+          ["/images/hero-neutral-phones-800.avif", 800],
+          ["/images/hero-neutral-phones-1200.avif", 1200],
+          ["/images/hero-neutral-phones-1600.avif", 1600],
         ]}
         webp={[
-          ["/images/hero-dashboard-phones-480.webp", 480],
-          ["/images/hero-dashboard-phones-800.webp", 800],
-          ["/images/hero-dashboard-phones-1200.webp", 1200],
-          ["/images/hero-dashboard-phones-1600.webp", 1600],
+          ["/images/hero-neutral-phones-480.webp", 480],
+          ["/images/hero-neutral-phones-800.webp", 800],
+          ["/images/hero-neutral-phones-1200.webp", 1200],
+          ["/images/hero-neutral-phones-1600.webp", 1600],
         ]}
-        alt="GoGoCash app preview on two phones"
+        alt=""
         width={1600}
         height={1200}
         priority={priority}

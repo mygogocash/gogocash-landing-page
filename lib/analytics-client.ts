@@ -219,11 +219,17 @@ export function logLocaleRegionSelect(region: string): void {
 
 /**
  * Primary "launch app" CTA. `destination` is the resolved target (web on desktop,
- * LINE on mobile); `placement` is where on the page it was clicked (hero, final,
- * feature, header, quests) — powering CTA-performance breakdowns in PostHog.
+ * LINE on mobile by default, or web on mobile for an explicit typed override);
+ * `placement` is where on the page it was clicked (hero, final, feature, header,
+ * quests) — powering CTA-performance breakdowns in PostHog.
  */
+export type LaunchAppDestination =
+  | "web_desktop"
+  | "web_mobile"
+  | "line_mobile";
+
 export function logLaunchAppClick(
-  destination: "web_desktop" | "line_mobile",
+  destination: LaunchAppDestination,
   placement = "unknown",
 ): void {
   logFirebase("select_content", {
