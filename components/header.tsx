@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight } from "@/components/icons";
-import { LINE_MINI_APP_HREF, WEB_APP_QUEST_HREF } from "@/components/social-data";
+import { WEB_APP_HREF, WEB_APP_QUEST_HREF } from "@/components/social-data";
 import GoGoCashLogo from "./gogocash-logo";
 import LaunchAppLink from "@/components/launch-app-link";
 import { LocaleDropdown } from "./locale-menu";
@@ -297,7 +297,7 @@ export default function Header() {
               </div>
               <div className="min-w-0">
                 <a
-                  href={LINE_MINI_APP_HREF}
+                  href={WEB_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
