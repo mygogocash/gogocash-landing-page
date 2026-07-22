@@ -18,8 +18,8 @@ describe("launch app target contract", () => {
     assert.deepEqual(
       launchTargetBehavior("mobile", DEFAULT_MOBILE_LAUNCH_TARGET),
       {
-        destination: "line_mobile",
-        sendLineConversion: true,
+        destination: "web_mobile",
+        sendLineConversion: false,
       },
     );
   });
@@ -33,6 +33,19 @@ describe("launch app target contract", () => {
       {
         destination: "web_mobile",
         sendLineConversion: false,
+      },
+    );
+  });
+
+  it("still supports an explicit LINE Mini App mobile override", () => {
+    assert.deepEqual(
+      launchTargetBehavior("mobile", {
+        kind: "line",
+        href: "https://miniapp.line.me/2008237918-mpplkp5Q",
+      }),
+      {
+        destination: "line_mobile",
+        sendLineConversion: true,
       },
     );
   });

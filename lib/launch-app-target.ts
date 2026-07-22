@@ -1,5 +1,5 @@
 import type { LaunchAppDestination } from "@/lib/analytics-client";
-import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/lib/destinations";
+import { WEB_APP_HREF } from "@/lib/destinations";
 
 export type WebLaunchTarget = {
   kind: "web";
@@ -19,9 +19,13 @@ export const DEFAULT_DESKTOP_LAUNCH_TARGET: DesktopLaunchTarget = {
   href: WEB_APP_HREF,
 };
 
+/**
+ * Mobile CTAs default to the web app (parity with desktop). A specific CTA can
+ * still opt into the LINE Mini App by passing an explicit `mobileTarget`.
+ */
 export const DEFAULT_MOBILE_LAUNCH_TARGET: MobileLaunchTarget = {
-  kind: "line",
-  href: LINE_MINI_APP_HREF,
+  kind: "web",
+  href: WEB_APP_HREF,
 };
 
 type LaunchTargetBehavior = {
